@@ -30,6 +30,13 @@
 		</dependency>
 	</dependencies>
 
+	<scm>
+		<connection>scm:git:git://github.com/fiji/imagescience</connection>
+		<developerConnection>scm:git:git@github.com:fiji/imagescience</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/fiji/imagescience</url>
+	</scm>
+
 	<repositories>
 		<!-- NB: for project parent, in case of partial checkout -->
 		<repository>
