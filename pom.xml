@@ -30,6 +30,11 @@
 		</dependency>
 	</dependencies>
 
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.imagej.net/job/imagescience/</url>
+	</ciManagement>
+
 	<scm>
 		<connection>scm:git:git://github.com/fiji/imagescience</connection>
 		<developerConnection>scm:git:git@github.com:fiji/imagescience</developerConnection>
