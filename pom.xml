@@ -26,7 +26,6 @@
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>Image_5D</artifactId>
-			<version>${image5d.version}</version>
 		</dependency>
 	</dependencies>
 
