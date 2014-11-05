@@ -1,11 +1,12 @@
 package imagescience.shape;
 
 import imagescience.image.Axes;
+import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
-import imagescience.image.ByteImage;
 import imagescience.utility.FMath;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;

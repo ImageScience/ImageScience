@@ -1,7 +1,6 @@
 package imagescience.random;
 
 import imagescience.utility.FMath;
-import java.lang.Math;
 
 /** Binomial random number generator. This implementation is based on the algorithm described by W. H. Press, S. A. Teukolsky, W. T. Vetterling, B. P. Flannery, <a href="http://www.nr.com/" target="newbrowser">Numerical Recipes in C: The Art of Scientific Computing</a> (2nd edition), Cambridge University Press, Cambridge, 1992, Section 7.3, and uses {@link UniformGenerator} as a source of uniform random numbers. */
 public class BinomialGenerator implements RandomGenerator {

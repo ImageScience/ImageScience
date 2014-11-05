@@ -1,8 +1,6 @@
 package imagescience.feature;
 
 import imagescience.image.Aspects;
-import imagescience.image.Axes;
-import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.FloatImage;
 import imagescience.image.Image;

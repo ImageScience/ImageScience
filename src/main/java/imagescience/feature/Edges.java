@@ -1,6 +1,5 @@
 package imagescience.feature;
 
-import imagescience.array.DoubleArray;
 import imagescience.image.Aspects;
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;

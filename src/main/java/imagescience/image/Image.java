@@ -1,8 +1,7 @@
 package imagescience.image;
 
 import ij.ImagePlus;
-import java.lang.Class;
-import java.lang.Math;
+
 import java.lang.reflect.Constructor;
 
 /** Abstract base class for images containing up to 5D elements. */

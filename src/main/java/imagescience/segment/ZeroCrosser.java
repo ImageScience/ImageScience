@@ -3,7 +3,6 @@ package imagescience.segment;
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
-import imagescience.image.FloatImage;
 import imagescience.image.Image;
 import imagescience.utility.ImageScience;
 import imagescience.utility.Messenger;

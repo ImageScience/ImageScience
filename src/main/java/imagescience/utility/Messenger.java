@@ -1,8 +1,6 @@
 package imagescience.utility;
 
 import ij.IJ;
-import ij.ImageJ;
-import ij.gui.MessageDialog;
 
 /** Displays various types of messages. */
 public class Messenger {

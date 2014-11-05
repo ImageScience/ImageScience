@@ -1,6 +1,5 @@
 package imagescience.utility;
 
-import java.lang.Math;
 
 /** Carries out elementary mathematical operations and function evaluations. */
 public class FMath {

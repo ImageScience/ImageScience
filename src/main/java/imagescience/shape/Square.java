@@ -6,8 +6,9 @@ import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
 import imagescience.utility.FMath;
-import java.awt.geom.Rectangle2D;
+
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 
 /** A square in the x-y plane. */
 public class Square implements Shape {

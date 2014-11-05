@@ -6,8 +6,8 @@ import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
 import imagescience.utility.FMath;
+
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
 import java.util.Vector;
 
 /** A closed, interpolating, C&#178;-continuous, cubic spline curve in the x-y plane. It uses a uniform parametrization and knot vector. Although this may not be optimal in some cases, as pointed out by L. Piegl and W. Tiller, The NURBS Book, 2nd Edition, Springer-Verlag, Berlin, 1997, it allows for an extremely efficient implementation and computation of several features. Thus the user should be aware that this class works best for (approximately) equally spaced vertices. Also, although higher-dimensional vertices are accepted, only the x- and y-coordinates of the vertices are actually considered by all methods. */

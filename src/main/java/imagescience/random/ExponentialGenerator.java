@@ -1,6 +1,5 @@
 package imagescience.random;
 
-import java.lang.Math;
 
 /** Exponential random number generator. This implementation is based on taking the natural logarithm of uniform random numbers, the latter of which are obtained from class {@link UniformGenerator}. For more details, see for example W. H. Press, S. A. Teukolsky, W. T. Vetterling, B. P. Flannery, <a href="http://www.nr.com/" target="newbrowser">Numerical Recipes in C: The Art of Scientific Computing</a> (2nd edition), Cambridge University Press, Cambridge, 1992, Section 7.2. */
 public class ExponentialGenerator implements RandomGenerator {

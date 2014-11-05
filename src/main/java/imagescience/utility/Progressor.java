@@ -3,6 +3,7 @@ package imagescience.utility;
 import ij.IJ;
 import ij.ImageJ;
 import ij.gui.ProgressBar;
+
 import java.awt.Graphics;
 
 /** Wrapper around ImageJ's progress bar. This class offers several advantages over ImageJ's native progress displaying methods. First, it allows one to make sure that the progress bar is <em>always</em> updated (repainting can be enforced) if displaying is enabled, even when it is used from within the event dispatching thread (in which case the bar - within ImageJ drawn using that same thread - would otherwise not be updated until the process using the bar is finished). Furthermore, it relieves the user of explicitly computing the progress percentage (all this class requires is the total number of steps before the start of a process and the same number of step calls during the process). Also, it allows specifying the number of progress updates (by default 20 from start to end), thereby limiting the number of repaint calls (which are relatively expensive), and thus reducing execution time for progress displaying. Finally, it allows specifying the progress range (the minimum / maximum displayed progress value for the start / end of the corresponding process), which facilitates progress displaying for subprocesses. */

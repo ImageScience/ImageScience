@@ -1,6 +1,5 @@
 package imagescience.utility;
 
-import java.lang.System;
 
 /** Facilitates measuring of the computation time consumed by a process. The measuring is done with millisecond precision. Note, however, that the accuracy of the measuring depends on the timing granularity of the underlying operating system and may be coarser than milliseconds. */
 public class Timer {

@@ -10,6 +10,7 @@ import imagescience.utility.ImageScience;
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
+
 import java.util.Vector;
 
 /** Computes eigenimages of the structure tensor. */

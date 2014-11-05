@@ -9,6 +9,7 @@ import ij.ImageStack;
 import ij.LookUpTable;
 import ij.measure.Calibration;
 import ij.process.ImageProcessor;
+
 import java.awt.image.ColorModel;
 
 /** Provides Image5D utility methods. Use of this class requires the <a href="http://rsb.info.nih.gov/ij/plugins/image5d.html" target="newbrowser">Image5D</a> package to be installed. */

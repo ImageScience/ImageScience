@@ -1,7 +1,6 @@
 package imagescience.random;
 
 import imagescience.image.Axes;
-import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
@@ -9,7 +8,6 @@ import imagescience.utility.ImageScience;
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
-import java.lang.Math;
 
 /** Randomizes images. */
 public class Randomizer {

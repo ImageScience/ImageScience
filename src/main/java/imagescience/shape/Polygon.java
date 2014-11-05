@@ -6,6 +6,7 @@ import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
 import imagescience.utility.FMath;
+
 import java.awt.geom.GeneralPath;
 import java.util.Vector;
 
