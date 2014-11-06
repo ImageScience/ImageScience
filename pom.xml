@@ -18,6 +18,25 @@
 	<name>jars/imagescience.jar</name>
 	<description></description>
 
+	<scm>
+		<connection>scm:git:git://github.com/fiji/imagescience</connection>
+		<developerConnection>scm:git:git@github.com:fiji/imagescience</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/fiji/imagescience</url>
+	</scm>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.imagej.net/job/imagescience/</url>
+	</ciManagement>
+
+	<repositories>
+		<!-- NB: for project parent -->
+		<repository>
+			<id>imagej.public</id>
+			<url>http://maven.imagej.net/content/groups/public</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<!-- ImageJ dependencies -->
 		<dependency>
@@ -29,25 +48,5 @@
 			<artifactId>Image_5D</artifactId>
 		</dependency>
 	</dependencies>
-
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/job/imagescience/</url>
-	</ciManagement>
-
-	<scm>
-		<connection>scm:git:git://github.com/fiji/imagescience</connection>
-		<developerConnection>scm:git:git@github.com:fiji/imagescience</developerConnection>
-		<tag>HEAD</tag>
-		<url>https://github.com/fiji/imagescience</url>
-	</scm>
-
-	<repositories>
-		<!-- NB: for project parent -->
-		<repository>
-			<id>imagej.public</id>
-			<url>http://maven.imagej.net/content/groups/public</url>
-		</repository>
-	</repositories>
 
 </project>
