@@ -14,6 +14,30 @@
 
 	<name>jars/imagescience.jar</name>
 	<description />
+	<url>http://fiji.sc/ImageScience</url>
+	<inceptionYear>2001</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>ImageScience</name>
+			<url>http://fiji.sc/ImageScience_License</url>
+			<distribution>repo</distribution>
+			<comments>Not an OSS license!</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Erik Meijering</name>
+			<url>http://imagescience.org/meijering/</url>
+			<organization>ImageScience</organization>
+			<organizationUrl>http://imagescience.org/</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
 
 	<scm>
 		<connection>scm:git:git://github.com/fiji/imagescience</connection>
