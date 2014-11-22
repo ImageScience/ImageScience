@@ -21,7 +21,7 @@
 		<license>
 			<name>ImageScience</name>
 			<url>http://fiji.sc/ImageScience_License</url>
-			<distribution>repo</distribution>
+			<distribution>manual</distribution>
 			<comments>Not an OSS license!</comments>
 		</license>
 	</licenses>
