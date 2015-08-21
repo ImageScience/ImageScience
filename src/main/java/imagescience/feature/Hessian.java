@@ -1,12 +1,14 @@
 package imagescience.feature;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Aspects;
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.FloatImage;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
@@ -21,13 +23,13 @@ public class Hessian {
 	
 	/** Computes Hessian eigenimages of images.
 		
-		@param image the input image for which Hessian eigenimages need to be computed. If it is of type {@link FloatImage}, it will be used to store intermediate results. Otherwise it will be left unaltered. If the size of the image in the z-dimension equals {@code 1}, this method will compute, for every image element, the two-dimensional (2D) Hessian and its two eigenvalues. Otherwise it will compute for every image element the full three-dimensional (3D) Hessian and its three eigenvalues. These computations are performed on every x-y(-z) subimage in a 5D image.
+		@param image The input image for which Hessian eigenimages need to be computed. If it is of type {@link FloatImage}, it will be used to store intermediate results. Otherwise it will be left unaltered. If the size of the image in the z-dimension equals {@code 1}, this method will compute, for every image element, the two-dimensional (2D) Hessian and its two eigenvalues. Otherwise it will compute for every image element the full three-dimensional (3D) Hessian and its three eigenvalues. These computations are performed on every x-y(-z) subimage in a 5D image.
 		
-		@param scale the smoothing scale at which the required image derivatives are computed. The scale is equal to the standard deviation of the Gaussian kernel used for differentiation and must be larger than {@code 0}. In order to enforce physical isotropy, for each dimension, the scale is divided by the size of the image elements (aspect-ratio value) in that dimension.
+		@param scale The smoothing scale at which the required image derivatives are computed. The scale is equal to the standard deviation of the Gaussian kernel used for differentiation and must be larger than {@code 0}. In order to enforce physical isotropy, for each dimension, the scale is divided by the size of the image elements (aspect ratio) in that dimension.
 		
-		@param absolute determines whether eigenvalues are compared in absolute sense.
+		@param absolute Determines whether eigenvalues are compared in absolute sense.
 		
-		@return an array containing the eigenimages. The images are always of type {@link FloatImage}.<br>
+		@return An array containing the eigenimages. The images are always of type {@link FloatImage}.<br>
 		If only the two-dimensional (2D) Hessian and its two eigenvalues were computed for every image element, the returned array contains two eigenimages:<br>
 		Element {@code 0} = the image with, for every element, the largest (absolute) eigenvalue,<br>
 		Element {@code 1} = the image with, for every element, the smallest (absolute) eigenvalue.<br>
@@ -36,11 +38,11 @@ public class Hessian {
 		Element {@code 1} = the image with, for every element, the middle (absolute) eigenvalue,<br>
 		Element {@code 2} = the image with, for every element, the smallest (absolute) eigenvalue.
 		
-		@exception IllegalArgumentException if {@code scale} is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If {@code scale} is less than or equal to {@code 0}.
 		
-		@exception IllegalStateException if the size of the image elements (aspect-ratio value) is less than or equal to {@code 0} in the x-, y-, or z-dimension.
+		@throws IllegalStateException If the size of the image elements (aspect ratio) is less than or equal to {@code 0} in the x-, y-, or z-dimension.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Vector<Image> run(final Image image, final double scale, final boolean absolute) {
 		
@@ -58,10 +60,10 @@ public class Hessian {
 		messenger.log("Input image dimensions: (x,y,z,t,c) = ("+dims.x+","+dims.y+","+dims.z+","+dims.t+","+dims.c+")");
 		
 		final Aspects asps = image.aspects();
-		messenger.log("Element aspect-ratios: ("+asps.x+","+asps.y+","+asps.z+","+asps.t+","+asps.c+")");
-		if (asps.x <= 0) throw new IllegalStateException("Aspect-ratio value in x-dimension less than or equal to 0");
-		if (asps.y <= 0) throw new IllegalStateException("Aspect-ratio value in y-dimension less than or equal to 0");
-		if (asps.z <= 0) throw new IllegalStateException("Aspect-ratio value in z-dimension less than or equal to 0");
+		messenger.log("Element aspect ratios: ("+asps.x+","+asps.y+","+asps.z+","+asps.t+","+asps.c+")");
+		if (asps.x <= 0) throw new IllegalStateException("Aspect ratio in x-dimension less than or equal to 0");
+		if (asps.y <= 0) throw new IllegalStateException("Aspect ratio in y-dimension less than or equal to 0");
+		if (asps.z <= 0) throw new IllegalStateException("Aspect ratio in z-dimension less than or equal to 0");
 		
 		final Image smoothImage = (image instanceof FloatImage) ? image : new FloatImage(image);
 		Vector<Image> eigenimages = null;
@@ -76,15 +78,15 @@ public class Hessian {
 			final double[] pls = {0, 0.32, 0.64, 0.96, 1}; int pl = 0;
 			
 			// Compute Hessian components:
-			logstatus("Computing Hxx"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Hxx"); progressor.range(pls[pl],pls[++pl]);
 			final Image Hxx = differentiator.run(smoothImage.duplicate(),scale,2,0,0);
-			logstatus("Computing Hxy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Hxy"); progressor.range(pls[pl],pls[++pl]);
 			final Image Hxy = differentiator.run(smoothImage.duplicate(),scale,1,1,0);
-			logstatus("Computing Hyy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Hyy"); progressor.range(pls[pl],pls[++pl]);
 			final Image Hyy = differentiator.run(smoothImage,scale,0,2,0);
 			
 			// Compute eigenimages (Hxx and Hyy are reused to save memory):
-			logstatus("Computing eigenimages");
+			logus("Computing eigenimages");
 			progressor.steps(dims.c*dims.t*dims.y);
 			progressor.range(pls[pl],pls[++pl]);
 			Hxx.axes(Axes.X); Hxy.axes(Axes.X); Hyy.axes(Axes.X);
@@ -176,21 +178,21 @@ public class Hessian {
 			final double[] pls = {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 1}; int pl = 0;
 			
 			// Compute Hessian components:
-			logstatus("Computing Hxx"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Hxx"); progressor.range(pls[pl],pls[++pl]);
 			final Image Hxx = differentiator.run(smoothImage.duplicate(),scale,2,0,0);
-			logstatus("Computing Hxy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Hxy"); progressor.range(pls[pl],pls[++pl]);
 			final Image Hxy = differentiator.run(smoothImage.duplicate(),scale,1,1,0);
-			logstatus("Computing Hxz"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Hxz"); progressor.range(pls[pl],pls[++pl]);
 			final Image Hxz = differentiator.run(smoothImage.duplicate(),scale,1,0,1);
-			logstatus("Computing Hyy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Hyy"); progressor.range(pls[pl],pls[++pl]);
 			final Image Hyy = differentiator.run(smoothImage.duplicate(),scale,0,2,0);
-			logstatus("Computing Hyz"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Hyz"); progressor.range(pls[pl],pls[++pl]);
 			final Image Hyz = differentiator.run(smoothImage.duplicate(),scale,0,1,1);
-			logstatus("Computing Hzz"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Hzz"); progressor.range(pls[pl],pls[++pl]);
 			final Image Hzz = differentiator.run(smoothImage,scale,0,0,2);
 			
 			// Compute eigenimages (Hxx, Hyy, Hzz are reused to save memory):
-			logstatus("Computing eigenimages");
+			logus("Computing eigenimages");
 			progressor.steps(dims.c*dims.t*dims.z*dims.y);
 			progressor.range(pls[pl],pls[++pl]);
 			Hxx.axes(Axes.X); Hxy.axes(Axes.X); Hxz.axes(Axes.X);
@@ -321,17 +323,15 @@ public class Hessian {
 			eigenimages.add(Hzz);
 		}
 		
-		messenger.status("");
-		
 		timer.stop();
 		
 		return eigenimages;
 	}
 	
-	private void logstatus(final String s) {
+	private void logus(final String s) {
 		
 		messenger.log(s);
-		messenger.status(s+"...");
+		progressor.status(s+"...");
 	}
 	
 	/** The object used for message displaying. */

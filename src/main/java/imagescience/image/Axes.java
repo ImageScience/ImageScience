@@ -46,7 +46,7 @@ public class Axes {
 	
 	/** One-dimensional constructor.
 		
-		@param x the x-axis activity.
+		@param x The x-axis activity.
 	*/
 	public Axes(final boolean x) {
 		
@@ -56,9 +56,9 @@ public class Axes {
 	
 	/** Two-dimensional constructor.
 		
-		@param x the x-axis activity.
+		@param x The x-axis activity.
 		
-		@param y the y-axis activity.
+		@param y The y-axis activity.
 	*/
 	public Axes(final boolean x, final boolean y) {
 		
@@ -69,11 +69,11 @@ public class Axes {
 	
 	/** Three-dimensional constructor.
 		
-		@param x the x-axis activity.
+		@param x The x-axis activity.
 		
-		@param y the y-axis activity.
+		@param y The y-axis activity.
 		
-		@param z the z-axis activity.
+		@param z The z-axis activity.
 	*/
 	public Axes(final boolean x, final boolean y, final boolean z) {
 		
@@ -85,13 +85,13 @@ public class Axes {
 	
 	/** Four-dimensional constructor.
 		
-		@param x the x-axis activity.
+		@param x The x-axis activity.
 		
-		@param y the y-axis activity.
+		@param y The y-axis activity.
 		
-		@param z the z-axis activity.
+		@param z The z-axis activity.
 		
-		@param t the t-axis activity.
+		@param t The t-axis activity.
 	*/
 	public Axes(final boolean x, final boolean y, final boolean z, final boolean t) {
 		
@@ -104,15 +104,15 @@ public class Axes {
 	
 	/** Five-dimensional constructor.
 		
-		@param x the x-axis activity.
+		@param x The x-axis activity.
 		
-		@param y the y-axis activity.
+		@param y The y-axis activity.
 		
-		@param z the z-axis activity.
+		@param z The z-axis activity.
 		
-		@param t the t-axis activity.
+		@param t The t-axis activity.
 		
-		@param c the c-axis activity.
+		@param c The c-axis activity.
 	*/
 	public Axes(final boolean x, final boolean y, final boolean z, final boolean t, final boolean c) {
 		
@@ -125,9 +125,9 @@ public class Axes {
 	
 	/** Five-dimensional constructor.
 		
-		@param axes an integer number indicating which axes are active. Must be one or a combination (by addition) of {@link #X}, {@link #Y}, {@link #Z}, {@link #T}, {@link #C}.
+		@param axes An integer number indicating which axes are active. Must be one or a combination (by addition) of {@link #X}, {@link #Y}, {@link #Z}, {@link #T}, {@link #C}.
 		
-		@exception IllegalArgumentException if {@code axes} does not correspond to a valid combination of axes.
+		@throws IllegalArgumentException If {@code axes} does not correspond to a valid combination of axes.
 	*/
 	public Axes(final int axes) {
 		
@@ -142,15 +142,15 @@ public class Axes {
 	
 	/** Duplicates this object.
 		
-		@return a new {@code Axes} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
+		@return A new {@code Axes} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
 	*/
 	public Axes duplicate() { return new Axes(x,y,z,t,c); }
 	
 	/** Indicates whether this object is in the same state as the given object.
 		
-		@param axes the object to compare this object with.
+		@param axes The object to compare this object with.
 		
-		@return {@code true} if the given object is not {@code null} and has the same axes (de)activated as this object; {@code false} if this is not the case.
+		@return Value {@code true} if the given object is not {@code null} and has the same axes (de)activated as this object, or {@code false} if this is not the case.
 	*/
 	public boolean equals(final Axes axes) {
 		

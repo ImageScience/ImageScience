@@ -30,9 +30,9 @@ public class Borders {
 	
 	/** One-dimensional constructor.
 		
-		@param x the border size in the x-dimension.
+		@param x The border size in the x-dimension.
 		
-		@exception IllegalArgumentException if the parameter value is less than {@code 0}.
+		@throws IllegalArgumentException If the parameter value is less than {@code 0}.
 	*/
 	public Borders(final int x) {
 		
@@ -46,11 +46,11 @@ public class Borders {
 	
 	/** Two-dimensional constructor.
 		
-		@param x the border size in the x-dimension.
+		@param x The border size in the x-dimension.
 		
-		@param y the border size in the y-dimension.
+		@param y The border size in the y-dimension.
 		
-		@exception IllegalArgumentException if any of the parameter values is less than {@code 0}.
+		@throws IllegalArgumentException If any of the parameter values is less than {@code 0}.
 	*/
 	public Borders(final int x, final int y) {
 		
@@ -64,13 +64,13 @@ public class Borders {
 	
 	/** Three-dimensional constructor.
 		
-		@param x the border size in the x-dimension.
+		@param x The border size in the x-dimension.
 		
-		@param y the border size in the y-dimension.
+		@param y The border size in the y-dimension.
 		
-		@param z the border size in the z-dimension.
+		@param z The border size in the z-dimension.
 		
-		@exception IllegalArgumentException if any of the parameter values is less than {@code 0}.
+		@throws IllegalArgumentException If any of the parameter values is less than {@code 0}.
 	*/
 	public Borders(final int x, final int y, final int z) {
 		
@@ -84,15 +84,15 @@ public class Borders {
 	
 	/** Four-dimensional constructor.
 		
-		@param x the border size in the x-dimension.
+		@param x The border size in the x-dimension.
 		
-		@param y the border size in the y-dimension.
+		@param y The border size in the y-dimension.
 		
-		@param z the border size in the z-dimension.
+		@param z The border size in the z-dimension.
 		
-		@param t the border size in the t-dimension.
+		@param t The border size in the t-dimension.
 		
-		@exception IllegalArgumentException if any of the parameter values is less than {@code 0}.
+		@throws IllegalArgumentException If any of the parameter values is less than {@code 0}.
 	*/
 	public Borders(final int x, final int y, final int z, final int t) {
 		
@@ -106,17 +106,17 @@ public class Borders {
 	
 	/** Five-dimensional constructor.
 		
-		@param x the border size in the x-dimension.
+		@param x The border size in the x-dimension.
 		
-		@param y the border size in the y-dimension.
+		@param y The border size in the y-dimension.
 		
-		@param z the border size in the z-dimension.
+		@param z The border size in the z-dimension.
 		
-		@param t the border size in the t-dimension.
+		@param t The border size in the t-dimension.
 		
-		@param c the border size in the c-dimension.
+		@param c The border size in the c-dimension.
 		
-		@exception IllegalArgumentException if any of the parameter values is less than {@code 0}.
+		@throws IllegalArgumentException If any of the parameter values is less than {@code 0}.
 	*/
 	public Borders(final int x, final int y, final int z, final int t, final int c) {
 		
@@ -130,15 +130,15 @@ public class Borders {
 	
 	/** Duplicates this object.
 		
-		@return a new {@code Borders} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
+		@return A new {@code Borders} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
 	*/
 	public Borders duplicate() { return new Borders(x,y,z,t,c); }
 	
 	/** Indicates whether this object is in the same state as the given object.
 		
-		@param borders the object to compare this object with.
+		@param borders The object to compare this object with.
 		
-		@return {@code true} if the given object is not {@code null} and has the same border size in each dimension as this object; {@code false} if this is not the case.
+		@return Value {@code true} if the given object is not {@code null} and has the same border size in each dimension as this object, or {@code false} if this is not the case.
 	*/
 	public boolean equals(final Borders borders) {
 		

@@ -2,7 +2,9 @@ package imagescience.image;
 
 import ij.ImagePlus;
 import ij.ImageStack;
+
 import ij.measure.Calibration;
+
 import imagescience.utility.FMath;
 
 /** An image containing up to 5D elements of type {@code int} representing aRGB-color values. The color components are stored in an {@code int} as follows:<br>
@@ -38,9 +40,9 @@ public class ColorImage extends Image {
 	
 	/** Dimensions constructor.
 		
-		@param dims the dimensions of the new image.
+		@param dims The dimensions of the new image.
 		
-		@exception NullPointerException if {@code dims} is {@code null}.
+		@throws NullPointerException If {@code dims} is {@code null}.
 	*/
 	public ColorImage(final Dimensions dims) {
 		
@@ -53,11 +55,11 @@ public class ColorImage extends Image {
 	
 	/** Wrapper constructor.
 		
-		@param imageplus the {@code ImagePlus} object whose image data is to be wrapped. The actual image data is not copied but shared.
+		@param imageplus The {@code ImagePlus} object whose image data is to be wrapped. The actual image data is not copied but shared.
 		
-		@exception IllegalArgumentException if the image elements of {@code imageplus} are not of type {@code int}.
+		@throws IllegalArgumentException If the image elements of {@code imageplus} are not of type {@code int}.
 		
-		@exception NullPointerException if {@code imageplus} is {@code null}.
+		@throws NullPointerException If {@code imageplus} is {@code null}.
 	*/
 	public ColorImage(final ImagePlus imageplus) {
 		
@@ -96,9 +98,9 @@ public class ColorImage extends Image {
 	
 	/** Copy constructor.
 		
-		@param image the image to copy from. Image element values are copied using a {@code get} method of the given image and the corresponding {@code set} method of this image. This enables copying from images that are of different type than this image. Be aware, however, of the value conversion rules of the respective methods when copying from images that are not of the same type as this image.
+		@param image The image to copy from. Image element values are copied using a {@code get} method of the given image and the corresponding {@code set} method of this image. This enables copying from images that are of different type than this image. Be aware, however, of the value conversion rules of the respective methods when copying from images that are not of the same type as this image.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public ColorImage(final Image image) {
 		
@@ -124,11 +126,11 @@ public class ColorImage extends Image {
 	
 	/** Copy constructor that allows adding borders. Creates a new image whose size in each dimension is equal to that of the given image plus twice the given border size in that dimension.
 		
-		@param image the image to copy from. Image element values are copied using a {@code get} method of the given image and the corresponding {@code set} method of this image, taking into account the new border sizes. This enables copying from images that are of a different type than this image. Be aware, however, of the value conversion rules of the respective methods when copying from images that are not of the same type as this image.
+		@param image The image to copy from. Image element values are copied using a {@code get} method of the given image and the corresponding {@code set} method of this image, taking into account the new border sizes. This enables copying from images that are of a different type than this image. Be aware, however, of the value conversion rules of the respective methods when copying from images that are not of the same type as this image.
 		
-		@param borders specifies the border size in each dimension of the new image.
+		@param borders Specifies the border size in each dimension of the new image.
 		
-		@exception NullPointerException if any of the parameters is {@code null}.
+		@throws NullPointerException If any of the parameters is {@code null}.
 	*/
 	public ColorImage(final Image image, final Borders borders) {
 		
@@ -175,15 +177,15 @@ public class ColorImage extends Image {
 	
 	/** Indicates the currently active component.
 		
-		@return the currently active component. The returned value is one of the static fields of this class. By default this is {@link #FULL}.
+		@return The currently active component. The returned value is one of the static fields of this class. By default this is {@link #FULL}.
 	*/
 	public int component() { return component; }
 	
 	/** Sets the active component.
 		
-		@param component the component to be activated. Must be one of the static fields of this class. The {@code get} and {@code set} methods consider only the currently active component. By default this is {@link #FULL}.
+		@param component The component to be activated. Must be one of the static fields of this class. The {@code get} and {@code set} methods consider only the currently active component. By default this is {@link #FULL}.
 		
-		@exception IllegalArgumentException if {@code component} is not one of the static fields of this class.
+		@throws IllegalArgumentException If {@code component} is not one of the static fields of this class.
 	*/
 	public void component(final int component) {
 		
@@ -278,7 +280,7 @@ public class ColorImage extends Image {
 	
 	/** Returns the currently active component as a new {@code Image}.
 		
-		@return a new {@code Image} containing a copy of the currently active component. If the active component is one of {@link #ALPHA}, {@link #RED}, {@link #GREEN}, {@link #BLUE}, the returned object is an instance of {@link ByteImage} and contains the element values of the corresponding component. If it is {@link #FULL}, the returned object is an instance of {@link ColorImage} and contains a copy of this image.
+		@return A new {@code Image} containing a copy of the currently active component. If the active component is one of {@link #ALPHA}, {@link #RED}, {@link #GREEN}, {@link #BLUE}, the returned object is an instance of {@link ByteImage} and contains the element values of the corresponding component. If it is {@link #FULL}, the returned object is an instance of {@link ColorImage} and contains a copy of this image.
 	*/
 	public Image get() {
 		
@@ -977,13 +979,692 @@ public class ColorImage extends Image {
 		}
 	}
 	
+	public void get(final Coordinates coords, final float[] values) {
+		
+		switch (axes) {
+			case Axes.X: {
+				int vxstart = 0;
+				int exstart = coords.x;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				int exstop = coords.x + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				final int[] elms = elements[coords.c][coords.t][coords.z];
+				for (int x=exstart, ex=coords.y*dims.x+exstart, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+					values[vx] = (getmask&elms[ex])>>bitshift;
+				break;
+			}
+			case Axes.Y: {
+				int vystart = 0;
+				int eystart = coords.y;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				int eystop = coords.y + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				final int[] elms = elements[coords.c][coords.t][coords.z];
+				for (int y=eystart, ey=eystart*dims.x+coords.x, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+					values[vy] = (getmask&elms[ey])>>bitshift;
+				break;
+			}
+			case Axes.Z: {
+				int vzstart = 0;
+				int ezstart = coords.z;
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				int ezstop = coords.z + values.length;
+				if (ezstop > dims.z) ezstop = dims.z;
+				final int exy = coords.y*dims.x + coords.x;
+				final int[][] elms = elements[coords.c][coords.t];
+				for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+					values[vz] = (getmask&elms[ez][exy])>>bitshift;
+				break;
+			}
+			case Axes.T: {
+				int vtstart = 0;
+				int etstart = coords.t;
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int etstop = coords.t + values.length;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					values[vt] = (getmask&elements[coords.c][et][coords.z][exy])>>bitshift;
+				break;
+			}
+			case Axes.C: {
+				int vcstart = 0;
+				int ecstart = coords.c;
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int ecstop = coords.c + values.length;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					values[vc] = (getmask&elements[ec][coords.t][coords.z][exy])>>bitshift;
+				break;
+			}
+			default:
+				throw new IllegalStateException("Wrong number of active axes");
+		}
+	}
+	
+	public void get(final Coordinates coords, final float[][] values) {
+		
+		switch (axes) {
+			case Axes.YX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				int exstop = coords.x + values[0].length;
+				int eystop = coords.y + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				final int[] elms = elements[coords.c][coords.t][coords.z];
+				for (int y=eystart, ey=eystart*dims.x+exstart, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+					for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+						values[vy][vx] = (getmask&elms[ex])>>bitshift;
+				break;
+			}
+			case Axes.ZX: {
+				int vxstart = 0;
+				int vzstart = 0;
+				int exstart = coords.x;
+				int ezstart = coords.z;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				int exstop = coords.x + values[0].length;
+				int ezstop = coords.z + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (ezstop > dims.z) ezstop = dims.z;
+				final int exy = coords.y*dims.x + exstart;
+				final int[][] elms = elements[coords.c][coords.t];
+				for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+					for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+						values[vz][vx] = (getmask&elms[ez][ex])>>bitshift;
+				break;
+			}
+			case Axes.ZY: {
+				int vystart = 0;
+				int vzstart = 0;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				int eystop = coords.y + values[0].length;
+				int ezstop = coords.z + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				final int exy = eystart*dims.x + coords.x;
+				final int[][] elms = elements[coords.c][coords.t];
+				for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+						values[vz][vy] = (getmask&elms[ez][ey])>>bitshift;
+				break;
+			}
+			case Axes.TX: {
+				int vxstart = 0;
+				int vtstart = 0;
+				int exstart = coords.x;
+				int etstart = coords.t;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int exstop = coords.x + values[0].length;
+				int etstop = coords.t + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = coords.y*dims.x + exstart;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+						values[vt][vx] = (getmask&elements[coords.c][et][coords.z][ex])>>bitshift;
+				break;
+			}
+			case Axes.TY: {
+				int vystart = 0;
+				int vtstart = 0;
+				int eystart = coords.y;
+				int etstart = coords.t;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int eystop = coords.y + values[0].length;
+				int etstop = coords.t + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = eystart*dims.x + coords.x;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+						values[vt][vy] = (getmask&elements[coords.c][et][coords.z][ey])>>bitshift;
+				break;
+			}
+			case Axes.TZ: {
+				int vzstart = 0;
+				int vtstart = 0;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int ezstop = coords.z + values[0].length;
+				int etstop = coords.t + values.length;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						values[vt][vz] = (getmask&elements[coords.c][et][ez][exy])>>bitshift;
+				break;
+			}
+			case Axes.CX: {
+				int vxstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+						values[vc][vx] = (getmask&elements[ec][coords.t][coords.z][ex])>>bitshift;
+				break;
+			}
+			case Axes.CY: {
+				int vystart = 0;
+				int vcstart = 0;
+				int eystart = coords.y;
+				int ecstart = coords.c;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int eystop = coords.y + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+						values[vc][vy] = (getmask&elements[ec][coords.t][coords.z][ey])>>bitshift;
+				break;
+			}
+			case Axes.CZ: {
+				int vzstart = 0;
+				int vcstart = 0;
+				int ezstart = coords.z;
+				int ecstart = coords.c;
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int ezstop = coords.z + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						values[vc][vz] = (getmask&elements[ec][coords.t][ez][exy])>>bitshift;
+				break;
+			}
+			case Axes.CT: {
+				int vtstart = 0;
+				int vcstart = 0;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						values[vc][vt] = (getmask&elements[ec][et][coords.z][exy])>>bitshift;
+				break;
+			}
+			default:
+				throw new IllegalStateException("Wrong number of active axes");
+		}
+	}
+	
+	public void get(final Coordinates coords, final float[][][] values) {
+		
+		switch (axes) {
+			case Axes.ZYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vzstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				int exstop = coords.x + values[0][0].length;
+				int eystop = coords.y + values[0].length;
+				int ezstop = coords.z + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				final int exy = eystart*dims.x + exstart;
+				final int[][] elms = elements[coords.c][coords.t];
+				for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+						for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+							values[vz][vy][vx] = (getmask&elms[ez][ex])>>bitshift;
+				break;
+			}
+			case Axes.TYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vtstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int etstart = coords.t;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int exstop = coords.x + values[0][0].length;
+				int eystop = coords.y + values[0].length;
+				int etstop = coords.t + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = eystart*dims.x + exstart;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+						for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+							values[vt][vy][vx] = (getmask&elements[coords.c][et][coords.z][ex])>>bitshift;
+				break;
+			}
+			case Axes.CYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0].length;
+				int eystop = coords.y + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+						for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+							values[vc][vy][vx] = (getmask&elements[ec][coords.t][coords.z][ex])>>bitshift;
+				break;
+			}
+			case Axes.TZX: {
+				int vxstart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int exstart = coords.x;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int exstop = coords.x + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int etstop = coords.t + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = coords.y*dims.x + exstart;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+							values[vt][vz][vx] = (getmask&elements[coords.c][et][ez][ex])>>bitshift;
+				break;
+			}
+			case Axes.CZX: {
+				int vxstart = 0;
+				int vzstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int ezstart = coords.z;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+							values[vc][vz][vx] = (getmask&elements[ec][coords.t][ez][ex])>>bitshift;
+				break;
+			}
+			case Axes.CTX: {
+				int vxstart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+							values[vc][vt][vx] = (getmask&elements[ec][et][coords.z][ex])>>bitshift;
+				break;
+			}
+			case Axes.TZY: {
+				int vystart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int eystop = coords.y + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int etstop = coords.t + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = eystart*dims.x + coords.x;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+							values[vt][vz][vy] = (getmask&elements[coords.c][et][ez][ey])>>bitshift;
+				break;
+			}
+			case Axes.CZY: {
+				int vystart = 0;
+				int vzstart = 0;
+				int vcstart = 0;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int ecstart = coords.c;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int eystop = coords.y + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+							values[vc][vz][vy] = (getmask&elements[ec][coords.t][ez][ey])>>bitshift;
+				break;
+			}
+			case Axes.CTY: {
+				int vystart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int eystart = coords.y;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int eystop = coords.y + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+							values[vc][vt][vy] = (getmask&elements[ec][et][coords.z][ey])>>bitshift;
+				break;
+			}
+			case Axes.CTZ: {
+				int vzstart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int ezstop = coords.z + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+							values[vc][vt][vz] = (getmask&elements[ec][et][ez][exy])>>bitshift;
+				break;
+			}
+			default:
+				throw new IllegalStateException("Wrong number of active axes");
+		}
+	}
+	
+	public void get(final Coordinates coords, final float[][][][] values) {
+		
+		switch (axes) {
+			case Axes.TZYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int exstop = coords.x + values[0][0][0].length;
+				int eystop = coords.y + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int etstop = coords.t + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = eystart*dims.x + exstart;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+							for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+								values[vt][vz][vy][vx] = (getmask&elements[coords.c][et][ez][ex])>>bitshift;
+				break;
+			}
+			case Axes.CZYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vzstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0][0].length;
+				int eystop = coords.y + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+							for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+								values[vc][vz][vy][vx] = (getmask&elements[ec][coords.t][ez][ex])>>bitshift;
+				break;
+			}
+			case Axes.CTYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0][0].length;
+				int eystop = coords.y + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+							for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+								values[vc][vt][vy][vx] = (getmask&elements[ec][et][coords.z][ex])>>bitshift;
+				break;
+			}
+			case Axes.CTZX: {
+				int vxstart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0][0].length;
+				int ezstop = coords.z + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+							for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+								values[vc][vt][vz][vx] = (getmask&elements[ec][et][ez][ex])>>bitshift;
+				break;
+			}
+			case Axes.CTZY: {
+				int vystart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int eystop = coords.y + values[0][0][0].length;
+				int ezstop = coords.z + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+							for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+								values[vc][vt][vz][vy] = (getmask&elements[ec][et][ez][ey])>>bitshift;
+				break;
+			}
+			default:
+				throw new IllegalStateException("Wrong number of active axes");
+		}
+	}
+	
+	public void get(final Coordinates coords, final float[][][][][] values) {
+		
+		switch (axes) {
+			case Axes.CTZYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0][0][0].length;
+				int eystop = coords.y + values[0][0][0].length;
+				int ezstop = coords.z + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+							for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+								for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx)
+									values[vc][vt][vz][vy][vx] = (getmask&elements[ec][et][ez][ex])>>bitshift;
+				break;
+			}
+			default:
+				throw new IllegalStateException("Wrong number of active axes");
+		}
+	}
+	
 	/** Sets the currently active component to the given image.
 		
-		@param image the image to set the currently active component to. Image element values are copied using a {@code get} method of the given image and the corresponding {@code set} method of this image. Be aware of the value conversion rules of the respective methods.
+		@param image The image to set the currently active component to. Image element values are copied using a {@code get} method of the given image and the corresponding {@code set} method of this image. Be aware of the value conversion rules of the respective methods.
 		
-		@exception IllegalStateException if the size of the given image is not equal to that of this image in every dimension.
+		@throws IllegalStateException If the size of the given image is not equal to that of this image in every dimension.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public void set(final Image image) {
 		
@@ -1956,6 +2637,771 @@ public class ColorImage extends Image {
 	}
 	
 	public void set(final Coordinates coords, final double[][][][][] values) {
+		
+		switch (axes) {
+			case Axes.CTZYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0][0][0].length;
+				int eystop = coords.y + values[0][0][0].length;
+				int ezstop = coords.z + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+							for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+								for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+									final double value = values[vc][vt][vz][vy][vx];
+									elements[ec][et][ez][ex] =
+										(setmask&elements[ec][et][ez][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+								}
+				break;
+			}
+			default:
+				throw new IllegalStateException("Wrong number of active axes");
+		}
+	}
+	
+	public void set(final Coordinates coords, final float[] values) {
+		
+		switch (axes) {
+			case Axes.X: {
+				int vxstart = 0;
+				int exstart = coords.x;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				int exstop = coords.x + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				final int[] elms = elements[coords.c][coords.t][coords.z];
+				for (int x=exstart, ex=coords.y*dims.x+exstart, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+					final double value = values[vx];
+					elms[ex] = (setmask&elms[ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+				}
+				break;
+			}
+			case Axes.Y: {
+				int vystart = 0;
+				int eystart = coords.y;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				int eystop = coords.y + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				final int[] elms = elements[coords.c][coords.t][coords.z];
+				for (int y=eystart, ey=eystart*dims.x+coords.x, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy) {
+					final double value = values[vy];
+					elms[ey] = (setmask&elms[ey])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+				}
+				break;
+			}
+			case Axes.Z: {
+				int vzstart = 0;
+				int ezstart = coords.z;
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				int ezstop = coords.z + values.length;
+				if (ezstop > dims.z) ezstop = dims.z;
+				final int exy = coords.y*dims.x + coords.x;
+				final int[][] elms = elements[coords.c][coords.t];
+				for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz) {
+					final double value = values[vz];
+					elms[ez][exy] = (setmask&elms[ez][exy])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+				}
+				break;
+			}
+			case Axes.T: {
+				int vtstart = 0;
+				int etstart = coords.t;
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int etstop = coords.t + values.length;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt) {
+					final double value = values[vt];
+					elements[coords.c][et][coords.z][exy] =
+						(setmask&elements[coords.c][et][coords.z][exy])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+				}
+				break;
+			}
+			case Axes.C: {
+				int vcstart = 0;
+				int ecstart = coords.c;
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int ecstop = coords.c + values.length;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc) {
+					final double value = values[vc];
+					elements[ec][coords.t][coords.z][exy] =
+						(setmask&elements[ec][coords.t][coords.z][exy])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+				}
+				break;
+			}
+			default:
+				throw new IllegalStateException("Wrong number of active axes");
+		}
+	}
+	
+	public void set(final Coordinates coords, final float[][] values) {
+		
+		switch (axes) {
+			case Axes.YX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				int exstop = coords.x + values[0].length;
+				int eystop = coords.y + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				final int[] elms = elements[coords.c][coords.t][coords.z];
+				for (int y=eystart, ey=eystart*dims.x+exstart, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+					for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+						final double value = values[vy][vx];
+						elms[ex] = (setmask&elms[ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+					}
+				break;
+			}
+			case Axes.ZX: {
+				int vxstart = 0;
+				int vzstart = 0;
+				int exstart = coords.x;
+				int ezstart = coords.z;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				int exstop = coords.x + values[0].length;
+				int ezstop = coords.z + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (ezstop > dims.z) ezstop = dims.z;
+				final int exy = coords.y*dims.x + exstart;
+				final int[][] elms = elements[coords.c][coords.t];
+				for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+					for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+						final double value = values[vz][vx];
+						elms[ez][ex] = (setmask&elms[ez][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+					}
+				break;
+			}
+			case Axes.TX: {
+				int vxstart = 0;
+				int vtstart = 0;
+				int exstart = coords.x;
+				int etstart = coords.t;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int exstop = coords.x + values[0].length;
+				int etstop = coords.t + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = coords.y*dims.x + exstart;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+						final double value = values[vt][vx];
+						elements[coords.c][et][coords.z][ex] =
+							(setmask&elements[coords.c][et][coords.z][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+					}
+				break;
+			}
+			case Axes.ZY: {
+				int vystart = 0;
+				int vzstart = 0;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				int eystop = coords.y + values[0].length;
+				int ezstop = coords.z + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				final int exy = eystart*dims.x + coords.x;
+				for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy) {
+						final double value = values[vz][vy];
+						elements[coords.c][coords.t][ez][ey] =
+							(setmask&elements[coords.c][coords.t][ez][ey])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+					}
+				break;
+			}
+			case Axes.TY: {
+				int vystart = 0;
+				int vtstart = 0;
+				int eystart = coords.y;
+				int etstart = coords.t;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int eystop = coords.y + values[0].length;
+				int etstop = coords.t + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = eystart*dims.x + coords.x;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy) {
+						final double value = values[vt][vy];
+						elements[coords.c][et][coords.z][ey] =
+							(setmask&elements[coords.c][et][coords.z][ey])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+					}
+				break;
+			}
+			case Axes.TZ: {
+				int vzstart = 0;
+				int vtstart = 0;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int ezstop = coords.z + values[0].length;
+				int etstop = coords.t + values.length;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz) {
+						final double value = values[vt][vz];
+						elements[coords.c][et][ez][exy] =
+							(setmask&elements[coords.c][et][ez][exy])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+					}
+				break;
+			}
+			case Axes.CX: {
+				int vxstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+						final double value = values[vc][vx];
+						elements[ec][coords.t][coords.z][ex] =
+							(setmask&elements[ec][coords.t][coords.z][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+					}
+				break;
+			}
+			case Axes.CY: {
+				int vystart = 0;
+				int vcstart = 0;
+				int eystart = coords.y;
+				int ecstart = coords.c;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int eystop = coords.y + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy) {
+						final double value = values[vc][vy];
+						elements[ec][coords.t][coords.z][ey] =
+							(setmask&elements[ec][coords.t][coords.z][ey])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+					}
+				break;
+			}
+			case Axes.CZ: {
+				int vzstart = 0;
+				int vcstart = 0;
+				int ezstart = coords.z;
+				int ecstart = coords.c;
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int ezstop = coords.z + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz) {
+						final double value = values[vc][vz];
+						elements[ec][coords.t][ez][exy] =
+							(setmask&elements[ec][coords.t][ez][exy])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+					}
+				break;
+			}
+			case Axes.CT: {
+				int vtstart = 0;
+				int vcstart = 0;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt) {
+						final double value = values[vc][vt];
+						elements[ec][et][coords.z][exy] =
+							(setmask&elements[ec][et][coords.z][exy])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+					}
+				break;
+			}
+			default:
+				throw new IllegalStateException("Wrong number of active axes");
+		}
+	}
+	
+	public void set(final Coordinates coords, final float[][][] values) {
+		
+		switch (axes) {
+			case Axes.ZYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vzstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				int exstop = coords.x + values[0][0].length;
+				int eystop = coords.y + values[0].length;
+				int ezstop = coords.z + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				final int exy = eystart*dims.x + exstart;
+				final int[][] elms = elements[coords.c][coords.t];
+				for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+						for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+							final double value = values[vz][vy][vx];
+							elms[ez][ex] = (setmask&elms[ez][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+						}
+				break;
+			}
+			case Axes.TYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vtstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int etstart = coords.t;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int exstop = coords.x + values[0][0].length;
+				int eystop = coords.y + values[0].length;
+				int etstop = coords.t + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = eystart*dims.x + exstart;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+						for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+							final double value = values[vt][vy][vx];
+							elements[coords.c][et][coords.z][ex] =
+								(setmask&elements[coords.c][et][coords.z][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+						}
+				break;
+			}
+			case Axes.CYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0].length;
+				int eystop = coords.y + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+						for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+							final double value = values[vc][vy][vx];
+							elements[ec][coords.t][coords.z][ex] =
+								(setmask&elements[ec][coords.t][coords.z][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+						}
+				break;
+			}
+			case Axes.TZX: {
+				int vxstart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int exstart = coords.x;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int exstop = coords.x + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int etstop = coords.t + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = coords.y*dims.x + exstart;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+							final double value = values[vt][vz][vx];
+							elements[coords.c][et][ez][ex] =
+								(setmask&elements[coords.c][et][ez][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+						}
+				break;
+			}
+			case Axes.CZX: {
+				int vxstart = 0;
+				int vzstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int ezstart = coords.z;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+							final double value = values[vc][vz][vx];
+							elements[ec][coords.t][ez][ex] =
+								(setmask&elements[ec][coords.t][ez][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+						}
+				break;
+			}
+			case Axes.CTX: {
+				int vxstart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+							final double value = values[vc][vt][vx];
+							elements[ec][et][coords.z][ex] =
+								(setmask&elements[ec][et][coords.z][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+						}
+				break;
+			}
+			case Axes.TZY: {
+				int vystart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int eystop = coords.y + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int etstop = coords.t + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = eystart*dims.x + coords.x;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy) {
+							final double value = values[vt][vz][vy];
+							elements[coords.c][et][ez][ey] =
+								(setmask&elements[coords.c][et][ez][ey])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+						}
+				break;
+			}
+			case Axes.CZY: {
+				int vystart = 0;
+				int vzstart = 0;
+				int vcstart = 0;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int ecstart = coords.c;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int eystop = coords.y + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy) {
+							final double value = values[vc][vz][vy];
+							elements[ec][coords.t][ez][ey] =
+								(setmask&elements[ec][coords.t][ez][ey])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+						}
+				break;
+			}
+			case Axes.CTY: {
+				int vystart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int eystart = coords.y;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int eystop = coords.y + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy) {
+							final double value = values[vc][vt][vy];
+							elements[ec][et][coords.z][ey] =
+								(setmask&elements[ec][et][coords.z][ey])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+						}
+				break;
+			}
+			case Axes.CTZ: {
+				int vzstart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int ezstop = coords.z + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz) {
+							final double value = values[vc][vt][vz];
+							elements[ec][et][ez][exy] =
+								(setmask&elements[ec][et][ez][exy])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+						}
+				break;
+			}
+			default:
+				throw new IllegalStateException("Wrong number of active axes");
+		}
+	}
+	
+	public void set(final Coordinates coords, final float[][][][] values) {
+		
+		switch (axes) {
+			case Axes.TZYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				int exstop = coords.x + values[0][0][0].length;
+				int eystop = coords.y + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int etstop = coords.t + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				final int exy = eystart*dims.x + exstart;
+				for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+							for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+								final double value = values[vt][vz][vy][vx];
+								elements[coords.c][et][ez][ex] =
+									(setmask&elements[coords.c][et][ez][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+							}
+				break;
+			}
+			case Axes.CZYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vzstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0][0].length;
+				int eystop = coords.y + values[0][0].length;
+				int ezstop = coords.z + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+							for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+								final double value = values[vc][vz][vy][vx];
+								elements[ec][coords.t][ez][ex] =
+									(setmask&elements[ec][coords.t][ez][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+							}
+				break;
+			}
+			case Axes.CTYX: {
+				int vxstart = 0;
+				int vystart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int eystart = coords.y;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0][0].length;
+				int eystop = coords.y + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (eystop > dims.y) eystop = dims.y;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy)
+							for (int x=exstart, ex=ey, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+								final double value = values[vc][vt][vy][vx];
+								elements[ec][et][coords.z][ex] =
+									(setmask&elements[ec][et][coords.z][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+							}
+				break;
+			}
+			case Axes.CTZX: {
+				int vxstart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int exstart = coords.x;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (exstart < 0) { exstart = 0; vxstart = -coords.x; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int exstop = coords.x + values[0][0][0].length;
+				int ezstop = coords.z + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (exstop > dims.x) exstop = dims.x;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = coords.y*dims.x + exstart;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+							for (int x=exstart, ex=exy, vx=vxstart; x<exstop; ++x, ++ex, ++vx) {
+								final double value = values[vc][vt][vz][vx];
+								elements[ec][et][ez][ex] =
+									(setmask&elements[ec][et][ez][ex])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+							}
+				break;
+			}
+			case Axes.CTZY: {
+				int vystart = 0;
+				int vzstart = 0;
+				int vtstart = 0;
+				int vcstart = 0;
+				int eystart = coords.y;
+				int ezstart = coords.z;
+				int etstart = coords.t;
+				int ecstart = coords.c;
+				if (eystart < 0) { eystart = 0; vystart = -coords.y; }
+				if (ezstart < 0) { ezstart = 0; vzstart = -coords.z; }
+				if (etstart < 0) { etstart = 0; vtstart = -coords.t; }
+				if (ecstart < 0) { ecstart = 0; vcstart = -coords.c; }
+				int eystop = coords.y + values[0][0][0].length;
+				int ezstop = coords.z + values[0][0].length;
+				int etstop = coords.t + values[0].length;
+				int ecstop = coords.c + values.length;
+				if (eystop > dims.y) eystop = dims.y;
+				if (ezstop > dims.z) ezstop = dims.z;
+				if (etstop > dims.t) etstop = dims.t;
+				if (ecstop > dims.c) ecstop = dims.c;
+				final int exy = eystart*dims.x + coords.x;
+				for (int ec=ecstart, vc=vcstart; ec<ecstop; ++ec, ++vc)
+					for (int et=etstart, vt=vtstart; et<etstop; ++et, ++vt)
+						for (int ez=ezstart, vz=vzstart; ez<ezstop; ++ez, ++vz)
+							for (int y=eystart, ey=exy, vy=vystart; y<eystop; ++y, ey+=dims.x, ++vy) {
+								final double value = values[vc][vt][vz][vy];
+								elements[ec][et][ez][ey] =
+									(setmask&elements[ec][et][ez][ey])|(FMath.round((value>max)?max:((value<min)?min:value))<<bitshift);
+							}
+				break;
+			}
+			default:
+				throw new IllegalStateException("Wrong number of active axes");
+		}
+	}
+	
+	public void set(final Coordinates coords, final float[][][][][] values) {
 		
 		switch (axes) {
 			case Axes.CTZYX: {

@@ -1,6 +1,7 @@
 package imagescience.transform;
 
 import imagescience.image.Axes;
+
 import imagescience.shape.Point;
 
 /** Represents a 3D affine transformation matrix. The matrix has the following form:
@@ -58,7 +59,7 @@ public class Transform {
 	
 	/** Copy constructor. Sets the elements of the transformation matrix to those of the given transform.
 		
-		@exception NullPointerException if {@code transform} is {@code null}.
+		@throws NullPointerException If {@code transform} is {@code null}.
 	*/
 	public Transform(final Transform transform) {
 		
@@ -67,11 +68,11 @@ public class Transform {
 	
 	/** Array constructor. Sets the elements of the transformation matrix to those of the given array.
 		
-		@param array the array containing the transformation matrix. Must be a 4 x 4 array with the first index corresponding to the rows and second index corresponding to the columns of the matrix.
+		@param array The array containing the transformation matrix. Must be a 4 x 4 array with the first index corresponding to the rows and second index corresponding to the columns of the matrix.
 		
-		@exception IllegalArgumentException if {@code array} is not a 4 x 4 array.
+		@throws IllegalArgumentException If {@code array} is not a 4 x 4 array.
 		
-		@exception NullPointerException if {@code array} is {@code null}.
+		@throws NullPointerException If {@code array} is {@code null}.
 	*/
 	public Transform(final double[][] array) {
 		
@@ -93,7 +94,7 @@ public class Transform {
 	
 	/** Duplicates the transform.
 		
-		@return a new {@code Transform} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
+		@return A new {@code Transform} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
 	*/
 	public Transform duplicate() {
 		
@@ -108,9 +109,9 @@ public class Transform {
 	
 	/** Indicates whether the transform is equal to the given transform.
 	
-		@param transform the transform to compare this transform with.
+		@param transform The transform to compare this transform with.
 		
-		@return {@code true} if {@code transform} is not {@code null} and its matrix is equal to the matrix of this object; {@code false} if this is not the case.
+		@return Value {@code true} if {@code transform} is not {@code null} and its matrix is equal to the matrix of this object, or {@code false} if this is not the case.
 	*/
 	public boolean equals(final Transform transform) {
 		
@@ -126,7 +127,7 @@ public class Transform {
 	
 	/** Indicates whether the transformation matrix is equal to the identity matrix.
 	
-		@return {@code true} if the transformation matrix is equal to the identity matrix; {@code false} if this is not the case.
+		@return Value {@code true} if the transformation matrix is equal to the identity matrix, or {@code false} if this is not the case.
 	*/
 	public boolean identity() {
 		
@@ -148,7 +149,7 @@ public class Transform {
 	
 	/** Returns the determinant of the transformation matrix.
 		
-		@return the determinant of the transformation matrix.
+		@return The determinant of the transformation matrix.
 	*/
 	public double determinant() {
 		
@@ -157,7 +158,7 @@ public class Transform {
 	
 	/** Inverts the transformation matrix.
 		
-		@exception IllegalStateException if the transformation matrix is non-invertible.
+		@throws IllegalStateException If the transformation matrix is non-invertible.
 	*/
 	public void invert() {
 		
@@ -187,9 +188,9 @@ public class Transform {
 	
 	/** Transforms the transformation matrix.
 		
-		@param transform the transform to be applied.
+		@param transform The transform to be applied.
 		
-		@exception NullPointerException if {@code transform} is {@code null}.
+		@throws NullPointerException If {@code transform} is {@code null}.
 	*/
 	public void transform(final Transform transform) {
 		
@@ -215,9 +216,9 @@ public class Transform {
 	
 	/** Transforms the given point.
 		
-		@param point the point to be transformed. The point is treated as a 3D point. That is, only its {@code x}, {@code y}, {@code z} coordinates are used, which are replaced by their transformed coordinates.
+		@param point The point to be transformed. The point is treated as a 3D point. That is, only its {@code x}, {@code y}, {@code z} coordinates are used, which are replaced by their transformed coordinates.
 		
-		@exception NullPointerException if {@code point} is {@code null}.
+		@throws NullPointerException If {@code point} is {@code null}.
 	*/
 	public void transform(final Point point) {
 		
@@ -232,11 +233,11 @@ public class Transform {
 	
 	/** Rotates the transformation matrix.
 		
-		@param angle the rotation angle in degrees.
+		@param angle The rotation angle in degrees.
 		
-		@param axis the rotation axis. Must be one of {@link Axes#X}, {@link Axes#Y}, {@link Axes#Z}.
+		@param axis The rotation axis. Must be one of {@link Axes#X}, {@link Axes#Y}, {@link Axes#Z}.
 		
-		@exception IllegalArgumentException if {@code axis} is invalid.
+		@throws IllegalArgumentException If {@code axis} is invalid.
 	*/
 	public void rotate(final double angle, final int axis) {
 		
@@ -301,11 +302,11 @@ public class Transform {
 	
 	/** Scales the transformation matrix.
 		
-		@param factor the scaling factor.
+		@param factor The scaling factor.
 		
-		@param axis the scaling axis. Must be one of {@link Axes#X}, {@link Axes#Y}, {@link Axes#Z}.
+		@param axis The scaling axis. Must be one of {@link Axes#X}, {@link Axes#Y}, {@link Axes#Z}.
 		
-		@exception IllegalArgumentException if {@code axis} is invalid.
+		@throws IllegalArgumentException If {@code axis} is invalid.
 	*/
 	public void scale(final double factor, final int axis) {
 		
@@ -339,13 +340,13 @@ public class Transform {
 	
 	/** Shears the transformation matrix.
 		
-		@param factor the shearing factor.
+		@param factor The shearing factor.
 		
-		@param axis the shearing axis. Must be one of {@link Axes#X}, {@link Axes#Y}, {@link Axes#Z}.
+		@param axis The shearing axis. Must be one of {@link Axes#X}, {@link Axes#Y}, {@link Axes#Z}.
 		
-		@param drive the driving axis. Must be one of {@link Axes#X}, {@link Axes#Y}, {@link Axes#Z}.
+		@param drive The driving axis. Must be one of {@link Axes#X}, {@link Axes#Y}, {@link Axes#Z}.
 		
-		@exception IllegalArgumentException if any of {@code axis} or {@code drive} is invalid.
+		@throws IllegalArgumentException If any of {@code axis} or {@code drive} is invalid.
 	*/
 	public void shear(final double factor, final int axis, final int drive) {
 		
@@ -436,11 +437,11 @@ public class Transform {
 	
 	/** Translates the transformation matrix.
 		
-		@param distance the translation distance.
+		@param distance The translation distance.
 		
-		@param axis the translation axis. Must be one of {@link Axes#X}, {@link Axes#Y}, {@link Axes#Z}.
+		@param axis The translation axis. Must be one of {@link Axes#X}, {@link Axes#Y}, {@link Axes#Z}.
 		
-		@exception IllegalArgumentException if {@code axis} is invalid.
+		@throws IllegalArgumentException If {@code axis} is invalid.
 	*/
 	public void translate(final double distance, final int axis) {
 		
@@ -465,7 +466,7 @@ public class Transform {
 	
 	/** Sets the elements of the transformation matrix to those of the given transform.
 		
-		@exception NullPointerException if {@code transform} is {@code null}.
+		@throws NullPointerException If {@code transform} is {@code null}.
 	*/
 	public void set(final Transform transform) {
 		
@@ -488,11 +489,11 @@ public class Transform {
 	
 	/** Sets the elements of the transformation matrix to those of the given array.
 		
-		@param array the array containing the transformation matrix. Must be a 4 x 4 array with the first index corresponding to the rows and second index corresponding to the columns of the matrix.
+		@param array The array containing the transformation matrix. Must be a 4 x 4 array with the first index corresponding to the rows and second index corresponding to the columns of the matrix.
 		
-		@exception IllegalArgumentException if {@code array} is not a 4 x 4 array.
+		@throws IllegalArgumentException If {@code array} is not a 4 x 4 array.
 		
-		@exception NullPointerException if {@code array} is {@code null}.
+		@throws NullPointerException If {@code array} is {@code null}.
 	*/
 	public void set(final double[][] array) {
 		
@@ -511,13 +512,13 @@ public class Transform {
 	
 	/** Sets the element at the given row and column of the transformation matrix to the given value.
 		
-		@param row the row index. Must be {@code 0}, {@code 1}, or {@code 2} (row {@code 3} is fixed).
+		@param row The row index. Must be {@code 0}, {@code 1}, or {@code 2} (row {@code 3} is fixed).
 		
-		@param column the column index. Must be {@code 0}, {@code 1}, {@code 2}, or {@code 3}.
+		@param column The column index. Must be {@code 0}, {@code 1}, {@code 2}, or {@code 3}.
 		
-		@param value the value.
+		@param value The value.
 		
-		@exception IllegalArgumentException if {@code row} or {@code column} is out of bounds.
+		@throws IllegalArgumentException If {@code row} or {@code column} is out of bounds.
 	*/
 	public void set(final int row, final int column, final double value) {
 		
@@ -550,11 +551,11 @@ public class Transform {
 	
 	/** Returns the element at the given row and column of the transformation matrix.
 		
-		@param row the row index. Must be {@code 0}, {@code 1}, {@code 2}, or {@code 3}.
+		@param row The row index. Must be {@code 0}, {@code 1}, {@code 2}, or {@code 3}.
 		
-		@param column the column index. Must be {@code 0}, {@code 1}, {@code 2}, or {@code 3}.
+		@param column The column index. Must be {@code 0}, {@code 1}, {@code 2}, or {@code 3}.
 		
-		@exception IllegalArgumentException if {@code row} or {@code column} is out of bounds.
+		@throws IllegalArgumentException If {@code row} or {@code column} is out of bounds.
 	*/
 	public double get(final int row, final int column) {
 		
@@ -577,7 +578,7 @@ public class Transform {
 	
 	/** Returns a string representation of the transformation matrix.
 		
-		@return a new {@code String} object containing a string representation of the transformation matrix.
+		@return A new {@code String} object containing a string representation of the transformation matrix.
 	*/
 	public String string() {
 		
@@ -586,13 +587,13 @@ public class Transform {
 	
 	/** Returns a formatted string representation of the transformation matrix.
 		
-		@param prefix the string put at the beginning of each matrix row.
+		@param prefix The string put at the beginning of each matrix row.
 		
-		@param delimit the string put as delimiter between the matrix row elements.
+		@param delimit The string put as delimiter between the matrix row elements.
 		
-		@param postfix the string put at the end of each matrix row.
+		@param postfix The string put at the end of each matrix row.
 		
-		@return a new {@code String} object containing a formatted string representation of the transformation matrix.
+		@return A new {@code String} object containing a formatted string representation of the transformation matrix.
 	*/
 	public String string(final String prefix, final String delimit, final String postfix) {
 		

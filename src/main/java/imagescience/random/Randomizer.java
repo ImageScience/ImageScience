@@ -1,16 +1,23 @@
 package imagescience.random;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Axes;
+import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
 
+import java.lang.Math;
+
 /** Randomizes images. */
 public class Randomizer {
+	
+	final static UniformGenerator seeder = new UniformGenerator(Integer.MIN_VALUE,Integer.MAX_VALUE,(int)System.currentTimeMillis());
 	
 	/** Additive insertion of random numbers. For each image element, a random number is generated from the selected distribution and is added to the original value. */
 	public final static int ADDITIVE = 0;
@@ -26,21 +33,21 @@ public class Randomizer {
 	
 	/** Randomizes images using a Gaussian random variable.
 		
-		@param image the input image to be randomized.
+		@param image The input image to be randomized.
 		
-		@param mean the mean of the Gaussian distribution.
+		@param mean The mean of the Gaussian distribution.
 		
-		@param stdev the standard deviation of the Gaussian distribution. Must be larger than or equal to {@code 0}.
+		@param stdev The standard deviation of the Gaussian distribution. Must be larger than or equal to {@code 0}.
 		
-		@param insertion determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE} or {@link #MULTIPLICATIVE}.
+		@param insertion Determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE} or {@link #MULTIPLICATIVE}.
 		
-		@param newimage indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
+		@param newimage Indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
 		
-		@return a randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
+		@return A randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
 		
-		@exception IllegalArgumentException if {@code stdev} is less than {@code 0}, or if {@code insertion} is invalid.
+		@throws IllegalArgumentException If {@code stdev} is less than {@code 0}, or if {@code insertion} is invalid.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Image gaussian(
 		final Image image,
@@ -74,21 +81,21 @@ public class Randomizer {
 	
 	/** Randomizes images using a binomial random variable.
 		
-		@param image the input image to be randomized.
+		@param image The input image to be randomized.
 		
-		@param trials the number of trials of the binomial distribution. Must be larger than or equal to {@code 0}.
+		@param trials The number of trials of the binomial distribution. Must be larger than or equal to {@code 0}.
 		
-		@param probability the probability for each trial of the binomial distribution. Must be in the range {@code [0,1]}.
+		@param probability The probability for each trial of the binomial distribution. Must be in the range {@code [0,1]}.
 		
-		@param insertion determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE} or {@link #MULTIPLICATIVE}.
+		@param insertion Determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE} or {@link #MULTIPLICATIVE}.
 		
-		@param newimage indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
+		@param newimage Indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
 		
-		@return a randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
+		@return A randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
 		
-		@exception IllegalArgumentException if {@code trials} is less than {@code 0}, if {@code probability} is outside the range {@code [0,1]}, or if {@code insertion} is invalid.
+		@throws IllegalArgumentException If {@code trials} is less than {@code 0}, if {@code probability} is outside the range {@code [0,1]}, or if {@code insertion} is invalid.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Image binomial(
 		final Image image,
@@ -127,19 +134,19 @@ public class Randomizer {
 	
 	/** Randomizes images using a gamma random variable.
 		
-		@param image the input image to be randomized.
+		@param image The input image to be randomized.
 		
-		@param order the integer order of the gamma distribution. Must be larger than {@code 0}.
+		@param order The integer order of the gamma distribution. Must be larger than {@code 0}.
 		
-		@param insertion determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE} or {@link #MULTIPLICATIVE}.
+		@param insertion Determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE} or {@link #MULTIPLICATIVE}.
 		
-		@param newimage indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
+		@param newimage Indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
 		
-		@return a randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
+		@return A randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
 		
-		@exception IllegalArgumentException if {@code order} is less than or equal to {@code 0}, or if {@code insertion} is invalid.
+		@throws IllegalArgumentException If {@code order} is less than or equal to {@code 0}, or if {@code insertion} is invalid.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Image gamma(
 		final Image image,
@@ -173,19 +180,19 @@ public class Randomizer {
 	
 	/** Randomizes images using a uniform random variable.
 		
-		@param image the input image to be randomized.
+		@param image The input image to be randomized.
 		
-		@param min {@code max} - the interval parameters of the uniform distribution. Random numbers are generated in the open interval ({@code min},{@code max}).
+		@param min {@code max} - The interval parameters of the uniform distribution. Random numbers are generated in the open interval ({@code min},{@code max}).
 		
-		@param insertion determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE} or {@link #MULTIPLICATIVE}.
+		@param insertion Determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE} or {@link #MULTIPLICATIVE}.
 		
-		@param newimage indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
+		@param newimage Indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
 		
-		@return a randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
+		@return A randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
 		
-		@exception IllegalArgumentException if {@code min} is larger than or equal to {@code max}, or if {@code insertion} is invalid.
+		@throws IllegalArgumentException If {@code min} is larger than or equal to {@code max}, or if {@code insertion} is invalid.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Image uniform(
 		final Image image,
@@ -223,19 +230,19 @@ public class Randomizer {
 	
 	/** Randomizes images using an exponential random variable.
 		
-		@param image the input image to be randomized.
+		@param image The input image to be randomized.
 		
-		@param lambda the lambda parameter of the exponential distribution. Must be larger than {@code 0}.
+		@param lambda The lambda parameter of the exponential distribution. Must be larger than {@code 0}.
 		
-		@param insertion determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE} or {@link #MULTIPLICATIVE}.
+		@param insertion Determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE} or {@link #MULTIPLICATIVE}.
 		
-		@param newimage indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
+		@param newimage Indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
 		
-		@return a randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
+		@return A randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
 		
-		@exception IllegalArgumentException if {@code lambda} is less than or equal to {@code 0}, or if {@code insertion} is invalid.
+		@throws IllegalArgumentException If {@code lambda} is less than or equal to {@code 0}, or if {@code insertion} is invalid.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Image exponential(
 		final Image image,
@@ -271,19 +278,19 @@ public class Randomizer {
 	
 	/** Randomizes images using a Poisson random variable.
 		
-		@param image the input image to be randomized.
+		@param image The input image to be randomized.
 		
-		@param mean the mean of the Poisson distribution. Must be larger than or equal to {@code 0}.
+		@param mean The mean of the Poisson distribution. Must be larger than or equal to {@code 0}.
 		
-		@param insertion determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE}, {@link #MULTIPLICATIVE}, or {@link #MODULATORY}.
+		@param insertion Determines how the random numbers generated from the distribution are inserted into the image. Must be one of {@link #ADDITIVE}, {@link #MULTIPLICATIVE}, or {@link #MODULATORY}.
 		
-		@param newimage indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
+		@param newimage Indicates whether the randomized image should be returned as a new image. If this parameter is {@code true}, the result is returned as a new {@code Image} object (of the same type as the input image) and the input image is left unaltered; if it is {@code false}, the input image itself is randomized and returned, thereby saving memory.
 		
-		@return a randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
+		@return A randomized version of the input image. Be aware of the value conversion and insertion rules for the different types of images: random numbers may have been clipped and rounded.
 		
-		@exception IllegalArgumentException if {@code mean} is less than {@code 0}, or if {@code insertion} is invalid.
+		@throws IllegalArgumentException If {@code mean} is less than {@code 0}, or if {@code insertion} is invalid.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Image poisson(
 		final Image image,
@@ -321,7 +328,7 @@ public class Randomizer {
 		messenger.log("Randomizing "+img.type());
 		final Dimensions dims = img.dimensions();
 		final Coordinates coords = new Coordinates();
-		messenger.status("Randomizing...");
+		progressor.status("Randomizing...");
 		progressor.steps(dims.c*dims.t*dims.z*dims.y);
 		final double[] array = new double[dims.x];
 		img.axes(Axes.X);
@@ -376,7 +383,6 @@ public class Randomizer {
 			default: throw new IllegalArgumentException("Invalid type of insertion");
 		}
 		progressor.stop();
-		messenger.status("");
 	}
 	
 	private String insertion(final int insertion) {

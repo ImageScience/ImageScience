@@ -1,13 +1,15 @@
 package imagescience.feature;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Aspects;
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.FloatImage;
 import imagescience.image.Image;
+
 import imagescience.utility.FMath;
-import imagescience.utility.ImageScience;
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
@@ -20,19 +22,19 @@ public class Edges {
 	
 	/** Detects edges in images.
 		
-		@param image the input image in which edges are to be detected. If it is of type {@link FloatImage}, it will be used to store intermediate results. Otherwise it will be left unaltered. If the size of the image in the z-dimension equals {@code 1}, this method will compute, for every image element, the magnitude of the two-dimensional (2D) gradient vector. Otherwise it will compute for every image element the magnitude of the full three-dimensional (3D) gradient vector. These computations are performed on every x-y(-z) subimage in a 5D image.
+		@param image The input image in which edges are to be detected. If it is of type {@link FloatImage}, it will be used to store intermediate results. Otherwise it will be left unaltered. If the size of the image in the z-dimension equals {@code 1}, this method will compute, for every image element, the magnitude of the two-dimensional (2D) gradient vector. Otherwise it will compute for every image element the magnitude of the full three-dimensional (3D) gradient vector. These computations are performed on every x-y(-z) subimage in a 5D image.
 		
-		@param scale the smoothing scale at which the required image derivatives are computed. The scale is equal to the standard deviation of the Gaussian kernel used for differentiation and must be larger than {@code 0}. In order to enforce physical isotropy, for each dimension, the scale is divided by the size of the image elements (aspect-ratio value) in that dimension.
+		@param scale The smoothing scale at which the required image derivatives are computed. The scale is equal to the standard deviation of the Gaussian kernel used for differentiation and must be larger than {@code 0}. In order to enforce physical isotropy, for each dimension, the scale is divided by the size of the image elements (aspect ratio) in that dimension.
 		
-		@param nonmaxsup determines whether locally non-maximal gray-values are suppressed. To determine whether the gray-value of an image element is a local maximum, this method applies linear interpolation in the direction of the gradient vector to compute gray-values at approximately one sample distance on each side of the given element, which are subsequently compared to the gray-value of the given element.
+		@param nonmaxsup Determines whether locally non-maximal gray-values are suppressed. To determine whether the gray-value of an image element is a local maximum, this method applies linear interpolation in the direction of the gradient vector to compute gray-values at approximately one sample distance on each side of the given element, which are subsequently compared to the gray-value of the given element.
 		
-		@return an image showing the locations of edges according to the algorithm. The returned image is always of type {@link FloatImage}.
+		@return An image showing the locations of edges according to the algorithm. The returned image is always of type {@link FloatImage}.
 		
-		@exception IllegalArgumentException if {@code scale} is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If {@code scale} is less than or equal to {@code 0}.
 		
-		@exception IllegalStateException if the size of the image elements (aspect-ratio value) is less than or equal to {@code 0} in the x-, y-, or z-dimension.
+		@throws IllegalStateException If the size of the image elements (aspect ratio) is less than or equal to {@code 0} in the x-, y-, or z-dimension.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Image run(final Image image, final double scale, final boolean nonmaxsup) {
 		
@@ -50,10 +52,10 @@ public class Edges {
 		messenger.log("Input image dimensions: (x,y,z,t,c) = ("+dims.x+","+dims.y+","+dims.z+","+dims.t+","+dims.c+")");
 		
 		final Aspects asps = image.aspects();
-		messenger.log("Element aspect-ratios: ("+asps.x+","+asps.y+","+asps.z+","+asps.t+","+asps.c+")");
-		if (asps.x <= 0) throw new IllegalStateException("Aspect-ratio value in x-dimension less than or equal to 0");
-		if (asps.y <= 0) throw new IllegalStateException("Aspect-ratio value in y-dimension less than or equal to 0");
-		if (asps.z <= 0) throw new IllegalStateException("Aspect-ratio value in z-dimension less than or equal to 0");
+		messenger.log("Element aspect ratios: ("+asps.x+","+asps.y+","+asps.z+","+asps.t+","+asps.c+")");
+		if (asps.x <= 0) throw new IllegalStateException("Aspect ratio in x-dimension less than or equal to 0");
+		if (asps.y <= 0) throw new IllegalStateException("Aspect ratio in y-dimension less than or equal to 0");
+		if (asps.z <= 0) throw new IllegalStateException("Aspect ratio in z-dimension less than or equal to 0");
 		
 		final String name = image.name();
 		
@@ -69,13 +71,13 @@ public class Edges {
 			if (nonmaxsup) pls = new double[] {0, 0.46, 0.9, 0.92, 1};
 			
 			// Compute gradient vector:
-			logstatus("Computing Ix"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Ix"); progressor.range(pls[pl],pls[++pl]);
 			final Image Ix = differentiator.run(edgeImage.duplicate(),scale,1,0,0);
-			logstatus("Computing Iy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Iy"); progressor.range(pls[pl],pls[++pl]);
 			final Image Iy = differentiator.run(edgeImage,scale,0,1,0);
 			
 			// Compute gradient magnitude (Ix is reused to save memory in case non-maxima suppression is not applied):
-			logstatus("Computing gradient magnitude");
+			logus("Computing gradient magnitude");
 			progressor.range(pls[pl],pls[++pl]);
 			progressor.steps(dims.c*dims.t*dims.y);
 			edgeImage = nonmaxsup ? new FloatImage(dims) : Ix;
@@ -98,7 +100,7 @@ public class Edges {
 			
 			// Apply non-maxima suppression if requested (using mirror-boundary conditions and linear interpolation):
 			if (nonmaxsup) {
-				logstatus("Suppressing non-maxima");
+				logus("Suppressing non-maxima");
 				progressor.steps(dims.c*dims.t*dims.y);
 				progressor.range(pls[pl],pls[++pl]);
 				final Image supImage = Ix;
@@ -157,15 +159,15 @@ public class Edges {
 			if (nonmaxsup) pls = new double[] {0, 0.32, 0.64, 0.9, 0.92, 1};
 			
 			// Compute gradient vector:
-			logstatus("Computing Ix"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Ix"); progressor.range(pls[pl],pls[++pl]);
 			final Image Ix = differentiator.run(edgeImage.duplicate(),scale,1,0,0);
-			logstatus("Computing Iy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Iy"); progressor.range(pls[pl],pls[++pl]);
 			final Image Iy = differentiator.run(edgeImage.duplicate(),scale,0,1,0);
-			logstatus("Computing Iz"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Iz"); progressor.range(pls[pl],pls[++pl]);
 			final Image Iz = differentiator.run(edgeImage,scale,0,0,1);
 			
 			// Compute gradient magnitude (Ix is reused to save memory in case non-maxima suppression is not applied):
-			logstatus("Computing gradient magnitude");
+			logus("Computing gradient magnitude");
 			progressor.steps(dims.c*dims.t*dims.z*dims.y);
 			progressor.range(pls[pl],pls[++pl]);
 			edgeImage = nonmaxsup ? new FloatImage(dims) : Ix;
@@ -190,7 +192,7 @@ public class Edges {
 			
 			// Apply non-maxima suppression if requested (using mirror-boundary conditions and linear interpolation):
 			if (nonmaxsup) {
-				logstatus("Suppressing non-maxima");
+				logus("Suppressing non-maxima");
 				progressor.steps(dims.c*dims.t*dims.z);
 				progressor.range(pls[pl],pls[++pl]);
 				Ix.axes(Axes.X+Axes.Y);
@@ -238,8 +240,6 @@ public class Edges {
 				edgeImage = supImage;
 			}
 		}
-		
-		messenger.status("");
 		
 		timer.stop();
 		
@@ -414,10 +414,10 @@ public class Edges {
 		}
 	}
 	
-	private void logstatus(final String s) {
+	private void logus(final String s) {
 		
 		messenger.log(s);
-		messenger.status(s+"...");
+		progressor.status(s+"...");
 	}
 	
 	/** The object used for message displaying. */

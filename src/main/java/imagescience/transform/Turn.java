@@ -1,16 +1,18 @@
 package imagescience.transform;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Aspects;
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
 
-/** Rotates images multiples of 90 degrees around its principal axes. The advantage of this class over {@link Rotate} is that no interpolations are performed: it merely shuffles the image elements. */
+/** Rotates an image multiples of 90 degrees around its principal axes. The advantage of this class over {@link Rotate} is that no interpolations are performed: it merely shuffles the image elements. */
 public class Turn {
 	
 	/** Default constructor. */
@@ -18,15 +20,15 @@ public class Turn {
 	
 	/** Turns an image.
 		
-		@param image the image to be turned.
+		@param image The image to be turned.
 		
-		@param times90z {@code times90y} - {@code times90x} - the number of times the image should be rotated 90 degrees around the z-, y-, and x-axis, respectively. The order of rotation is the same as the parameters. That is to say, first {@code times90z} times 90 degrees around the z-axis, then {@code times90y} times 90 degrees around the y-axis, and finally {@code times90x} times 90 degrees around the x-axis. The algorithm is applied to every x-y-z subimage in a 5D image and assumes a right-handed coordinate system, with the origin in the center of each subimage. A rotation of +90 degrees around the z-axis implies that the positive x-axis is mapped onto the positive y-axis. Similarly, a rotation of +90 degrees around the y-axis maps the positive z-axis onto the positive x-axis, and a rotation of +90 degrees around the x-axis maps the positive y-axis onto the positive z-axis.
+		@param times90z {@code times90y} - {@code times90x} - The number of times the image should be rotated 90 degrees around the z-, y-, and x-axis, respectively. The order of rotation is the same as the parameters. That is to say, first {@code times90z} times 90 degrees around the z-axis, then {@code times90y} times 90 degrees around the y-axis, and finally {@code times90x} times 90 degrees around the x-axis. The algorithm is applied to every x-y-z subimage in a 5D image and assumes a right-handed coordinate system, with the origin in the center of each subimage. A rotation of +90 degrees around the z-axis implies that the positive x-axis is mapped onto the positive y-axis. Similarly, a rotation of +90 degrees around the y-axis maps the positive z-axis onto the positive x-axis, and a rotation of +90 degrees around the x-axis maps the positive y-axis onto the positive z-axis.
 		
-		@return a new image containing a turned version of the input image. The returned image is of the same type as the input image.
+		@return A new image containing a turned version of the input image. The returned image is of the same type as the input image.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 		
-		@exception UnknownError if for any reason the output image could not be created. In most cases this will be due to insufficient free memory.
+		@throws UnknownError If for any reason the output image can not be created. In most cases this will be due to insufficient free memory.
 	*/
 	public Image run(final Image image, final int times90z, final int times90y, final int times90x) {
 		
@@ -36,9 +38,6 @@ public class Turn {
 		final Timer timer = new Timer();
 		timer.messenger.log(messenger.log());
 		timer.start();
-		
-		// Check parameters:
-		messenger.log("Checking parameters");
 		
 		// Map the parameters back to 0,1,2, or 3:
 		final int nr90z = (times90z < 0) ? (((times90z + 1) % 4) + 3) : (times90z % 4);
@@ -69,7 +68,7 @@ public class Turn {
 		
 		// Determine aspect values of the turned image:
 		final Aspects iasps = image.aspects();
-		messenger.log("Input image aspects: (x,y,z,t,c) = ("+iasps.x+","+iasps.y+","+iasps.z+","+iasps.t+","+iasps.c+")");
+		messenger.log("Input voxel dimensions: (x,y,z) = ("+iasps.x+","+iasps.y+","+iasps.z+")");
 		
 		final Aspects taspsturnz = (nr90z == 1 || nr90z == 3) ?
 			new Aspects(iasps.y,iasps.x,iasps.z,iasps.t,iasps.c) :
@@ -83,10 +82,10 @@ public class Turn {
 			new Aspects(taspsturny.x,taspsturny.z,taspsturny.y,iasps.t,iasps.c) :
 			taspsturny.duplicate();
 		
-		messenger.log("Output image aspects: (x,y,z,t,c) = ("+tasps.x+","+tasps.y+","+tasps.z+","+tasps.t+","+tasps.c+")");
+		messenger.log("Output voxel dimensions: (x,y,z) = ("+tasps.x+","+tasps.y+","+tasps.z+")");
 		
 		// Initialize:
-		messenger.status("Turning...");
+		progressor.status("Turning...");
 		progressor.steps(idims.c*idims.t*idims.z);
 		progressor.start();
 		
@@ -435,7 +434,6 @@ public class Turn {
 		// Finish up:
 		turned.name(image.name()+" turned");
 		turned.aspects(tasps);
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
 		

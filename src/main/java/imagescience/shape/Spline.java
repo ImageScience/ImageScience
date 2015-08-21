@@ -5,9 +5,12 @@ import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
+
 import imagescience.utility.FMath;
 
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
+
 import java.util.Vector;
 
 /** A closed, interpolating, C&#178;-continuous, cubic spline curve in the x-y plane. It uses a uniform parametrization and knot vector. Although this may not be optimal in some cases, as pointed out by L. Piegl and W. Tiller, The NURBS Book, 2nd Edition, Springer-Verlag, Berlin, 1997, it allows for an extremely efficient implementation and computation of several features. Thus the user should be aware that this class works best for (approximately) equally spaced vertices. Also, although higher-dimensional vertices are accepted, only the x- and y-coordinates of the vertices are actually considered by all methods. */
@@ -18,9 +21,9 @@ public class Spline implements Shape {
 	
 	/** Constructs a spline from the given vertices.
 		
-		@param vertices the vertices that define the spline. The handles of the {@code Point} objects are copied. Any subsequent modifications of the vertices become effective only after calling the {@link #update()} method.
+		@param vertices The vertices that define the spline. The handles of the {@code Point} objects are copied. Any subsequent modifications of the vertices become effective only after calling the {@link #update()} method.
 		
-		@exception NullPointerException if {@code vertices} or any of its elements is {@code null}.
+		@throws NullPointerException If {@code vertices} or any of its elements is {@code null}.
 	*/
 	public Spline(final Vector<Point> vertices) {
 		
@@ -29,9 +32,9 @@ public class Spline implements Shape {
 	
 	/** Copy constructor.
 		
-		@param spline the spline to be copied. All information is copied and no memory is shared with this spline.
+		@param spline The spline to be copied. All information is copied and no memory is shared with this spline.
 		
-		@exception NullPointerException if {@code spline} is {@code null}.
+		@throws NullPointerException If {@code spline} is {@code null}.
 	*/
 	public Spline(final Spline spline) {
 		
@@ -46,9 +49,9 @@ public class Spline implements Shape {
 	
 	/** Sets the vertices of the spline to the given vertices.
 		
-		@param vertices the vertices to be copied. The handles of the {@code Point} objects are copied. Any subsequent modifications of the vertices become effective only after calling the {@link #update()} method.
+		@param vertices The vertices to be copied. The handles of the {@code Point} objects are copied. Any subsequent modifications of the vertices become effective only after calling the {@link #update()} method.
 		
-		@exception NullPointerException if {@code vertices} or any of its elements is {@code null}.
+		@throws NullPointerException If {@code vertices} or any of its elements is {@code null}.
 	*/
 	public void set(final Vector<Point> vertices) {
 		
@@ -69,9 +72,9 @@ public class Spline implements Shape {
 	
 	/** Sets the vertices of the spline to the given vertices. Alias of method {@link #set(Vector)}.
 		
-		@param vertices the vertices to be copied. The handles of the {@code Point} objects are copied. Any subsequent modifications of the vertices become effective only after calling the {@link #update()} method.
+		@param vertices The vertices to be copied. The handles of the {@code Point} objects are copied. Any subsequent modifications of the vertices become effective only after calling the {@link #update()} method.
 		
-		@exception NullPointerException if {@code vertices} or any of its elements is {@code null}.
+		@throws NullPointerException If {@code vertices} or any of its elements is {@code null}.
 	*/
 	public void vertices(final Vector<Point> vertices) {
 		
@@ -80,7 +83,7 @@ public class Spline implements Shape {
 	
 	/** Returns a new {@code Vector} object containing the handles of the vertices of the spline.
 		
-		@return a new {@code Vector} object containing the handles of the vertices of the spline. Any subsequent modifications of the vertices become effective only after calling the {@link #update()} method.
+		@return A new {@code Vector} object containing the handles of the vertices of the spline. Any subsequent modifications of the vertices become effective only after calling the {@link #update()} method.
 	*/
 	public Vector<Point> vertices() {
 		
@@ -96,9 +99,9 @@ public class Spline implements Shape {
 	
 	/** Translates the spline over the given distance. This is done by translating all the vertices over the given distance and updating the spline accordingly.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 	*/
 	public void translate(final double dx, final double dy) {
 		
@@ -111,7 +114,7 @@ public class Spline implements Shape {
 	
 	/** Returns the perimeter of the spline.
 		
-		@return the perimeter of the spline. The perimeter is approximated using the rapidly converging estimator described by J. Gravesen, "Adaptive Subdivision and the Length and Energy of B&eacute;zier Curves", Computational Geometry, vol. 8, no. 1, June 1997, pp. 13-31. The absolute difference between the true perimeter and the approximation returned by this method is guaranteed to be (much) less than 0.001.
+		@return The perimeter of the spline. The perimeter is approximated using the rapidly converging estimator described by J. Gravesen, "Adaptive Subdivision and the Length and Energy of B&eacute;zier Curves", Computational Geometry, vol. 8, no. 1, June 1997, pp. 13-31. The absolute difference between the true perimeter and the approximation returned by this method is guaranteed to be (much) less than 0.001.
 	*/
 	public double perimeter() {
 		
@@ -201,7 +204,7 @@ public class Spline implements Shape {
 	
 	/** Returns the area spanned by the spline.
 		
-		@return the area spanned by the spline. The area is computed using the exact (up to numerical rounding errors) method described by M. Jacob, T. Blu, M. Unser, "An Exact Method for Computing the Area Moments of Wavelet and Spline Curves", IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 23, no. 6, June 2001, pp. 633-642. The result is correct only for non-self-intersecting splines.
+		@return The area spanned by the spline. The area is computed using the exact (up to numerical rounding errors) method described by M. Jacob, T. Blu, M. Unser, "An Exact Method for Computing the Area Moments of Wavelet and Spline Curves", IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 23, no. 6, June 2001, pp. 633-642. The result is correct only for non-self-intersecting splines.
 	*/
 	public double area() {
 		
@@ -235,11 +238,11 @@ public class Spline implements Shape {
 	
 	/** Indicates the position of a point relative to the spline.
 		
-		@param point the point whose position relative to the spline is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
+		@param point The point whose position relative to the spline is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
 		
-		@return the value {@link #contains(double,double) contains(point.x,point.y)}.
+		@return The value {@link #contains(double,double) contains(point.x,point.y)}.
 		
-		@exception NullPointerException if {@code point} is {@code null}.
+		@throws NullPointerException If {@code point} is {@code null}.
 	*/
 	public boolean contains(final Point point) {
 		
@@ -248,11 +251,11 @@ public class Spline implements Shape {
 	
 	/** Indicates the position of a point relative to the spline.
 		
-		@param x the x-coordinate of the point.
+		@param x The x-coordinate of the point.
 		
-		@param y the y-coordinate of the point.
+		@param y The y-coordinate of the point.
 		
-		@return {@code true} if the point is on or inside the spline; {@code false} if it is outside the spline.
+		@return Value {@code true} if the point is on or inside the spline, or {@code false} if it is outside the spline.
 	*/
 	public boolean contains(final double x, final double y) {
 		
@@ -261,7 +264,7 @@ public class Spline implements Shape {
 	
 	/** Returns the contour of the spline.
 		
-		@return a new {@code GeneralPath} object containing the contour of the spline. The interior of the returned path is defined by the non-zero winding rule.
+		@return A new {@code GeneralPath} object containing the contour of the spline. The interior of the returned path is defined by the non-zero winding rule.
 	*/
 	public GeneralPath contour() {
 		

@@ -1,15 +1,17 @@
 package imagescience.transform;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
 
-/** Embeds images into larger images. */
+/** Embeds an image into a larger image. */
 public class Embed {
 	
 	/** Background filling with value {@code 0}. */
@@ -38,21 +40,21 @@ public class Embed {
 	
 	/** Embeds an image.
 		
-		@param image the image to be embedded.
+		@param image The image to be embedded.
 		
-		@param dims the dimensions of the new image in which the input image is embedded.
+		@param dims The dimensions of the new image in which the input image is embedded.
 		
-		@param pos the starting position of the input image in the new image.
+		@param pos The starting position of the input image in the new image.
 		
-		@param type the type of filling of background elements. Must be equal to one of the static fields of this class.
+		@param type The type of filling of background elements. Must be equal to one of the static fields of this class.
 		
-		@return a new image with the given dimensions containing a copy of the input image at the given starting position and with the background elements filled as specified. The returned image is of the same type as the input image.
+		@return A new image with the given dimensions containing a copy of the input image at the given starting position and with the background elements filled as specified. The returned image is of the same type as the input image.
 		
-		@exception IllegalArgumentException if the starting position coordinates are such that the input image does not fit entirely in the new image, or if the specified type of background filling is not supported.
+		@throws IllegalArgumentException If the starting position coordinates are such that the input image does not fit entirely in the new image, or if the specified type of background filling is not supported.
 		
-		@exception NullPointerException if any of the first three parameters is {@code null}.
+		@throws NullPointerException If any of the first three parameters is {@code null}.
 		
-		@exception UnknownError if for any reason the output image could not be created. In most cases this will be due to insufficient free memory.
+		@throws UnknownError If for any reason the output image can not be created. In most cases this will be due to insufficient free memory.
 	*/
 	public Image run(final Image image, final Dimensions dims, final Coordinates pos, final int type) {
 		
@@ -63,8 +65,7 @@ public class Embed {
 		timer.messenger.log(messenger.log());
 		timer.start();
 		
-		// Check parameters:
-		messenger.log("Checking parameters");
+		// Check parameters and conditions
 		final Dimensions idims = image.dimensions();
 		messenger.log("Input image dimensions: (x,y,z,t,c) = ("+idims.x+","+idims.y+","+idims.z+","+idims.t+","+idims.c+")");
 		messenger.log("Output image dimensions: (x,y,z,t,c) = ("+dims.x+","+dims.y+","+dims.z+","+dims.t+","+dims.c+")");
@@ -83,7 +84,7 @@ public class Embed {
 		messenger.log("Embedding "+image.type());
 		final Image embedded = Image.create(dims,image.type());
 		image.axes(Axes.X); embedded.axes(Axes.X);
-		messenger.status("Embedding...");
+		progressor.status("Embedding...");
 		
 		double bgval;
 		switch (type) {
@@ -452,7 +453,6 @@ public class Embed {
 		// Finish up:
 		embedded.name(image.name()+" embedded");
 		embedded.aspects(image.aspects().duplicate());
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
 		

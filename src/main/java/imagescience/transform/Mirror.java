@@ -1,15 +1,17 @@
 package imagescience.transform;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
 
-/** Mirrors images. */
+/** Mirrors an image. */
 public class Mirror {
 	
 	/** Default constructor. */
@@ -17,11 +19,11 @@ public class Mirror {
 	
 	/** Mirrors an image.
 		
-		@param image the input image to be mirrored. The image is overwritten with the results of mirroring.
+		@param image The input image to be mirrored. The image is overwritten with the results of mirroring.
 		
-		@param axes indicates the axes along which to mirror. The image is mirrored in each dimension for which the corresponding boolean field of this parameter is {@code true}.
+		@param axes Indicates the axes along which to mirror. The image is mirrored in each dimension for which the corresponding boolean field of this parameter is {@code true}.
 		
-		@exception NullPointerException if any of the parameters is {@code null}.
+		@throws NullPointerException If any of the parameters is {@code null}.
 	*/
 	public void run(final Image image, final Axes axes) {
 		
@@ -33,7 +35,6 @@ public class Mirror {
 		timer.start();
 		
 		// Check parameters:
-		messenger.log("Checking parameters");
 		final Dimensions dims = image.dimensions();
 		messenger.log("Input image dimensions: (x,y,z,t,c) = ("+dims.x+","+dims.y+","+dims.z+","+dims.t+","+dims.c+")");
 		
@@ -46,13 +47,13 @@ public class Mirror {
 			(axes.t ? dims.c*(1+(dims.t-1)/2)*dims.z : 0) +
 			(axes.c ? (1+(dims.c-1)/2)*dims.t*dims.z : 0)
 		);
+		progressor.status("Mirroring...");
 		progressor.start();
 		image.axes(Axes.X);
 		
 		// Mirror in x-dimension if requested:
 		if (axes.x) {
-			messenger.log("Mirroring in x-dimension");
-			messenger.status("Mirroring in x-dimension...");
+			logus("Mirroring in x-dimension");
 			final Coordinates c = new Coordinates();
 			final double[] a = new double[dims.x];
 			final int dimsxm1 = dims.x - 1;
@@ -77,8 +78,7 @@ public class Mirror {
 		
 		// Mirror in y-dimension if requested:
 		if (axes.y) {
-			messenger.log("Mirroring in y-dimension");
-			messenger.status("Mirroring in y-dimension...");
+			logus("Mirroring in y-dimension");
 			final Coordinates c1 = new Coordinates();
 			final Coordinates c2 = new Coordinates();
 			final double[] a1 = new double[dims.x];
@@ -102,8 +102,7 @@ public class Mirror {
 		
 		// Mirror in z-dimension if requested:
 		if (axes.z) {
-			messenger.log("Mirroring in z-dimension");
-			messenger.status("Mirroring in z-dimension...");
+			logus("Mirroring in z-dimension");
 			final Coordinates c1 = new Coordinates();
 			final Coordinates c2 = new Coordinates();
 			final double[] a1 = new double[dims.x];
@@ -127,8 +126,7 @@ public class Mirror {
 		
 		// Mirror in t-dimension if requested:
 		if (axes.t) {
-			messenger.log("Mirroring in t-dimension");
-			messenger.status("Mirroring in t-dimension...");
+			logus("Mirroring in t-dimension");
 			final Coordinates c1 = new Coordinates();
 			final Coordinates c2 = new Coordinates();
 			final double[] a1 = new double[dims.x];
@@ -152,8 +150,7 @@ public class Mirror {
 		
 		// Mirror in c-dimension if requested:
 		if (axes.c) {
-			messenger.log("Mirroring in c-dimension");
-			messenger.status("Mirroring in c-dimension...");
+			logus("Mirroring in c-dimension");
 			final Coordinates c1 = new Coordinates();
 			final Coordinates c2 = new Coordinates();
 			final double[] a1 = new double[dims.x];
@@ -177,9 +174,14 @@ public class Mirror {
 		
 		// Finish up:
 		image.name(image.name()+" mirrored");
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
+	}
+	
+	private void logus(final String s) {
+		
+		messenger.log(s);
+		progressor.status(s+"...");
 	}
 	
 	/** The object used for message displaying. */

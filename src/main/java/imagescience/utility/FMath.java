@@ -1,7 +1,8 @@
 package imagescience.utility;
 
+import java.lang.Math;
 
-/** Carries out elementary mathematical operations and function evaluations. */
+/** Performs elementary mathematical operations and function evaluations. */
 public class FMath {
 	
 	/** Default constructor. */
@@ -9,9 +10,9 @@ public class FMath {
 	
 	/** Returns the floor of the given value.
 		
-		@param d the value whose floor is to be returned.
+		@param d The value whose floor is to be returned.
 		
-		@return the largest integral value that is not greater than {@code d}. This method works only for {@code double} values that fall within the range spanned by the {@code int}egers. In that case, this method yields the same result as the corresponding method in Java's {@code Math} class, but is in general much faster and returns an {@code int} rather than a {@code double}.
+		@return The largest integral value that is not greater than {@code d}. This method works only for {@code double} values that fall within the range spanned by the {@code int}egers. In that case, this method yields the same result as the corresponding method in Java's {@code Math} class, but is in general much faster and returns an {@code int} rather than a {@code double}.
 	*/
 	public static int floor(final double d) {
 		
@@ -21,9 +22,9 @@ public class FMath {
 	
 	/** Returns the ceiling of the given value.
 		
-		@param d the value whose ceiling is to be returned.
+		@param d The value whose ceiling is to be returned.
 		
-		@return the smallest integral value that is not less than {@code d}. This method works only for {@code double} values that fall within the range spanned by the {@code int}egers. In that case, this method yields the same result as the corresponding method in Java's {@code Math} class, but is in general much faster and returns an {@code int} rather than a {@code double}.
+		@return The smallest integral value that is not less than {@code d}. This method works only for {@code double} values that fall within the range spanned by the {@code int}egers. In that case, this method yields the same result as the corresponding method in Java's {@code Math} class, but is in general much faster and returns an {@code int} rather than a {@code double}.
 	*/
 	public static int ceil(final double d) {
 		
@@ -33,9 +34,9 @@ public class FMath {
 	
 	/** Returns the given value rounded to the nearest integral value.
 		
-		@param d the value whose rounded value is to be returned.
+		@param d The value whose rounded value is to be returned.
 		
-		@return the integral value closest to {@code d}. This method works only for {@code double} values that fall within the range spanned by the {@code int}egers. In that case, this method yields the same result as the corresponding method in Java's {@code Math} class, but is in general much faster and returns an {@code int} rather than a {@code double}.
+		@return The integral value closest to {@code d}. This method works only for {@code double} values that fall within the range spanned by the {@code int}egers. In that case, this method yields the same result as the corresponding method in Java's {@code Math} class, but is in general much faster and returns an {@code int} rather than a {@code double}.
 	*/
 	public static int round(final double d) {
 		
@@ -47,13 +48,13 @@ public class FMath {
 	
 	/** Returns the value of {@code d} clipped to the range {@code [min,max]}.
 		
-		@param d the value to be clipped.
+		@param d The value to be clipped.
 		
-		@param min the lower bound (minimum value) of the clip range.
+		@param min The lower bound (minimum value) of the clip range.
 		
-		@param max the upper bound (maximum value) of the clip range.
+		@param max The upper bound (maximum value) of the clip range.
 		
-		@return the value of {@code d} clipped to the range {@code [min,max]}. Guaranteed to be correct only if {@code min <= max}.
+		@return The value of {@code d} clipped to the range {@code [min,max]}. Guaranteed to be correct only if {@code min <= max}.
 	*/
 	public static double clip(final double d, final double min, final double max) {
 		
@@ -62,9 +63,9 @@ public class FMath {
 	
 	/** Returns the minimum of the given values.
 		
-		@param d1 {@code d2} - the values.
+		@param d1 {@code d2} - The values.
 		
-		@return the minimum of {@code d1} and {@code d2}.
+		@return The minimum of {@code d1} and {@code d2}.
 	*/
 	public static double min(final double d1, final double d2) {
 		
@@ -73,9 +74,9 @@ public class FMath {
 	
 	/** Returns the minimum of the given values.
 		
-		@param d1 {@code d2} - {@code d3} - {@code d4} - the values.
+		@param d1 {@code d2} - {@code d3} - {@code d4} - The values.
 		
-		@return the minimum of {@code d1,...,d4}.
+		@return The minimum of {@code d1,...,d4}.
 	*/
 	public static double min(final double d1, final double d2, final double d3, final double d4) {
 		
@@ -86,9 +87,9 @@ public class FMath {
 	
 	/** Returns the minimum of the given values.
 		
-		@param d1 {@code d2} - {@code d3} - {@code d4} - {@code d5} - {@code d6} - {@code d7} - {@code d8} - the values.
+		@param d1 {@code d2} - {@code d3} - {@code d4} - {@code d5} - {@code d6} - {@code d7} - {@code d8} - The values.
 		
-		@return the minimum of {@code d1,...,d8}.
+		@return The minimum of {@code d1,...,d8}.
 	*/
 	public static double min(
 		final double d1, final double d2,
@@ -104,9 +105,9 @@ public class FMath {
 	
 	/** Returns the maximum of the given values.
 		
-		@param d1 {@code d2} - the values.
+		@param d1 {@code d2} - The values.
 		
-		@return the maximum of {@code d1} and {@code d2}.
+		@return The maximum of {@code d1} and {@code d2}.
 	*/
 	public static double max(final double d1, final double d2) {
 		
@@ -115,9 +116,9 @@ public class FMath {
 	
 	/** Returns the maximum of the given values.
 		
-		@param d1 {@code d2} - {@code d3} - {@code d4} - the values.
+		@param d1 {@code d2} - {@code d3} - {@code d4} - The values.
 		
-		@return the maximum of {@code d1,...,d4}.
+		@return The maximum of {@code d1,...,d4}.
 	*/
 	public static double max(final double d1, final double d2, final double d3, final double d4) {
 		
@@ -128,9 +129,9 @@ public class FMath {
 	
 	/** Returns the maximum of the given values.
 		
-		@param d1 {@code d2} - {@code d3} - {@code d4} - {@code d5} - {@code d6} - {@code d7} - {@code d8} - the values.
+		@param d1 {@code d2} - {@code d3} - {@code d4} - {@code d5} - {@code d6} - {@code d7} - {@code d8} - The values.
 		
-		@return the maximum of {@code d1,...,d8}.
+		@return The maximum of {@code d1,...,d8}.
 	*/
 	public static double max(
 		final double d1, final double d2,
@@ -152,11 +153,11 @@ public class FMath {
 	
 	/** Returns the natural logarithm of the Gamma function at {@code x}.
 		
-		@param x the input value. Must be larger than {@code 0}.
+		@param x The input value. Must be larger than {@code 0}.
 		
-		@return the natural logarithm of the Gamma function at {@code x}. Computed using the approximation described by C. Lanczos, "A Precision Approximation of the Gamma Function", SIAM Journal on Numerical Analysis, Series B, vol. 1, 1964, pp. 86-96, as implemented by W. H. Press et al., Numerical Recipes in C: The Art of Scientific Computing, 2nd ed., Cambridge University Press, Cambridge, 1992, Section 6.1.
+		@return The natural logarithm of the Gamma function at {@code x}. Computed using the approximation described by C. Lanczos, "A Precision Approximation of the Gamma Function", SIAM Journal on Numerical Analysis, Series B, vol. 1, 1964, pp. 86-96, as implemented by W. H. Press et al., Numerical Recipes in C: The Art of Scientific Computing, 2nd ed., Cambridge University Press, Cambridge, 1992, Section 6.1.
 		
-		@throws IllegalArgumentException if {@code x} is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If {@code x} is less than or equal to {@code 0}.
 	*/
 	public static double lngamma(final double x) {
 		
@@ -173,15 +174,15 @@ public class FMath {
 	
 	/** Returns the value at {@code x} of the {@code d}th derivative of the {@code n}th-degree centered uniform B-spline basis function.
 		
-		@param x the input value.
+		@param x The input value.
 		
-		@param n the B-spline degree. Must be larger than or equal to {@code 0}.
+		@param n The B-spline degree. Must be larger than or equal to {@code 0}.
 		
-		@param d the derivate order. Must be larger than or equal to {@code 0} and less than or equal to {@code n}.
+		@param d The derivate order. Must be larger than or equal to {@code 0} and less than or equal to {@code n}.
 		
-		@return the value at {@code x} of the {@code d}th derivative of the {@code n}th-degree centered uniform B-spline basis function.
+		@return The value at {@code x} of the {@code d}th derivative of the {@code n}th-degree centered uniform B-spline basis function.
 		
-		@throws IllegalArgumentException if {@code n} or {@code d} is out of range.
+		@throws IllegalArgumentException If {@code n} or {@code d} is out of range.
 	*/
 	public static double bspline(final double x, final int n, final int d) {
 		
@@ -213,15 +214,15 @@ public class FMath {
 	
 	private static final double INVSQRT2PI = 1.0/Math.sqrt(2*Math.PI);
 	
-	/** Returns the value at {@code x} of the Gaussian distribution with standard deviation {@code s}. The distribution is normalized to unit integral.
+	/** Returns The value at {@code x} of the Gaussian distribution with standard deviation {@code s}. The distribution is normalized to unit integral.
 		
-		@param x the input value.
+		@param x The input value.
 		
-		@param s the standard deviation of the Gaussian distribution.
+		@param s The standard deviation of the Gaussian distribution.
 		
-		@return the value at {@code x} of the Gaussian distribution with standard deviation {@code s}.
+		@return The value at {@code x} of the Gaussian distribution with standard deviation {@code s}.
 		
-		@throws IllegalArgumentException if {@code s} is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If {@code s} is less than or equal to {@code 0}.
 	*/
 	public static double gauss(final double x, final double s) {
 		
@@ -232,9 +233,9 @@ public class FMath {
 	
 	/** Returns the value of the sinc function at {@code x}. The sinc function is defined as the limit of {@code sin(x)/x}.
 		
-		@param x the input value.
+		@param x The input value.
 		
-		@return the value of the sinc function at {@code x}.
+		@return The value of the sinc function at {@code x}.
 	*/
 	public static double sinc(final double x) {
 		
@@ -244,9 +245,9 @@ public class FMath {
 	
 	/** Returns the value at {@code x} of the zeroth-order Bessel function of the first kind.
 		
-		@param x the input value.
+		@param x The input value.
 		
-		@return the value at {@code x} of the zeroth-order Bessel function of the first kind. Computed using the algorithm described by W. H. Press et al., Numerical Recipes in C: The Art of Scientific Computing, 2nd ed., Cambridge University Press, Cambridge, 1992, Section 6.5.
+		@return The value at {@code x} of the zeroth-order Bessel function of the first kind. Computed using the algorithm described by W. H. Press et al., Numerical Recipes in C: The Art of Scientific Computing, 2nd ed., Cambridge University Press, Cambridge, 1992, Section 6.5.
 	*/
 	public static double besselj0(final double x) {
 		
@@ -267,9 +268,9 @@ public class FMath {
 	
 	/** Returns the value at {@code x} of the first-order Bessel function of the first kind.
 		
-		@param x the input value.
+		@param x The input value.
 		
-		@return the value at {@code x} of the first-order Bessel function of the first kind. Computed using the algorithm described by W. H. Press et al., Numerical Recipes in C: The Art of Scientific Computing, 2nd ed., Cambridge University Press, Cambridge, 1992, Section 6.5.
+		@return The value at {@code x} of the first-order Bessel function of the first kind. Computed using the algorithm described by W. H. Press et al., Numerical Recipes in C: The Art of Scientific Computing, 2nd ed., Cambridge University Press, Cambridge, 1992, Section 6.5.
 	*/
 	public static double besselj1(final double x) {
 		
@@ -295,13 +296,13 @@ public class FMath {
 	
 	/** Returns the value at {@code x} of the Bessel function of the first kind of order {@code n}.
 		
-		@param n the order of the Bessel function of the first kind. Must be larger than or equal to {@code 0}.
+		@param n The order of the Bessel function of the first kind. Must be larger than or equal to {@code 0}.
 		
-		@param x the input value.
+		@param x The input value.
 		
-		@return the value at {@code x} of the Bessel function of the first kind of order {@code n}. Computed using the algorithm described by W. H. Press et al., Numerical Recipes in C: The Art of Scientific Computing, 2nd ed., Cambridge University Press, Cambridge, 1992, Section 6.5.
+		@return The value at {@code x} of the Bessel function of the first kind of order {@code n}. Computed using the algorithm described by W. H. Press et al., Numerical Recipes in C: The Art of Scientific Computing, 2nd ed., Cambridge University Press, Cambridge, 1992, Section 6.5.
 		
-		@throws IllegalArgumentException if {@code n} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code n} is less than {@code 0}.
 	*/
 	public static double besselj(final int n, final double x) {
 		
@@ -353,17 +354,17 @@ public class FMath {
 	
 	/** Returns the value at {@code (u,v)} of the series expansion of the Lommel U-function of order {@code n} evaluated to {@code t} terms.
 		
-		@param n the order of the Lommel U-function. Must be larger than or equal to {@code 0}.
+		@param n The order of the Lommel U-function. Must be larger than or equal to {@code 0}.
 		
-		@param t the number of terms to which the series expansion is to be computed. Must be larger than {@code 0}.
+		@param t The number of terms to which the series expansion is to be computed. Must be larger than {@code 0}.
 		
-		@param u the first input value.
+		@param u The first input value.
 		
-		@param v the second input value. Must be different from {@code 0}.
+		@param v The second input value. Must be different from {@code 0}.
 		
-		@return the value at {@code (u,v)} of the series expansion of the Lommel U-function of order {@code n} evaluated to {@code t} terms. Computed using a straightforward implementation of the formula given by M. Born and E. Wolf, Principles of Optics, 5th ed., Pergamon Press, Oxford, 1975, Section 8.8.
+		@return The value at {@code (u,v)} of the series expansion of the Lommel U-function of order {@code n} evaluated to {@code t} terms. Computed using a straightforward implementation of the formula given by M. Born and E. Wolf, Principles of Optics, 5th ed., Pergamon Press, Oxford, 1975, Section 8.8.
 		
-		@throws IllegalArgumentException if any of the parameter values is out of range.
+		@throws IllegalArgumentException If any of the parameter values is out of range.
 	*/
 	public static double lommelu(final int n, final int t, final double u, final double v) {
 		
@@ -383,17 +384,17 @@ public class FMath {
 	
 	/** Returns the value at {@code (u,v)} of the series expansion of the Lommel V-function of order {@code n} evaluated to {@code t} terms.
 		
-		@param n the order of the Lommel V-function. Must be larger than or equal to {@code 0}.
+		@param n The order of the Lommel V-function. Must be larger than or equal to {@code 0}.
 		
-		@param t the number of terms to which the series expansion is to be computed. Must be larger than {@code 0}.
+		@param t The number of terms to which the series expansion is to be computed. Must be larger than {@code 0}.
 		
-		@param u the first input value. Must be different from {@code 0}.
+		@param u The first input value. Must be different from {@code 0}.
 		
-		@param v the second input value.
+		@param v The second input value.
 		
-		@return the value at {@code (u,v)} of the series expansion of the Lommel V-function of order {@code n} evaluated to {@code t} terms. Computed using a straightforward implementation of the formula given by M. Born and E. Wolf, Principles of Optics, 5th ed., Pergamon Press, Oxford, 1975, Section 8.8.
+		@return The value at {@code (u,v)} of the series expansion of the Lommel V-function of order {@code n} evaluated to {@code t} terms. Computed using a straightforward implementation of the formula given by M. Born and E. Wolf, Principles of Optics, 5th ed., Pergamon Press, Oxford, 1975, Section 8.8.
 		
-		@throws IllegalArgumentException if any of the parameter values is out of range.
+		@throws IllegalArgumentException If any of the parameter values is out of range.
 	*/
 	public static double lommelv(final int n, final int t, final double u, final double v) {
 		
@@ -415,9 +416,9 @@ public class FMath {
 	
 	/** Indicates whether the given integer value is a power of 2.
 		
-		@param i the integer value to be tested. Should not be larger than {@code 2^30} in magnitude.
+		@param i The integer value to be tested. Should not be larger than {@code 2^30} in magnitude.
 		
-		@return {@code true} if {@code i} is a power of 2; {@code false} if this is not the case.
+		@return Value {@code true} if {@code i} is a power of 2, or {@code false} if this is not the case.
 	*/
 	public static boolean power2(final int i) {
 		

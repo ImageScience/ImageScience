@@ -26,7 +26,7 @@ public class VTKResource {
 	
 	/** Checks whether VTK can be used in the current environment.
 		
-		@return {@code true} if the VTK Java DLLs could be successfully loaded (availability check) and the associated Java classes in {@code vtk.jar} can be found (accessibility check); {@code false} if this is not the case.
+		@return Value {@code true} if the VTK Java DLLs could be successfully loaded (availability check) and the associated Java classes in {@code vtk.jar} can be found (accessibility check), or {@code false} if this is not the case.
 	*/
 	public static boolean check() {
 		

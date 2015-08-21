@@ -1,10 +1,13 @@
 package imagescience.segment;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
+import imagescience.image.FloatImage;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
@@ -17,9 +20,9 @@ public class ZeroCrosser {
 	
 	/** Detects zero-crossings in an image.
 		
-		@param image the input image in which zero-crossings are to be detected. The image is overwritten with the detection results. To determine whether a zero-crossing is present, this method compares the signs of neighboring image elements, and if they are different, it uses a linear interpolation scheme to determine the element whose center is closest to the location of the crossing. This element is then set to {@code 255}. Other elements are set to {@code 0}. If the size of the image in the z-dimension equals {@code 1}, this method compares neighboring elements in 2D (x-y space), otherwise it compares neighboring elements in 3D (x-y-z space). The algorithm is applied to every x-y(-z) subimage in a 5D image.
+		@param image The input image in which zero-crossings are to be detected. The image is overwritten with the detection results. To determine whether a zero-crossing is present, this method compares the signs of neighboring image elements, and if they are different, it uses a linear interpolation scheme to determine the element whose center is closest to the location of the crossing. This element is then set to {@code 255}. Other elements are set to {@code 0}. If the size of the image in the z-dimension equals {@code 1}, this method compares neighboring elements in 2D (x-y space), otherwise it compares neighboring elements in 3D (x-y-z space). The algorithm is applied to every x-y(-z) subimage in a 5D image.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public void run(final Image image) {
 		
@@ -33,7 +36,7 @@ public class ZeroCrosser {
 		final Dimensions dims = image.dimensions();
 		messenger.log("Input image dimensions: (x,y,z,t,c) = ("+dims.x+","+dims.y+","+dims.z+","+dims.t+","+dims.c+")");
 		
-		messenger.status("Detecting zero crossings...");
+		progressor.status("Detecting zero crossings...");
 		
 		// Detect:
 		if (dims.z == 1) { // 2D case
@@ -193,7 +196,6 @@ public class ZeroCrosser {
 		
 		// Finish up:
 		image.name(image.name() + " zero-crossings");
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
 	}

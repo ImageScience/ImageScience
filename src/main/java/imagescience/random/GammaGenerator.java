@@ -1,5 +1,6 @@
 package imagescience.random;
 
+import java.lang.Math;
 
 /** Gamma random number generator of positive integer order. This implementation is based on the algorithm described by W. H. Press, S. A. Teukolsky, W. T. Vetterling, B. P. Flannery, <a href="http://www.nr.com/" target="newbrowser">Numerical Recipes in C: The Art of Scientific Computing</a> (2nd edition), Cambridge University Press, Cambridge, 1992, Section 7.3, and uses {@link UniformGenerator} as a source of uniform random numbers. */
 public class GammaGenerator implements RandomGenerator {
@@ -8,14 +9,14 @@ public class GammaGenerator implements RandomGenerator {
 	
 	private final UniformGenerator unigen;
 	
-	/** Constructs a generator of random numbers from the first-order gamma distribution. The seed used for initialization is derived from the system's current time in milliseconds. */
+	/** Constructs a generator of random numbers from the first-order gamma distribution initialized with a random seed */
 	public GammaGenerator() { this(1); }
 	
-	/** Constructs a generator of random numbers from the gamma distribution with given positive integer order. The seed used for initialization is derived from the system's current time in milliseconds.
+	/** Constructs a generator of random numbers from the gamma distribution with given {@code order} and initialized with a random seed.
 		
-		@param order the order of the gamma distribution. Must be larger than {@code 0}.
+		@param order The order of the gamma distribution. Must be larger than {@code 0}.
 		
-		@exception IllegalArgumentException if {@code order} is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If {@code order} is less than or equal to {@code 0}.
 	*/
 	public GammaGenerator(final int order) {
 		
@@ -26,13 +27,13 @@ public class GammaGenerator implements RandomGenerator {
 		unigen = new UniformGenerator(0,1);
 	}
 	
-	/** Constructs a generator of random numbers from the gamma distribution with given positive integer order and initialized with the given seed.
+	/** Constructs a generator of random numbers from the gamma distribution with given {@code order} and initialized with the given {@code seed}.
 		
-		@param order the order of the gamma distribution. Must be larger than {@code 0}.
+		@param order The order of the gamma distribution. Must be larger than {@code 0}.
 		
-		@param seed the seed used for initialization of the generator.
+		@param seed The seed used for initialization of the generator.
 		
-		@exception IllegalArgumentException if {@code order} is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If {@code order} is less than or equal to {@code 0}.
 	*/
 	public GammaGenerator(final int order, final int seed) {
 		
@@ -43,11 +44,17 @@ public class GammaGenerator implements RandomGenerator {
 		unigen = new UniformGenerator(0,1,seed);
 	}
 	
-	/** Returns a random number from the gamma distribution with integer order specified at construction.
+	/** Returns a random number from the gamma distribution with order specified at construction.
 		
-		@return a random number from the gamma distribution with integer order specified at construction.
+		@return A random number from the gamma distribution with order specified at construction.
 	*/
-	public double next() {
+	public double next() { return next(order); }
+	
+	/** Returns a random number from the gamma distribution with given {@code order}.
+		
+		@return A random number from the gamma distribution with given {@code order}.
+	*/
+	public double next(final int order) {
 		
 		if (order < 6) { // Direct method
 			double x = 1.0;

@@ -4,6 +4,7 @@ import i5d.Image5D;
 import i5d.cal.ChannelCalibration;
 import i5d.cal.ChannelDisplayProperties;
 import i5d.gui.ChannelControl;
+
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.LookUpTable;
@@ -32,13 +33,13 @@ public class I5DResource {
 	
 	/** Sets the displaying mode of an image.
 		
-		@param image the image.
+		@param image The image.
 		
-		@param mode the displaying mode. Must be one of {@link #GRAY}, {@link #COLOR}, {@link #OVERLAY}, {@link #TILED}.
+		@param mode The displaying mode. Must be one of {@link #GRAY}, {@link #COLOR}, {@link #OVERLAY}, {@link #TILED}.
 		
-		@exception IllegalArgumentException if {@code image} is not an {@code Image5D} object or if {@code mode} is invalid.
+		@throws IllegalArgumentException If {@code image} is not an {@code Image5D} object or if {@code mode} is invalid.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public static void mode(final ImagePlus image, final int mode) {
 		
@@ -52,15 +53,15 @@ public class I5DResource {
 	
 	/** Returns the density calibration of a specific channel of an image.
 		
-		@param image the image.
+		@param image The image.
 		
-		@param channel the channel number. Must be larger than or equal to {@code 1} and less than or equal to the number of channels.
+		@param channel The channel number. Must be larger than or equal to {@code 1} and less than or equal to the number of channels.
 		
-		@return the density calibration of the given channel of the given image.
+		@return The density calibration of the given channel of the given image.
 		
-		@exception IllegalArgumentException if {@code image} is not an {@code Image5D} object or if {@code channel} is out of range.
+		@throws IllegalArgumentException If {@code image} is not an {@code Image5D} object or if {@code channel} is out of range.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public static Calibration density(final ImagePlus image, final int channel) {
 		
@@ -77,9 +78,9 @@ public class I5DResource {
 	
 	/** Indicates whether an image is an instance of {@code Image5D}.
 		
-		@param image the image whose identity is to be tested.
+		@param image The image whose identity is to be tested.
 		
-		@return {@code true} if {@code image} is an instance of {@code Image5D}; {@code false} if this is not the case.
+		@return Value {@code true} if {@code image} is an instance of {@code Image5D}, or {@code false} if this is not the case.
 	*/
 	public static boolean instance(final ImagePlus image) {
 		
@@ -88,17 +89,17 @@ public class I5DResource {
 	
 	/** Returns the current position of an image in a specific dimension.
 		
-		@param image the image.
+		@param image The image.
 		
-		@param dimension the dimension. Must be {@code 0} (x), {@code 1} (y), {@code 2} (ch), {@code 3} (z), or {@code 4} (t).
+		@param dimension The dimension. Must be {@code 0} (x), {@code 1} (y), {@code 2} (c), {@code 3} (z), or {@code 4} (t).
 		
-		@return the current position of the given image in the given dimension.
+		@return The current position of the given image in the given dimension.
 		
-		@exception IllegalArgumentException if {@code image} is not an {@code Image5D} object.
+		@throws IllegalArgumentException If {@code image} is not an {@code Image5D} object.
 		
-		@exception ArrayIndexOutOfBoundsException if {@code dimension} is out of range.
+		@throws ArrayIndexOutOfBoundsException If {@code dimension} is out of range.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public static int position(final ImagePlus image, final int dimension) {
 		
@@ -110,15 +111,15 @@ public class I5DResource {
 	
 	/** Sets the position of an image in a specific dimension.
 		
-		@param image the image.
+		@param image The image.
 		
-		@param dimension the dimension. Must be {@code 0} (x), {@code 1} (y), {@code 2} (ch), {@code 3} (z), or {@code 4} (t).
+		@param dimension The dimension. Must be {@code 0} (x), {@code 1} (y), {@code 2} (c), {@code 3} (z), or {@code 4} (t).
 		
-		@param position the position. Should be larger than or equal to {@code 0} and less than {@code N}, where {@code N} is the size of the image in the specified dimension. Values outside this range are simply ignored (no exception is generated).
+		@param position The position. Should be larger than or equal to {@code 0} and less than {@code N}, where {@code N} is the size of the image in the specified dimension. Values outside this range are simply ignored (no exception is generated).
 		
-		@exception IllegalArgumentException if {@code image} is not an {@code Image5D} object, or if {@code dimension} is out of range.
+		@throws IllegalArgumentException If {@code image} is not an {@code Image5D} object, or if {@code dimension} is out of range.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public static void position(final ImagePlus image, final int dimension, final int position) {
 		
@@ -130,33 +131,33 @@ public class I5DResource {
 	
 	/** Sets the position of an image in each dimension.
 		
-		@param image the image.
+		@param image The image.
 		
-		@param x {@code y} - {@code ch} - {@code z} - {@code t} - the position in, respectively, the x, y, ch, z, and t dimension. Should be larger than or equal to {@code 0} and less than {@code N}, where {@code N} is the size of the image in the corresponding dimension. Values outside this range are simply ignored (no exception is generated).
+		@param x {@code y} - {@code c} - {@code z} - {@code t} - The position in, respectively, the x, y, c, z, and t dimension. Should be larger than or equal to {@code 0} and less than {@code N}, where {@code N} is the size of the image in the corresponding dimension. Values outside this range are simply ignored (no exception is generated).
 		
-		@exception IllegalArgumentException if {@code image} is not an {@code Image5D} object.
+		@throws IllegalArgumentException If {@code image} is not an {@code Image5D} object.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
-	public static void position(final ImagePlus image, final int x, final int y, final int ch, final int z, final int t) {
+	public static void position(final ImagePlus image, final int x, final int y, final int c, final int z, final int t) {
 		
 		if (!(image instanceof Image5D)) throw new IllegalArgumentException("Image is not an Image5D object");
 		final Image5D img5d = (Image5D)image;
 		
-		img5d.setCurrentPosition(x,y,ch,z,t);
+		img5d.setCurrentPosition(x,y,c,z,t);
 	}
 	
 	/** Returns the processor of a specific channel of an image.
 		
-		@param image the image.
+		@param image The image.
 		
-		@param channel the channel number. Must be larger than or equal to {@code 1} and less than or equal to the number of channels.
+		@param channel The channel number. Must be larger than or equal to {@code 1} and less than or equal to the number of channels.
 		
-		@return the processor of the given channel of the given image.
+		@return The processor of the given channel of the given image.
 		
-		@exception IllegalArgumentException if {@code image} is not an {@code Image5D} object, or if {@code channel} is out of range.
+		@throws IllegalArgumentException If {@code image} is not an {@code Image5D} object, or if {@code channel} is out of range.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public static ImageProcessor processor(final ImagePlus image, final int channel) {
 		
@@ -168,15 +169,15 @@ public class I5DResource {
 	
 	/** Converts an image to an {@code Image5D} object.
 		
-		@param image the image to be converted.
+		@param image The image to be converted.
 		
-		@param properties if {@code true}, the density calibration, color model, and window/level settings of {@code image} are copied to every channel of the new {@code Image5D} object; if {@code false}, these properties assume their default values.
+		@param properties If {@code true}, the density calibration, color model, and window/level settings of {@code image} are copied to every channel of the new {@code Image5D} object; if {@code false}, these properties assume their default values.
 		
-		@return an {@code Image5D} version of the given image. Returns the given image directly if it is already an {@code Image5D} object. Otherwise it converts the image to a new {@code Image5D} object.
+		@return An {@code Image5D} version of the given image. Returns the given image directly if it is already an {@code Image5D} object. Otherwise it converts the image to a new {@code Image5D} object.
 		
-		@exception IllegalArgumentException if {@code image} is not a gray-level image or if the ImageJ version is not supported.
+		@throws IllegalArgumentException If {@code image} is not a gray-level image or if the ImageJ version is not supported.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public static ImagePlus convert(final ImagePlus image, final boolean properties) {
 		
@@ -227,15 +228,15 @@ public class I5DResource {
 	
 	/** Sets the minimum and maximum displayed value of all channels of an image.
 		
-		@param image the image whose minimum and maximum displayed values are to be set.
+		@param image The image whose minimum and maximum displayed values are to be set.
 		
-		@param min the minimum value to be displayed.
+		@param min The minimum value to be displayed.
 		
-		@param max the maximum value to be displayed.
+		@param max The maximum value to be displayed.
 		
-		@exception IllegalArgumentException if {@code image} is not an {@code Image5D} object.
+		@throws IllegalArgumentException If {@code image} is not an {@code Image5D} object.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public static void minmax(final ImagePlus image, final double min, final double max) {
 		
@@ -253,13 +254,13 @@ public class I5DResource {
 	
 	/** Transfers all channel properties from source to destination image. These include both the display properties and the calibration properties.
 		
-		@param source the source image from which channel properties are to be copied.
+		@param source The source image from which channel properties are to be copied.
 		
-		@param destination the destination image to which channel properties are to be copied.
+		@param destination The destination image to which channel properties are to be copied.
 		
-		@exception IllegalArgumentException if {@code source} or {@code destination} is not an {@code Image5D} object, or if they do not have an equal number of channels.
+		@throws IllegalArgumentException If {@code source} or {@code destination} is not an {@code Image5D} object, or if they do not have an equal number of channels.
 		
-		@exception NullPointerException if {@code source} or {@code destination} is {@code null}.
+		@throws NullPointerException If {@code source} or {@code destination} is {@code null}.
 	*/
 	public static void transfer(final ImagePlus source, final ImagePlus destination) {
 		
@@ -285,15 +286,15 @@ public class I5DResource {
 	
 	/** Transfers the properties of specific channels from source to destination image. These include both the display properties and the calibration properties.
 		
-		@param source the source image from which channel properties are to be copied.
+		@param source The source image from which channel properties are to be copied.
 		
-		@param destination the destination image to which channel properties are to be copied.
+		@param destination The destination image to which channel properties are to be copied.
 		
-		@param channels a double array containing the source and destination channel indices. The {@code channels[0]} array contains the channel indices of the source image, and the {@code channels[1]} array the corresponding channel indices of the destination image. Channel indices may range from {@code 1} to the number of channels (inclusive).
+		@param channels A double array containing the source and destination channel indices. The {@code channels[0]} array contains the channel indices of the source image, and the {@code channels[1]} array the corresponding channel indices of the destination image. Channel indices may range from {@code 1} to the number of channels (inclusive).
 		
-		@exception IllegalArgumentException if {@code source} or {@code destination} is not an {@code Image5D} object, if the {@code channels[0]} and {@code channels[1]} arrays have different lengths, or if any of the indices in these arrays is out of range.
+		@throws IllegalArgumentException If {@code source} or {@code destination} is not an {@code Image5D} object, if the {@code channels[0]} and {@code channels[1]} arrays have different lengths, or if any of the indices in these arrays is out of range.
 		
-		@exception NullPointerException if any of the parameters is {@code null}.
+		@throws NullPointerException If any of the parameters is {@code null}.
 	*/
 	public static void transfer(final ImagePlus source, final ImagePlus destination, final int[][] channels) {
 		
@@ -320,15 +321,15 @@ public class I5DResource {
 	
 	/** Transfers the properties of a specific source image channel to the current processor and stack of a destination image. These include both the display properties and the calibration properties.
 		
-		@param source the source image from which channel properties are to be copied.
+		@param source The source image from which channel properties are to be copied.
 		
-		@param destination the destination image to which channel properties are to be copied.
+		@param destination The destination image to which channel properties are to be copied.
 		
-		@param channel the source channel index. Must be larger than or equal to {@code 1} and less than or equal to the number of channels.
+		@param channel The source channel index. Must be larger than or equal to {@code 1} and less than or equal to the number of channels.
 		
-		@exception IllegalArgumentException if {@code source} is not an {@code Image5D} object, or if {@code channel} is out of range.
+		@throws IllegalArgumentException If {@code source} is not an {@code Image5D} object, or if {@code channel} is out of range.
 		
-		@exception NullPointerException if {@code source} or {@code destination} is {@code null}.
+		@throws NullPointerException If {@code source} or {@code destination} is {@code null}.
 	*/
 	public static void transfer(final ImagePlus source, final ImagePlus destination, final int channel) {
 		
@@ -357,11 +358,11 @@ public class I5DResource {
 	
 	/** Disables the density calibration of all channels of an image.
 		
-		@param image the image whose density calibrations are to be disabled.
+		@param image The image whose density calibrations are to be disabled.
 		
-		@exception IllegalArgumentException if {@code image} is not an {@code Image5D} object.
+		@throws IllegalArgumentException If {@code image} is not an {@code Image5D} object.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public static void nodensity(final ImagePlus image) {
 		
@@ -376,11 +377,11 @@ public class I5DResource {
 	
 	/** Disables the color model of all channels of an image. The color model of each channel is set to the gray-scale color model.
 		
-		@param image the image whose color models are to be disabled.
+		@param image The image whose color models are to be disabled.
 		
-		@exception IllegalArgumentException if {@code image} is not an {@code Image5D} object.
+		@throws IllegalArgumentException If {@code image} is not an {@code Image5D} object.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public static void nocolor(final ImagePlus image) {
 		

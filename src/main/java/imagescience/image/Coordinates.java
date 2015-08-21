@@ -23,7 +23,7 @@ public class Coordinates {
 	
 	/** One-dimensional constructor.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 	*/
 	public Coordinates(final int x) {
 		
@@ -32,9 +32,9 @@ public class Coordinates {
 	
 	/** Two-dimensional constructor.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 	*/
 	public Coordinates(final int x, final int y) {
 		
@@ -44,11 +44,11 @@ public class Coordinates {
 	
 	/** Three-dimensional constructor.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 		
-		@param z the z-coordinate.
+		@param z The z-coordinate.
 	*/
 	public Coordinates(final int x, final int y, final int z) {
 		
@@ -59,13 +59,13 @@ public class Coordinates {
 	
 	/** Four-dimensional constructor.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 		
-		@param z the z-coordinate.
+		@param z The z-coordinate.
 		
-		@param t the t-coordinate.
+		@param t The t-coordinate.
 	*/
 	public Coordinates(final int x, final int y, final int z, final int t) {
 		
@@ -77,15 +77,15 @@ public class Coordinates {
 	
 	/** Five-dimensional constructor.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 		
-		@param z the z-coordinate.
+		@param z The z-coordinate.
 		
-		@param t the t-coordinate.
+		@param t The t-coordinate.
 		
-		@param c the c-coordinate.
+		@param c The c-coordinate.
 	*/
 	public Coordinates(final int x, final int y, final int z, final int t, final int c) {
 		
@@ -98,7 +98,7 @@ public class Coordinates {
 	
 	/** Copy constructor.
 		
-		@param coords the coordinates to be copied.
+		@param coords The coordinates to be copied.
 	*/
 	public Coordinates(final Coordinates coords) {
 		
@@ -114,9 +114,9 @@ public class Coordinates {
 	
 	/** Sets the coordinates to the given coordinates.
 		
-		@param coords the coordinates to be copied.
+		@param coords The coordinates to be copied.
 		
-		@exception NullPointerException if {@code coords} is {@code null}.
+		@throws NullPointerException If {@code coords} is {@code null}.
 	*/
 	public void set(final Coordinates coords) {
 		
@@ -129,15 +129,15 @@ public class Coordinates {
 	
 	/** Duplicates this object.
 		
-		@return a new {@code Coordinates} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
+		@return A new {@code Coordinates} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
 	*/
 	public Coordinates duplicate() { return new Coordinates(x,y,z,t,c); }
 	
 	/** Indicates whether this object is in the same state as the given object.
 		
-		@param coords the object to compare this object with.
+		@param coords The object to compare this object with.
 	
-		@return {@code true} if the given object is not {@code null} and its coordinates are equal to the corresponding coordinates of this object; {@code false} if this is not the case.
+		@return Value {@code true} if the given object is not {@code null} and its coordinates are equal to the corresponding coordinates of this object, or {@code false} if this is not the case.
 	*/
 	public boolean equals(final Coordinates coords) {
 		

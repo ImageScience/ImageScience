@@ -1,12 +1,14 @@
 package imagescience.fourier;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.FloatImage;
 import imagescience.image.Image;
+
 import imagescience.utility.FMath;
-import imagescience.utility.ImageScience;
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
@@ -19,15 +21,15 @@ public class FFT {
 	
 	/** Applies the forward Fourier transform to complex-valued images along the specified axes.
 		
-		@param real the real part of the complex-valued input image. The image is overwritten with the real component of the forward Fourier transform. Therefore this should be a {@link FloatImage} object.
+		@param real The real part of the complex-valued input image. The image is overwritten with the real component of the forward Fourier transform. Therefore this should be a {@link FloatImage} object.
 		
-		@param imag the imaginary part of the complex-valued input image. The image is overwritten with the imaginary component of the forward Fourier transform. Therefore this should be a {@link FloatImage} object.
+		@param imag The imaginary part of the complex-valued input image. The image is overwritten with the imaginary component of the forward Fourier transform. Therefore this should be a {@link FloatImage} object.
 		
-		@param axes the axes along which the transform is to be applied. The transform is applied to each dimension for which the corresponding boolean field of this parameter is {@code true}.
+		@param axes The axes along which the transform is to be applied. The transform is applied to each dimension for which the corresponding boolean field of this parameter is {@code true}.
 		
-		@exception IllegalStateException if the images do not have the same size in each dimension or if their size is not an integer power of 2 in any of the directions in which the transform is to be applied.
+		@throws IllegalStateException If the images do not have the same size in each dimension or if their size is not an integer power of 2 in any of the directions in which the transform is to be applied.
 		
-		@exception NullPointerException if any of the parameters is {@code null}.
+		@throws NullPointerException If any of the parameters is {@code null}.
 	*/
 	public void forward(final Image real, final Image imag, final Axes axes) {
 		
@@ -37,15 +39,15 @@ public class FFT {
 	
 	/** Applies the inverse Fourier transform to complex-valued images along the specified axes.
 		
-		@param real the real part of the complex-valued input image. The image is overwritten with the real component of the inverse Fourier transform. Therefore this should be a {@link FloatImage} object.
+		@param real The real part of the complex-valued input image. The image is overwritten with the real component of the inverse Fourier transform. Therefore this should be a {@link FloatImage} object.
 		
-		@param imag the imaginary part of the complex-valued input image. The image is overwritten with the imaginary component of the inverse Fourier transform. Therefore this should be a {@link FloatImage} object.
+		@param imag The imaginary part of the complex-valued input image. The image is overwritten with the imaginary component of the inverse Fourier transform. Therefore this should be a {@link FloatImage} object.
 		
-		@param axes the axes along which the transform is to be applied. The transform is applied to each dimension for which the corresponding boolean field of this parameter is {@code true}.
+		@param axes The axes along which the transform is to be applied. The transform is applied to each dimension for which the corresponding boolean field of this parameter is {@code true}.
 		
-		@exception IllegalStateException if the images do not have the same size in each dimension or if their size is not an integer power of 2 in any of the directions in which the transform is to be applied.
+		@throws IllegalStateException If the images do not have the same size in each dimension or if their size is not an integer power of 2 in any of the directions in which the transform is to be applied.
 		
-		@exception NullPointerException if any of the parameters is {@code null}.
+		@throws NullPointerException If any of the parameters is {@code null}.
 	*/
 	public void inverse(final Image real, final Image imag, final Axes axes) {
 		
@@ -63,8 +65,8 @@ public class FFT {
 		check(real,imag,axes);
 		final Coordinates c = new Coordinates();
 		final Dimensions dims = real.dimensions();
-		if (sign == -1) messenger.status("Forward FFT...");
-		else messenger.status("Inverse FFT...");
+		if (sign == -1) progressor.status("Forward FFT...");
+		else progressor.status("Inverse FFT...");
 		double[] re = null, im = null;
 		double scale = 1;
 		progressor.steps(
@@ -197,7 +199,6 @@ public class FFT {
 		}
 		
 		messenger.log("Done");
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
 	}

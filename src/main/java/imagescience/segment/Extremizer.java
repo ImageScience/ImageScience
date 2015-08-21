@@ -1,10 +1,12 @@
 package imagescience.segment;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
@@ -31,15 +33,15 @@ public class Extremizer {
 	
 	/** Finds local extrema in an image. A local extremum is defined as an image element whose value is either larger (maximum) or smaller (minimum) than those of all its neighboring elements. If the size of the image in the z-dimension equals {@code 1}, this method considers 8-connected neighbors in x-y space, otherwise it considers 26-connected neighbors in x-y-z space. For border elements, neighboring positions outside the image are ignored. The method searches for local extrema in every x-y(-z) subimage in a 5D image.
 		
-		@param image the input image in which local extrema are to be found.
+		@param image The input image in which local extrema are to be found.
 		
-		@param type the type of extrema to be found. Can be any or both (by addition) of {@link #MAXIMA} or {@link #MINIMA}.
+		@param type The type of extrema to be found. Can be any or both (by addition) of {@link #MAXIMA} or {@link #MINIMA}.
 		
-		@param mode determines how the found extrema are stored and returned. Can be any or both (by addition) of {@link #DETECT} or {@link #EXTRACT}.
+		@param mode Determines how the found extrema are stored and returned. Can be any or both (by addition) of {@link #DETECT} or {@link #EXTRACT}.
 		
-		@return if {@code mode} includes {@code DETECT}, the {@code image} is overwritten with the detection results: local maxima are set to {@code 255}, local minima to {@code 127}, and all other elements to {@code 0}. Otherwise the image is left unaltered. If {@code mode} includes {@code EXTRACT}, a new two-element {@code Vector} of {@code Vector<Coordinates>} objects is returned, containing the coordinates of all found local maxima (element {@code 0}) and local minima (element {@code 1}). Otherwise the method returns {@code null}. 
+		@return If {@code mode} includes {@code DETECT}, the {@code image} is overwritten with the detection results: local maxima are set to {@code 255}, local minima to {@code 127}, and all other elements to {@code 0}. Otherwise the image is left unaltered. If {@code mode} includes {@code EXTRACT}, a new two-element {@code Vector} of {@code Vector<Coordinates>} objects is returned, containing the coordinates of all found local maxima (element {@code 0}) and local minima (element {@code 1}). Otherwise the method returns {@code null}. 
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Vector<Vector<Coordinates>> run(final Image image, final int type, final int mode) {
 		
@@ -72,7 +74,7 @@ public class Extremizer {
 		final Vector<Coordinates> camax = extract ? new Vector<Coordinates>(dims.x,dims.x) : null;
 		final Vector<Coordinates> camin = extract ? new Vector<Coordinates>(dims.x,dims.x) : null;
 		
-		messenger.status("Finding extrema...");
+		progressor.status("Finding extrema...");
 		
 		// Find extrema:
 		if (dims.z == 1) { // 2D case
@@ -230,7 +232,6 @@ public class Extremizer {
 		}
 		
 		// Finish up:
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
 		

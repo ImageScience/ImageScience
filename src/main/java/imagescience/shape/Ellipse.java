@@ -5,6 +5,7 @@ import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
+
 import imagescience.utility.FMath;
 
 import java.awt.geom.AffineTransform;
@@ -25,17 +26,17 @@ public class Ellipse implements Shape {
 	
 	/** Constructs an ellipse with given center position, major and minor radii, and angle.
 		
-		@param x the x-coordinate of the center position of the ellipse.
+		@param x The x-coordinate of the center position of the ellipse.
 		
-		@param y the y-coordinate of the center position of the ellipse.
+		@param y The y-coordinate of the center position of the ellipse.
 		
-		@param major the major radius of the ellipse.
+		@param major The major radius of the ellipse.
 		
-		@param minor the minor radius of the ellipse.
+		@param minor The minor radius of the ellipse.
 		
-		@param angle the angle (in radians) of the ellipse.
+		@param angle The angle (in radians) of the ellipse.
 		
-		@exception IllegalArgumentException if {@code major} or {@code minor} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code major} or {@code minor} is less than {@code 0}.
 	*/
 	public Ellipse(final double x, final double y, final double major, final double minor, final double angle) {
 		
@@ -50,9 +51,9 @@ public class Ellipse implements Shape {
 	
 	/** Copy constructor.
 		
-		@param ellipse the ellipse to be copied. All information is copied and no memory is shared with this ellipse.
+		@param ellipse The ellipse to be copied. All information is copied and no memory is shared with this ellipse.
 		
-		@exception NullPointerException if {@code ellipse} is {@code null}.
+		@throws NullPointerException If {@code ellipse} is {@code null}.
 	*/
 	public Ellipse(final Ellipse ellipse) {
 		
@@ -65,33 +66,33 @@ public class Ellipse implements Shape {
 	
 	/** Sets the x-coordinate of the center position of the ellipse.
 		
-		@param x the x-coordinate of the center position of the ellipse.
+		@param x The x-coordinate of the center position of the ellipse.
 	*/
 	public void x(final double x) { this.x = x; }
 	
 	/** Returns the x-coordinate of the center position of the ellipse.
 		
-		@return the x-coordinate of the center position of the ellipse.
+		@return The x-coordinate of the center position of the ellipse.
 	*/
 	public double x() { return x; }
 	
 	/** Sets the y-coordinate of the center position of the ellipse.
 		
-		@param y the y-coordinate of the center position of the ellipse.
+		@param y The y-coordinate of the center position of the ellipse.
 	*/
 	public void y(final double y) { this.y = y; }
 	
 	/** Returns the y-coordinate of the center position of the ellipse.
 		
-		@return the y-coordinate of the center position of the ellipse.
+		@return The y-coordinate of the center position of the ellipse.
 	*/
 	public double y() { return y; }
 	
 	/** Sets the center position of the ellipse. The same as method {@link #position(double,double)}.
 		
-		@param x the x-coordinate of the center position of the ellipse.
+		@param x The x-coordinate of the center position of the ellipse.
 		
-		@param y the y-coordinate of the center position of the ellipse.
+		@param y The y-coordinate of the center position of the ellipse.
 	*/
 	public void center(final double x, final double y) {
 		
@@ -101,9 +102,9 @@ public class Ellipse implements Shape {
 	
 	/** Sets the center position of the ellipse. The same as method {@link #center(double,double)}.
 		
-		@param x the x-coordinate of the center position of the ellipse.
+		@param x The x-coordinate of the center position of the ellipse.
 		
-		@param y the y-coordinate of the center position of the ellipse.
+		@param y The y-coordinate of the center position of the ellipse.
 	*/
 	public void position(final double x, final double y) {
 		
@@ -113,9 +114,9 @@ public class Ellipse implements Shape {
 	
 	/** Sets the major radius of the ellipse.
 		
-		@param major the major radius of the ellipse.
+		@param major The major radius of the ellipse.
 		
-		@exception IllegalArgumentException if {@code major} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code major} is less than {@code 0}.
 	*/
 	public void major(final double major) {
 		
@@ -125,15 +126,15 @@ public class Ellipse implements Shape {
 	
 	/** Returns the major radius of the ellipse.
 		
-		@return the major radius of the ellipse.
+		@return The major radius of the ellipse.
 	*/
 	public double major() { return major; }
 	
 	/** Sets the minor radius of the ellipse.
 		
-		@param minor the minor radius of the ellipse.
+		@param minor The minor radius of the ellipse.
 		
-		@exception IllegalArgumentException if {@code minor} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code minor} is less than {@code 0}.
 	*/
 	public void minor(final double minor) {
 		
@@ -143,17 +144,17 @@ public class Ellipse implements Shape {
 	
 	/** Returns the minor radius of the ellipse.
 		
-		@return the minor radius of the ellipse.
+		@return The minor radius of the ellipse.
 	*/
 	public double minor() { return minor; }
 	
 	/** Sets the radii of the ellipse.
 		
-		@param major the major radius of the ellipse.
+		@param major The major radius of the ellipse.
 		
-		@param minor the minor radius of the ellipse.
+		@param minor The minor radius of the ellipse.
 		
-		@exception IllegalArgumentException if {@code major} or {@code minor} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code major} or {@code minor} is less than {@code 0}.
 	*/
 	public void radii(final double major, final double minor) {
 		
@@ -165,21 +166,21 @@ public class Ellipse implements Shape {
 	
 	/** Sets the angle of the ellipse.
 		
-		@param angle the angle of the ellipse.
+		@param angle The angle of the ellipse.
 	*/
 	public void angle(final double angle) { this.angle = angle; }
 	
 	/** Returns the angle of the ellipse.
 		
-		@return the angle of the ellipse.
+		@return The angle of the ellipse.
 	*/
 	public double angle() { return angle; }
 	
 	/** Translates the ellipse over the given distance.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 	*/
 	public void translate(final double dx, final double dy) {
 		
@@ -189,7 +190,7 @@ public class Ellipse implements Shape {
 	
 	/** Increases the angle of the ellipse by the given amount.
 		
-		@param angle the angle (in radians) over which to rotate the ellipse.
+		@param angle The angle (in radians) over which to rotate the ellipse.
 	*/
 	public void rotate(final double angle) {
 		
@@ -200,17 +201,17 @@ public class Ellipse implements Shape {
 	
 	/** Sets the center position, major and minor radii, and the angle of the ellipse.
 		
-		@param x the x-coordinate of the center position of the ellipse.
+		@param x The x-coordinate of the center position of the ellipse.
 		
-		@param y the y-coordinate of the center position of the ellipse.
+		@param y The y-coordinate of the center position of the ellipse.
 		
-		@param major the major radius of the ellipse.
+		@param major The major radius of the ellipse.
 		
-		@param minor the minor radius of the ellipse.
+		@param minor The minor radius of the ellipse.
 		
-		@param angle the angle (in radians) of the ellipse.
+		@param angle The angle (in radians) of the ellipse.
 		
-		@exception IllegalArgumentException if {@code major} or {@code minor} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code major} or {@code minor} is less than {@code 0}.
 	*/
 	public void set(final double x, final double y, final double major, final double minor, final double angle) {
 		
@@ -225,7 +226,7 @@ public class Ellipse implements Shape {
 	
 	/** Returns the eccentricity of the ellipse.
 		
-		@return the eccentricity of the ellipse. The returned value is always in the range {@code [0,1)}, with {@code 0} corresponding to a circle (including the degenerate case of a point), and {@code 1} to a line (completely flat ellipse).
+		@return The eccentricity of the ellipse. The returned value is always in the range {@code [0,1)}, with {@code 0} corresponding to a circle (including the degenerate case of a point), and {@code 1} to a line (completely flat ellipse).
 	*/
 	public double eccentricity() {
 		
@@ -241,7 +242,7 @@ public class Ellipse implements Shape {
 	
 	/** Returns the perimeter of the ellipse.
 		
-		@return the perimeter of the ellipse. The perimeter is approximated using the second formula of S. Ramanujan, "Modular Equations and Approximations to Pi", Quarterly Journal of Pure and Applied Mathematics, vol. 45, 1914, pp. 350-372.
+		@return The perimeter of the ellipse. The perimeter is approximated using the second formula of S. Ramanujan, "Modular Equations and Approximations to Pi", Quarterly Journal of Pure and Applied Mathematics, vol. 45, 1914, pp. 350-372.
 	*/
 	public double perimeter() {
 		
@@ -254,27 +255,27 @@ public class Ellipse implements Shape {
 	
 	/** Returns the area spanned by the ellipse.
 		
-		@return the area spanned by the ellipse.
+		@return The area spanned by the ellipse.
 	*/
 	public double area() { return (Math.PI*major*minor); }
 	
 	/** Indicates the position of a point relative to the ellipse.
 		
-		@param point the point whose position relative to the ellipse is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
+		@param point The point whose position relative to the ellipse is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
 		
-		@return the value {@link #contains(double,double) contains(point.x,point.y)}.
+		@return The value {@link #contains(double,double) contains(point.x,point.y)}.
 		
-		@exception NullPointerException if {@code point} is {@code null}.
+		@throws NullPointerException If {@code point} is {@code null}.
 	*/
 	public boolean contains(final Point point) { return contains(point.x,point.y); }
 	
 	/** Indicates the position of a point relative to the ellipse.
 		
-		@param x the x-coordinate of the point.
+		@param x The x-coordinate of the point.
 		
-		@param y the y-coordinate of the point.
+		@param y The y-coordinate of the point.
 		
-		@return {@code true} if the point is on or inside the ellipse; {@code false} if it is outside the ellipse.
+		@return Value {@code true} if the point is on or inside the ellipse, or {@code false} if it is outside the ellipse.
 	*/
 	public boolean contains(final double x, final double y) {
 		
@@ -292,7 +293,7 @@ public class Ellipse implements Shape {
 	
 	/** Returns the contour of the ellipse.
 		
-		@return a new {@code GeneralPath} object containing the contour of the ellipse.
+		@return A new {@code GeneralPath} object containing the contour of the ellipse.
 	*/
 	public GeneralPath contour() {
 		

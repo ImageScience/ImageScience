@@ -5,9 +5,11 @@ import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
+
 import imagescience.utility.FMath;
 
 import java.awt.geom.GeneralPath;
+
 import java.util.Vector;
 
 /** A polygon in the x-y plane. Although higher-dimensional vertices are accepted, only the x- and y-coordinates of the vertices are actually considered by all methods. */
@@ -18,9 +20,9 @@ public class Polygon implements Shape {
 	
 	/** Constructs a polygon from the given vertices.
 		
-		@param vertices the vertices that define the polygon. The handles of the {@code Point} objects are copied.
+		@param vertices The vertices that define the polygon. The handles of the {@code Point} objects are copied.
 		
-		@exception NullPointerException if {@code vertices} or any of its elements is {@code null}.
+		@throws NullPointerException If {@code vertices} or any of its elements is {@code null}.
 	*/
 	public Polygon(final Vector<Point> vertices) {
 		
@@ -29,9 +31,9 @@ public class Polygon implements Shape {
 	
 	/** Copy constructor.
 		
-		@param polygon the polygon to be copied. All information is copied and no memory is shared with this polygon.
+		@param polygon The polygon to be copied. All information is copied and no memory is shared with this polygon.
 		
-		@exception NullPointerException if {@code polygon} is {@code null}.
+		@throws NullPointerException If {@code polygon} is {@code null}.
 	*/
 	public Polygon(final Polygon polygon) {
 		
@@ -46,9 +48,9 @@ public class Polygon implements Shape {
 	
 	/** Sets the vertices of the polygon to the given vertices.
 		
-		@param vertices the vertices to be copied. The handles of the {@code Point} objects are copied.
+		@param vertices The vertices to be copied. The handles of the {@code Point} objects are copied.
 	
-		@exception NullPointerException if {@code vertices} or any of its elements is {@code null}.
+		@throws NullPointerException If {@code vertices} or any of its elements is {@code null}.
 	*/
 	public void set(final Vector<Point> vertices) {
 		
@@ -69,9 +71,9 @@ public class Polygon implements Shape {
 	
 	/** Sets the vertices of the polygon to the given vertices. Alias of method {@link #set(Vector)}.
 		
-		@param vertices the vertices to be copied. The handles of the {@code Point} objects are copied.
+		@param vertices The vertices to be copied. The handles of the {@code Point} objects are copied.
 	
-		@exception NullPointerException if {@code vertices} or any of its elements is {@code null}.
+		@throws NullPointerException If {@code vertices} or any of its elements is {@code null}.
 	*/
 	public void vertices(final Vector<Point> vertices) {
 		
@@ -80,7 +82,7 @@ public class Polygon implements Shape {
 	
 	/** Returns a new {@code Vector} object containing the handles of the vertices of the polygon.
 		
-		@return a new {@code Vector} object containing the handles of the vertices of the polygon.
+		@return A new {@code Vector} object containing the handles of the vertices of the polygon.
 	*/
 	public Vector<Point> vertices() {
 		
@@ -96,9 +98,9 @@ public class Polygon implements Shape {
 	
 	/** Translates the polygon over the given distance. This is done by translating all the vertices over the given distance.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 	*/
 	public void translate(final double dx, final double dy) {
 		
@@ -108,7 +110,7 @@ public class Polygon implements Shape {
 	
 	/** Returns the perimeter of the polygon.
 		
-		@return the perimeter of the polygon. The perimeter is computed straightforwardly by adding the Euclidean distances between the subsequent vertices, including the distance between the last and the first vertex.
+		@return The perimeter of the polygon. The perimeter is computed straightforwardly by adding the Euclidean distances between the subsequent vertices, including the distance between the last and the first vertex.
 	*/
 	public double perimeter() {
 		
@@ -127,7 +129,7 @@ public class Polygon implements Shape {
 	
 	/** Returns the area spanned by the polygon.
 		
-		@return the area of the polygon. The result is correct for all simple polygons, whether convex or concave, but may not be correct for self-intersecting polygons, except for special cases of self-overlapping polyons, where the overlap area is counted twice.
+		@return The area of the polygon. The result is correct for all simple polygons, whether convex or concave, but may not be correct for self-intersecting polygons, except for special cases of self-overlapping polyons, where the overlap area is counted twice.
 	*/
 	public double area() {
 		
@@ -143,11 +145,11 @@ public class Polygon implements Shape {
 	
 	/** Indicates the position of a point relative to the polygon.
 		
-		@param point the point whose position relative to the polygon is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
+		@param point The point whose position relative to the polygon is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
 		
-		@return the value {@link #contains(double,double) contains(point.x,point.y)}.
+		@return The value {@link #contains(double,double) contains(point.x,point.y)}.
 		
-		@exception NullPointerException if {@code point} is {@code null}.
+		@throws NullPointerException If {@code point} is {@code null}.
 	*/
 	public boolean contains(final Point point) {
 		
@@ -156,11 +158,11 @@ public class Polygon implements Shape {
 	
 	/** Indicates the position of a point relative to the polygon. The method is an implementation of Algorithm 7 described by K. Hormann and A. Agathos, "The Point in Polygon Problem for Arbitrary Polygons", Computational Geometry - Theory and Applications, vol. 20, no. 3, 2001, pp. 131-144. It is based on the non-zero winding rule.
 		
-		@param x the x-coordinate of the point.
+		@param x The x-coordinate of the point.
 		
-		@param y the y-coordinate of the point.
+		@param y The y-coordinate of the point.
 		
-		@return {@code true} if the point is on or inside the polygon; {@code false} if it is outside the polygon.
+		@return Value {@code true} if the point is on or inside the polygon, or {@code false} if it is outside the polygon.
 	*/
 	public boolean contains(final double x, final double y) {
 		
@@ -197,7 +199,7 @@ public class Polygon implements Shape {
 	
 	/** Returns the contour of the polygon.
 		
-		@return a new {@code GeneralPath} object containing the contour of the polygon. The interior of the returned path is defined by the non-zero winding rule.
+		@return A new {@code GeneralPath} object containing the contour of the polygon. The interior of the returned path is defined by the non-zero winding rule.
 	*/
 	public GeneralPath contour() {
 		

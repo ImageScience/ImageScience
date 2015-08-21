@@ -1,12 +1,15 @@
 package imagescience.feature;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Aspects;
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.FloatImage;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
+import imagescience.utility.FMath;
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
@@ -22,19 +25,19 @@ public class Differentiator {
 	
 	/** Computes derivatives of images.
 		
-		@param image the input image to be differentiated. If it is of type {@link FloatImage}, it will be overwritten with the differentiation results. Otherwise it will be left unaltered.
+		@param image The input image to be differentiated. If it is of type {@link FloatImage}, it will be overwritten with the differentiation results. Otherwise it will be left unaltered.
 		
-		@param scale the smoothing scale at which derivatives are to be computed. The scale is equal to the standard deviation of the Gaussian smoothing kernel and must be larger than {@code 0}. In order to enforce physical isotropy, for each dimension, the scale is divided by the size of the image elements (aspect-ratio value) in that dimension.
+		@param scale The smoothing scale at which derivatives are to be computed. The scale is equal to the standard deviation of the Gaussian smoothing kernel and must be larger than {@code 0}. In order to enforce physical isotropy, for each dimension, the scale is divided by the size of the image elements (aspect ratio) in that dimension.
 		
-		@param xorder {@code yorder} - {@code zorder} - the order of differentiation in the x-, y-, and z-dimension. The largest supported order of differentiation is {@link #MAX_ORDER}. If the order is {@code 0} in any dimension, the method applies just smoothing in that dimension, at the given {@code scale}.
+		@param xorder {@code yorder} - {@code zorder} - The order of differentiation in the x-, y-, and z-dimension. The largest supported order of differentiation is {@link #MAX_ORDER}. If the order is {@code 0} in any dimension, the method applies just smoothing in that dimension, at the given {@code scale}.
 		
-		@return the derivative image. The returned image is always of type {@link FloatImage}. If the input image is also of that type, the returned image is the same object, overwritten with the differentiation results.
+		@return The derivative image. The returned image is always of type {@link FloatImage}. If the input image is also of that type, the returned image is the same object, overwritten with the differentiation results.
 		
-		@exception IllegalArgumentException if {@code scale} is less than or equal to {@code 0}, or if any of {@code xorder}, {@code yorder}, or {@code zorder} is less than {@code 0} or larger than {@link #MAX_ORDER}.
+		@throws IllegalArgumentException If {@code scale} is less than or equal to {@code 0}, or if any of {@code xorder}, {@code yorder}, or {@code zorder} is less than {@code 0} or larger than {@link #MAX_ORDER}.
 		
-		@exception IllegalStateException if the size of the image elements (aspect-ratio value) is less than or equal to {@code 0} in the x-, y-, or z-dimension.
+		@throws IllegalStateException If the size of the image elements (aspect ratio) is less than or equal to {@code 0} in the x-, y-, or z-dimension.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Image run(final Image image, final double scale, final int xorder, final int yorder, final int zorder) {
 		
@@ -51,10 +54,10 @@ public class Differentiator {
 		messenger.log("Input image dimensions: (x,y,z,t,c) = ("+dims.x+","+dims.y+","+dims.z+","+dims.t+","+dims.c+")");
 		
 		final Aspects asps = image.aspects();
-		messenger.log("Element aspect-ratios: ("+asps.x+","+asps.y+","+asps.z+","+asps.t+","+asps.c+")");
-		if (asps.x <= 0) throw new IllegalStateException("Aspect-ratio value in x-dimension less than or equal to 0");
-		if (asps.y <= 0) throw new IllegalStateException("Aspect-ratio value in y-dimension less than or equal to 0");
-		if (asps.z <= 0) throw new IllegalStateException("Aspect-ratio value in z-dimension less than or equal to 0");
+		messenger.log("Element aspect ratios: ("+asps.x+","+asps.y+","+asps.z+","+asps.t+","+asps.c+")");
+		if (asps.x <= 0) throw new IllegalStateException("Aspect ratio in x-dimension less than or equal to 0");
+		if (asps.y <= 0) throw new IllegalStateException("Aspect ratio in y-dimension less than or equal to 0");
+		if (asps.z <= 0) throw new IllegalStateException("Aspect ratio in z-dimension less than or equal to 0");
 		
 		final Image deriv = (image instanceof FloatImage) ? image : new FloatImage(image);
 		
@@ -76,7 +79,7 @@ public class Differentiator {
 		} else {
 			final double xscale = scale/asps.x;
 			messenger.log("Operating at scale "+scale+"/"+asps.x+" = "+xscale+" pixels");
-			logstatus(info(xorder)+" in x-dimension...");
+			logus(info(xorder)+" in x-dimension");
 			final double[] kernel = kernel(xscale,xorder,dims.x);
 			final int klenm1 = kernel.length - 1;
 			final double[] ain = new double[dims.x + 2*klenm1];
@@ -105,7 +108,7 @@ public class Differentiator {
 		} else {
 			final double yscale = scale/asps.y;
 			messenger.log("Operating at scale "+scale+"/"+asps.y+" = "+yscale+" pixels");
-			logstatus(info(yorder)+" in y-dimension...");
+			logus(info(yorder)+" in y-dimension");
 			final double[] kernel = kernel(yscale,yorder,dims.y);
 			final int klenm1 = kernel.length - 1;
 			final double[] ain = new double[dims.y + 2*klenm1];
@@ -134,7 +137,7 @@ public class Differentiator {
 		} else {
 			final double zscale = scale/asps.z;
 			messenger.log("Operating at scale "+scale+"/"+asps.z+" = "+zscale+" slices");
-			logstatus(info(zorder)+" in z-dimension...");
+			logus(info(zorder)+" in z-dimension");
 			final double[] kernel = kernel(zscale,zorder,dims.z);
 			final int klenm1 = kernel.length - 1;
 			final double[] ain = new double[dims.z + 2*klenm1];
@@ -153,7 +156,6 @@ public class Differentiator {
 					}
 		}
 		
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
 		
@@ -337,10 +339,10 @@ public class Differentiator {
 		if (zorder < 0 || zorder > MAX_ORDER) throw new IllegalArgumentException("Differentiation order out of range in z-dimension");
 	}
 	
-	private void logstatus(final String s) {
+	private void logus(final String s) {
 		
 		messenger.log(s);
-		messenger.status(s);
+		progressor.status(s+"...");
 	}
 	
 	/** The object used for message displaying. */

@@ -5,6 +5,7 @@ import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
+
 import imagescience.utility.FMath;
 
 import java.awt.geom.Ellipse2D;
@@ -22,13 +23,13 @@ public class Circle implements Shape {
 	
 	/** Constructs a circle with given center position and radius.
 		
-		@param x the x-coordinate of the center position of the circle.
+		@param x The x-coordinate of the center position of the circle.
 		
-		@param y the y-coordinate of the center position of the circle.
+		@param y The y-coordinate of the center position of the circle.
 		
-		@param radius the radius of the circle.
+		@param radius The radius of the circle.
 		
-		@exception IllegalArgumentException if {@code radius} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code radius} is less than {@code 0}.
 	*/
 	public Circle(final double x, final double y, final double radius) {
 		
@@ -40,9 +41,9 @@ public class Circle implements Shape {
 	
 	/** Copy constructor.
 		
-		@param circle the circle to be copied. All information is copied and no memory is shared with this circle.
+		@param circle The circle to be copied. All information is copied and no memory is shared with this circle.
 		
-		@exception NullPointerException if {@code circle} is {@code null}.
+		@throws NullPointerException If {@code circle} is {@code null}.
 	*/
 	public Circle(final Circle circle) {
 		
@@ -53,37 +54,37 @@ public class Circle implements Shape {
 	
 	/** Sets the x-coordinate of the center position of the circle.
 		
-		@param x the x-coordinate of the center position of the circle.
+		@param x The x-coordinate of the center position of the circle.
 	*/
 	public void x(final double x) { this.x = x; }
 	
 	/** Sets the y-coordinate of the center position of the circle.
 		
-		@param y the y-coordinate of the center position of the circle.
+		@param y The y-coordinate of the center position of the circle.
 	*/
 	public void y(final double y) { this.y = y; }
 	
 	/** Sets the center position of the circle. The same as method {@link #position(double,double)}.
 		
-		@param x the x-coordinate of the center position of the circle.
+		@param x The x-coordinate of the center position of the circle.
 		
-		@param y the y-coordinate of the center position of the circle.
+		@param y The y-coordinate of the center position of the circle.
 	*/
 	public void center(final double x, final double y) { this.x = x; this.y = y; }
 	
 	/** Sets the center position of the circle. The same as method {@link #center(double,double)}.
 		
-		@param x the x-coordinate of the center position of the circle.
+		@param x The x-coordinate of the center position of the circle.
 		
-		@param y the y-coordinate of the center position of the circle.
+		@param y The y-coordinate of the center position of the circle.
 	*/
 	public void position(final double x, final double y) { this.x = x; this.y = y; }
 	
 	/** Translates the circle over the given distance.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 	*/
 	public void translate(final double dx, final double dy) { this.x += dx; this.y += dy; }
 	
@@ -91,13 +92,13 @@ public class Circle implements Shape {
 	
 	/** Sets the center position and radius of the circle.
 		
-		@param x the x-coordinate of the center position of the circle.
+		@param x The x-coordinate of the center position of the circle.
 		
-		@param y the y-coordinate of the center position of the circle.
+		@param y The y-coordinate of the center position of the circle.
 		
-		@param radius the radius of the circle.
+		@param radius The radius of the circle.
 		
-		@exception IllegalArgumentException if {@code radius} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code radius} is less than {@code 0}.
 	*/
 	public void set(final double x, final double y, final double radius) {
 		
@@ -109,9 +110,9 @@ public class Circle implements Shape {
 	
 	/** Sets the radius of the circle.
 		
-		@param radius the radius of the circle.
+		@param radius The radius of the circle.
 		
-		@exception IllegalArgumentException if {@code radius} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code radius} is less than {@code 0}.
 	*/
 	public void radius(final double radius) {
 		
@@ -121,51 +122,51 @@ public class Circle implements Shape {
 	
 	/** Returns the x-coordinate of the center position of the circle.
 		
-		@return the x-coordinate of the center position of the circle.
+		@return The x-coordinate of the center position of the circle.
 	*/
 	public double x() { return x; }
 	
 	/** Returns the y-coordinate of the center position of the circle.
 		
-		@return the y-coordinate of the center position of the circle.
+		@return The y-coordinate of the center position of the circle.
 	*/
 	public double y() { return y; }
 	
 	/** Returns the radius of the circle.
 		
-		@return the radius of the circle.
+		@return The radius of the circle.
 	*/
 	public double radius() { return radius; }
 	
 	/** Returns the perimeter of the circle.
 		
-		@return the perimeter of the circle.
+		@return The perimeter of the circle.
 	*/
 	public double perimeter() {	return (2.0*Math.PI*radius); }
 	
 	/** Returns the area spanned by the circle.
 		
-		@return the area of the circle.
+		@return The area of the circle.
 	*/
 	public double area() { return (Math.PI*radius*radius); }
 	
 	/** Indicates the position of a point relative to the circle.
 		
-		@param point the point whose position relative to the circle is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
+		@param point The point whose position relative to the circle is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
 		
-		@return the value {@link #contains(double,double) contains(point.x,point.y)}.
+		@return The value {@link #contains(double,double) contains(point.x,point.y)}.
 		
-		@exception NullPointerException if {@code point} is {@code null}.
+		@throws NullPointerException If {@code point} is {@code null}.
 	*/
 	public boolean contains(final Point point) { return contains(point.x,point.y); }
 	
 	/** Indicates the position of a point relative to the circle.
 		
-		@param x the x-coordinate of the point.
+		@param x The x-coordinate of the point.
 		
-		@param y the y-coordinate of the point.
+		@param y The y-coordinate of the point.
 		
-		@return {@code true} if the point is on or inside the circle; {@code false} if it is outside the circle.
+		@return Value {@code true} if the point is on or inside the circle, or {@code false} if it is outside the circle.
 	*/
 	public boolean contains(final double x, final double y) {
 		
@@ -180,7 +181,7 @@ public class Circle implements Shape {
 	
 	/** Returns the contour of the circle.
 		
-		@return a new {@code GeneralPath} object containing the contour of the circle.
+		@return A new {@code GeneralPath} object containing the contour of the circle.
 	*/
 	public GeneralPath contour() { return new GeneralPath(new Ellipse2D.Double(x-radius,y-radius,2*radius,2*radius)); }
 

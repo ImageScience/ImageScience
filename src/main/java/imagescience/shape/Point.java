@@ -23,7 +23,7 @@ public class Point {
 	
 	/** One-dimensional constructor. The x-coordinate is set to the given value while the remaining coordinates are set to their default values.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 	*/
 	public Point(final double x) {
 		
@@ -32,9 +32,9 @@ public class Point {
 	
 	/** Two-dimensional constructor. The x- and y-coordinates are set to the given values while the remaining coordinates are set to their default values.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 	*/
 	public Point(final double x, final double y) {
 		
@@ -44,11 +44,11 @@ public class Point {
 	
 	/** Three-dimensional constructor. The x-, y-, and z-coordinates are set to the given values while the remaining coordinates are set to their default values.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 		
-		@param z the z-coordinate.
+		@param z The z-coordinate.
 	*/
 	public Point(final double x, final double y, final double z) {
 		
@@ -59,13 +59,13 @@ public class Point {
 	
 	/** Four-dimensional constructor. The x-, y-, z-, and t-coordinates are set to the given values while the remaining coordinate is set to its default value.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 		
-		@param z the z-coordinate.
+		@param z The z-coordinate.
 		
-		@param t the t-coordinate.
+		@param t The t-coordinate.
 	*/
 	public Point(final double x, final double y, final double z, final double t) {
 		
@@ -77,15 +77,15 @@ public class Point {
 	
 	/** Five-dimensional constructor. The x-, y-, z-, t-, and c-coordinates are set to the given values.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 		
-		@param z the z-coordinate.
+		@param z The z-coordinate.
 		
-		@param t the t-coordinate.
+		@param t The t-coordinate.
 		
-		@param c the c-coordinate.
+		@param c The c-coordinate.
 	*/
 	public Point(final double x, final double y, final double z, final double t, final double c) {
 		
@@ -98,9 +98,9 @@ public class Point {
 	
 	/** Copy constructor.
 		
-		@param point the point to be copied. All information is copied and no memory is shared with this point.
+		@param point The point to be copied. All information is copied and no memory is shared with this point.
 		
-		@exception NullPointerException if {@code point} is {@code null}.
+		@throws NullPointerException If {@code point} is {@code null}.
 	*/
 	public Point(final Point point) {
 		
@@ -113,7 +113,7 @@ public class Point {
 	
 	/** Sets the one-dimensional position of the point. The x-coordinate is set to the given value and the remaining coordinates are not changed.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 	*/
 	public void set(final double x) {
 		
@@ -122,9 +122,9 @@ public class Point {
 	
 	/** Sets the two-dimensional position of the point. The x- and y-coordinates are set to the given values and the remaining coordinates are not changed.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 	*/
 	public void set(final double x, final double y) {
 		
@@ -134,11 +134,11 @@ public class Point {
 	
 	/** Sets the three-dimensional position of the point. The x-, y-, and z-coordinates are set to the given values and the remaining coordinates are not changed.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 		
-		@param z the z-coordinate.
+		@param z The z-coordinate.
 	*/
 	public void set(final double x, final double y, final double z) {
 		
@@ -149,13 +149,13 @@ public class Point {
 	
 	/** Sets the four-dimensional position of the point. The x-, y-, z-, and t-coordinates are set to the given values and the remaining coordinate is not changed.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 		
-		@param z the z-coordinate.
+		@param z The z-coordinate.
 		
-		@param t the t-coordinate.
+		@param t The t-coordinate.
 	*/
 	public void set(final double x, final double y, final double z, final double t) {
 		
@@ -167,15 +167,15 @@ public class Point {
 	
 	/** Sets the five-dimensional position of the point. The x-, y-, z-, t-, and c-coordinates are set to the given values.
 		
-		@param x the x-coordinate.
+		@param x The x-coordinate.
 		
-		@param y the y-coordinate.
+		@param y The y-coordinate.
 		
-		@param z the z-coordinate.
+		@param z The z-coordinate.
 		
-		@param t the t-coordinate.
+		@param t The t-coordinate.
 		
-		@param c the c-coordinate.
+		@param c The c-coordinate.
 	*/
 	public void set(final double x, final double y, final double z, final double t, final double c) {
 		
@@ -188,9 +188,9 @@ public class Point {
 	
 	/** Sets the coordinates of this point to the coordinates of the given point.
 		
-		@param point the point whose coordinates are to be copied.
+		@param point The point whose coordinates are to be copied.
 		
-		@exception NullPointerException if {@code point} is <code>null</code>.
+		@throws NullPointerException If {@code point} is <code>null</code>.
 	*/
 	public void set(final Point point) {
 		
@@ -203,7 +203,7 @@ public class Point {
 	
 	/** Translates the point in one dimension. The x-coordinate is increased by the given amount while the remaining coordinates are not changed.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 	*/
 	public void translate(final double dx) {
 		
@@ -212,9 +212,9 @@ public class Point {
 	
 	/** Translates the point in two dimensions. The x- and y-coordinates are increased by the given amounts while the remaining coordinates are not changed.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 	*/
 	public void translate(final double dx, final double dy) {
 		
@@ -224,11 +224,11 @@ public class Point {
 	
 	/** Translates the point in three dimensions. The x-, y-, and z-coordinates are increased by the given amounts while the remaining coordinates are not changed.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 		
-		@param dz the distance in the z-dimension over which to translate.
+		@param dz The distance in the z-dimension over which to translate.
 	*/
 	public void translate(final double dx, final double dy, final double dz) {
 		
@@ -239,13 +239,13 @@ public class Point {
 	
 	/** Translates the point in four dimensions. The x-, y-, z-, and t-coordinates are increased by the given amounts while the remaining coordinate is not changed.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 		
-		@param dz the distance in the z-dimension over which to translate.
+		@param dz The distance in the z-dimension over which to translate.
 		
-		@param dt the distance in the t-dimension over which to translate.
+		@param dt The distance in the t-dimension over which to translate.
 	*/
 	public void translate(final double dx, final double dy, final double dz, final double dt) {
 		
@@ -257,15 +257,15 @@ public class Point {
 	
 	/** Translates the point in five dimensions. The x-, y-, z-, t-, and c-coordinates are increased by the given amounts.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 		
-		@param dz the distance in the z-dimension over which to translate.
+		@param dz The distance in the z-dimension over which to translate.
 		
-		@param dt the distance in the t-dimension over which to translate.
+		@param dt The distance in the t-dimension over which to translate.
 		
-		@param dc the distance in the c-dimension over which to translate.
+		@param dc The distance in the c-dimension over which to translate.
 	*/
 	public void translate(final double dx, final double dy, final double dz, final double dt, final double dc) {
 		
@@ -278,15 +278,15 @@ public class Point {
 	
 	/** Returns an exact copy of this object.
 		
-		@return an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
+		@return An exact copy of this object. All information is copied and no memory is shared between this and the returned object.
 	*/
 	public Point duplicate() { return new Point(this); }
 	
 	/** Indicates whether this object represents the same point as the given object.
 		
-		@param point the point to compare this point with.
+		@param point The point to compare this point with.
 		
-		@return {@code true} if {@code point} is not {@code null}, and each of its coordinates is equal to the corresponding coordinate of this object; {@code false} if this is not the case.
+		@return Value {@code true} if {@code point} is not {@code null}, and each of its coordinates is equal to the corresponding coordinate of this object, or {@code false} if this is not the case.
 	*/
 	public boolean equals(final Point point) {
 		

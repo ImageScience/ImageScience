@@ -1,5 +1,7 @@
 package imagescience.transform;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Aspects;
 import imagescience.image.Axes;
 import imagescience.image.Borders;
@@ -7,28 +9,27 @@ import imagescience.image.ColorImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
+
 import imagescience.utility.FMath;
-import imagescience.utility.ImageScience;
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
 
-/** Scales images using different interpolation schemes.
+/** Scales an image using different interpolation schemes.
 	
 	<dt><b>References:</b></dt>
 	
 	<dd><table border="0" cellspacing="0" cellpadding="0">
 	
-	<tr><td valign="top">[1]</td><td width="10"></td><td>R. G. Keys, "Cubic Convolution Interpolation for Digital Image Processing", <em>IEEE Transactions on Acoustics, Speech, and Signal Processing</em>, vol. 29, no. 6, 1981, pp. 1153-1160.</td></tr>
+	<tr><td valign="top">[1]</td><td width="10"></td><td>R. G. Keys, "Cubic Convolution Interpolation for Digital Image Processing", <em>IEEE Transactions on Acoustics, Speech, and Signal Processing</em>, vol. 29, no. 6, December 1981, pp. 1153-1160.</td></tr>
 	
-	<tr><td valign="top">[2]</td><td width="10"></td><td>M. Unser, "Splines: A Perfect Fit for Signal and Image Processing", <em>IEEE Signal Processing Magazine</em>, vol. 16, no. 6, 1999, pp. 22-38.</td></tr>
+	<tr><td valign="top">[2]</td><td width="10"></td><td>M. Unser, "Splines: A Perfect Fit for Signal and Image Processing", <em>IEEE Signal Processing Magazine</em>, vol. 16, no. 6, November 1999, pp. 22-38.</td></tr>
 	
-	<tr><td valign="top">[3]</td><td width="10"></td><td>P. Thevenaz, T. Blu, M. Unser, "Interpolation Revisited", <em>IEEE Transactions on Medical Imaging</em>, vol. 19, no. 7, 2000, pp.739-758.</td></tr>
+	<tr><td valign="top">[3]</td><td width="10"></td><td>P. Thevenaz, T. Blu, M. Unser, "Interpolation Revisited", <em>IEEE Transactions on Medical Imaging</em>, vol. 19, no. 7, July 2000, pp.739-758.</td></tr>
 	
-	<tr><td valign="top">[4]</td><td width="10"></td><td>E. Meijering, W. Niessen, M. Viergever, "Quantitative Evaluation of Convolution-Based Methods for Medical
-	Image Interpolation", <em>Medical Image Analysis</em>, vol. 5, no. 2, 2001, pp. 111-126.</td></tr>
+	<tr><td valign="top">[4]</td><td width="10"></td><td>E. Meijering, W. Niessen, M. Viergever, "Quantitative Evaluation of Convolution-Based Methods for Medical Image Interpolation", <em>Medical Image Analysis</em>, vol. 5, no. 2, June 2001, pp. 111-126.</td></tr>
 	
-	<tr><td valign="top">[5]</td><td width="10"></td><td>T. Blu, P. Thevenaz, M. Unser, "MOMS: Maximal-Order Interpolation of Minimal Support", <em>IEEE Transactions on Image Processing</em>, vol. 10, no. 7, 2001, pp. 1069-1080.</td></tr>
+	<tr><td valign="top">[5]</td><td width="10"></td><td>T. Blu, P. Thevenaz, M. Unser, "MOMS: Maximal-Order Interpolation of Minimal Support", <em>IEEE Transactions on Image Processing</em>, vol. 10, no. 7, July 2001, pp. 1069-1080.</td></tr>
 	
 	</table></dd> 
 */
@@ -57,19 +58,21 @@ public class Scale {
 	
 	/** Scales an image.
 		
-		@param image the input image to be scaled. For images of type {@link ColorImage}, the color components are processed separately by the method.
+		@param image The input image to be scaled. For images of type {@link ColorImage}, the color components are processed separately by the method.
 		
-		@param xfactor {@code yfactor} - {@code zfactor} - {@code tfactor} - {@code cfactor} - the scaling factors in the respective dimensions.
+		@param xfactor {@code yfactor} - {@code zfactor} - {@code tfactor} - {@code cfactor} - The scaling factors in the respective dimensions.
 		
-		@param scheme the interpolation scheme to be used. Must be equal to one of the static fields of this class.
+		@param interpolation The interpolation scheme to be used. Must be equal to one of the static fields of this class.
 		
-		@return a new image containing a scaled version of the input image. The returned image is of the same type as the input image. The dimensions of the elements of the returned image (aspect-ratio values) are equal to those of the input image divided by the corresponding scaling factor.
+		@return A new image containing a scaled version of the input image. The returned image is of the same type as the input image.
 		
-		@exception IllegalArgumentException if any of the scaling factors is less than or equal to {@code 0}, or if the requested interpolation {@code scheme} is not supported.
+		@throws IllegalArgumentException If any of the scaling factors is less than or equal to {@code 0}, or if the requested {@code interpolation} scheme is not supported.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws IllegalStateException If the x-, y-, or z-aspect size of {@code image} is less than or equal to {@code 0}.
 		
-		@exception UnknownError if for any reason the output image could not be created. In most cases this will be due to insufficient free memory.
+		@throws NullPointerException If {@code image} is {@code null}.
+		
+		@throws UnknownError If for any reason the output image can not be created. In most cases this will be due to insufficient free memory.
 	*/
 	public synchronized Image run(
 		final Image image,
@@ -78,7 +81,7 @@ public class Scale {
 		final double zfactor,
 		final double tfactor,
 		final double cfactor,
-		final int scheme
+		final int interpolation
 	) {
 		
 		messenger.log(ImageScience.prelude()+"Scale");
@@ -88,8 +91,7 @@ public class Scale {
 		timer.messenger.log(messenger.log());
 		timer.start();
 		
-		// Check and initialize parameters:
-		checkup(image.dimensions(),xfactor,yfactor,zfactor,tfactor,cfactor,scheme);
+		initialize(image,xfactor,yfactor,zfactor,tfactor,cfactor,interpolation);
 		
 		// Scale:
 		messenger.log("Scaling "+image.type());
@@ -133,19 +135,7 @@ public class Scale {
 		
 		// Finish up:
 		scaled.name(image.name()+" scaled");
-		
-		final Aspects inasps = image.aspects();
-		final Aspects newasps = new Aspects(
-			inasps.x/xfactor,
-			inasps.y/yfactor,
-			inasps.z/zfactor,
-			inasps.t/tfactor,
-			inasps.c/cfactor
-		);
-		scaled.aspects(newasps);
-		
-		messenger.status("");
-		
+		scaled.aspects(image.aspects().duplicate());
 		timer.stop();
 		
 		return scaled;
@@ -170,6 +160,7 @@ public class Scale {
 			(tfactor != 1 ? indims.c*newdims.t*newdims.z*newdims.y*newdims.x : 0) +
 			(cfactor != 1 ? newdims.c*newdims.t*newdims.z*newdims.y*newdims.x : 0)
 		);
+		progressor.status("Scaling...");
 		progressor.start();
 		
 		// Scaling in x-dimension: *********************************************
@@ -177,8 +168,7 @@ public class Scale {
 			messenger.log("Skipping scaling in x-dimension");
 			ximage = image;
 		} else {
-			messenger.log("Scaling in x-dimension");
-			messenger.status("Scaling"+component+" in x-dimension...");
+			logus("Scaling"+component+" in x-dimension");
 			initialize(xscheme,newdims.x,xfactor,xshift);
 			final double[] ain = new double[indims.x + 2*borders.x];
 			final double[] anew = new double[newdims.x];
@@ -190,7 +180,7 @@ public class Scale {
 			
 			switch (xscheme) {
 				case NEAREST: {
-					messenger.log("Applying nearest-neighbor sampling function in x-dimension");
+					messenger.log("Nearest-neighbor sampling in x-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -204,7 +194,7 @@ public class Scale {
 								break;
 				}
 				case LINEAR: {
-					messenger.log("Applying linear sampling function in x-dimension");
+					messenger.log("Linear sampling in x-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -224,7 +214,7 @@ public class Scale {
 					break;
 				}
 				case CUBIC: {
-					messenger.log("Applying cubic convolution sampling function in x-dimension");
+					messenger.log("Cubic convolution sampling in x-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -247,7 +237,7 @@ public class Scale {
 					break;
 				}
 				case BSPLINE3: {
-					messenger.log("Applying cubic B-spline prefilter and sampling function in x-dimension");
+					messenger.log("Cubic B-spline prefiltering and sampling in x-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -271,7 +261,7 @@ public class Scale {
 					break;
 				}
 				case OMOMS3: {
-					messenger.log("Applying cubic O-MOMS prefilter and sampling function in x-dimension");
+					messenger.log("Cubic O-MOMS prefiltering and sampling in x-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -295,7 +285,7 @@ public class Scale {
 					break;
 				}
 				case BSPLINE5: {
-					messenger.log("Applying quintic B-spline prefilter and sampling function in x-dimension");
+					messenger.log("Quintic B-spline prefiltering and sampling in x-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -329,8 +319,7 @@ public class Scale {
 			messenger.log("Skipping scaling in y-dimension");
 			yimage = ximage;
 		} else {
-			messenger.log("Scaling in y-dimension");
-			messenger.status("Scaling"+component+" in y-dimension...");
+			logus("Scaling"+component+" in y-dimension");
 			initialize(yscheme,newdims.y,yfactor,yshift);
 			final double[] ain = new double[indims.y + 2*borders.y];
 			final double[] anew = new double[newdims.y];
@@ -342,7 +331,7 @@ public class Scale {
 			
 			switch (yscheme) {
 				case NEAREST: {
-					messenger.log("Applying nearest-neighbor sampling function in y-dimension");
+					messenger.log("Nearest-neighbor sampling in y-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -356,7 +345,7 @@ public class Scale {
 					break;
 				}
 				case LINEAR: {
-					messenger.log("Applying linear sampling function in y-dimension");
+					messenger.log("Linear sampling in y-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -376,7 +365,7 @@ public class Scale {
 					break;
 				}
 				case CUBIC: {
-					messenger.log("Applying cubic convolution sampling function in y-dimension");
+					messenger.log("Cubic convolution sampling in y-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -399,7 +388,7 @@ public class Scale {
 					break;
 				}
 				case BSPLINE3: {
-					messenger.log("Applying cubic B-spline prefilter and sampling function in y-dimension");
+					messenger.log("Cubic B-spline prefiltering and sampling in y-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -423,7 +412,7 @@ public class Scale {
 					break;
 				}
 				case OMOMS3: {
-					messenger.log("Applying cubic O-MOMS prefilter and sampling function in y-dimension");
+					messenger.log("Cubic O-MOMS prefiltering and sampling in y-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -447,7 +436,7 @@ public class Scale {
 					break;
 				}
 				case BSPLINE5: {
-					messenger.log("Applying quintic B-spline prefilter and sampling function in y-dimension");
+					messenger.log("Quintic B-spline prefiltering and sampling in y-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.z=0, cnew.z=0; cin.z<indims.z; ++cin.z, ++cnew.z)
@@ -483,8 +472,7 @@ public class Scale {
 			messenger.log("Skipping scaling in z-dimension");
 			zimage = yimage;
 		} else {
-			messenger.log("Scaling in z-dimension");
-			messenger.status("Scaling"+component+" in z-dimension...");
+			logus("Scaling"+component+" in z-dimension");
 			initialize(zscheme,newdims.z,zfactor,zshift);
 			final double[] ain = new double[indims.z + 2*borders.z];
 			final double[] anew = new double[newdims.z];
@@ -496,7 +484,7 @@ public class Scale {
 			
 			switch (zscheme) {
 				case NEAREST: {
-					messenger.log("Applying nearest-neighbor sampling function in z-dimension");
+					messenger.log("Nearest-neighbor sampling in z-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -509,7 +497,7 @@ public class Scale {
 					break;
 				}
 				case LINEAR: {
-					messenger.log("Applying linear sampling function in z-dimension");
+					messenger.log("Linear sampling in z-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -529,7 +517,7 @@ public class Scale {
 					break;
 				}
 				case CUBIC: {
-					messenger.log("Applying cubic convolution sampling function in z-dimension");
+					messenger.log("Cubic convolution sampling in z-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -552,7 +540,7 @@ public class Scale {
 					break;
 				}
 				case BSPLINE3: {
-					messenger.log("Applying cubic B-spline prefilter and sampling function in z-dimension");
+					messenger.log("Cubic B-spline prefiltering and sampling in z-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -576,7 +564,7 @@ public class Scale {
 					break;
 				}
 				case OMOMS3: {
-					messenger.log("Applying cubic O-MOMS prefilter and sampling function in z-dimension");
+					messenger.log("Cubic O-MOMS prefiltering and sampling in z-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -600,7 +588,7 @@ public class Scale {
 					break;
 				}
 				case BSPLINE5: {
-					messenger.log("Applying quintic B-spline prefilter and sampling function in z-dimension");
+					messenger.log("Quintic B-spline prefiltering and sampling in z-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.t=0, cnew.t=0; cin.t<indims.t; ++cin.t, ++cnew.t)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -636,8 +624,7 @@ public class Scale {
 			messenger.log("Skipping scaling in t-dimension");
 			timage = zimage;
 		} else {
-			messenger.log("Scaling in t-dimension");
-			messenger.status("Scaling"+component+" in t-dimension...");
+			logus("Scaling"+component+" in t-dimension");
 			initialize(tscheme,newdims.t,tfactor,tshift);
 			final double[] ain = new double[indims.t + 2*borders.t];
 			final double[] anew = new double[newdims.t];
@@ -649,7 +636,7 @@ public class Scale {
 			
 			switch (tscheme) {
 				case NEAREST: {
-					messenger.log("Applying nearest-neighbor sampling function in t-dimension");
+					messenger.log("Nearest-neighbor sampling in t-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -662,7 +649,7 @@ public class Scale {
 					break;
 				}
 				case LINEAR: {
-					messenger.log("Applying linear sampling function in t-dimension");
+					messenger.log("Linear sampling in t-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -682,7 +669,7 @@ public class Scale {
 					break;
 				}
 				case CUBIC: {
-					messenger.log("Applying cubic convolution sampling function in t-dimension");
+					messenger.log("Cubic convolution sampling in t-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -705,7 +692,7 @@ public class Scale {
 					break;
 				}
 				case BSPLINE3: {
-					messenger.log("Applying cubic B-spline prefilter and sampling function in t-dimension");
+					messenger.log("Cubic B-spline prefiltering and sampling in t-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -729,7 +716,7 @@ public class Scale {
 					break;
 				}
 				case OMOMS3: {
-					messenger.log("Applying cubic O-MOMS prefilter and sampling function in t-dimension");
+					messenger.log("Cubic O-MOMS prefiltering and sampling in t-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -753,7 +740,7 @@ public class Scale {
 					break;
 				}
 				case BSPLINE5: {
-					messenger.log("Applying quintic B-spline prefilter and sampling function in t-dimension");
+					messenger.log("Quintic B-spline prefiltering and sampling in t-dimension");
 					for (cin.c=0, cnew.c=0; cin.c<indims.c; ++cin.c, ++cnew.c)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -789,8 +776,7 @@ public class Scale {
 			messenger.log("Skipping scaling in c-dimension");
 			cimage = timage;
 		} else {
-			messenger.log("Scaling in c-dimension");
-			messenger.status("Scaling"+component+" in c-dimension...");
+			logus("Scaling"+component+" in c-dimension");
 			initialize(cscheme,newdims.c,cfactor,cshift);
 			final double[] ain = new double[indims.c + 2*borders.c];
 			final double[] anew = new double[newdims.c];
@@ -802,7 +788,7 @@ public class Scale {
 			
 			switch (cscheme) {
 				case NEAREST: {
-					messenger.log("Applying nearest-neighbor sampling function in c-dimension");
+					messenger.log("Nearest-neighbor sampling in c-dimension");
 					for (cin.t=0, cnew.t=0; cin.t<newdims.t; ++cin.t, ++cnew.t)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -815,7 +801,7 @@ public class Scale {
 					break;
 				}
 				case LINEAR: {
-					messenger.log("Applying linear sampling function in c-dimension");
+					messenger.log("Linear sampling in c-dimension");
 					for (cin.t=0, cnew.t=0; cin.t<newdims.t; ++cin.t, ++cnew.t)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -835,7 +821,7 @@ public class Scale {
 					break;
 				}
 				case CUBIC: {
-					messenger.log("Applying cubic convolution sampling function in c-dimension");
+					messenger.log("Cubic convolution sampling in c-dimension");
 					for (cin.t=0, cnew.t=0; cin.t<newdims.t; ++cin.t, ++cnew.t)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -858,7 +844,7 @@ public class Scale {
 					break;
 				}
 				case BSPLINE3: {
-					messenger.log("Applying cubic B-spline prefilter and sampling function in c-dimension");
+					messenger.log("Cubic B-spline prefiltering and sampling in c-dimension");
 					for (cin.t=0, cnew.t=0; cin.t<newdims.t; ++cin.t, ++cnew.t)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -882,7 +868,7 @@ public class Scale {
 					break;
 				}
 				case OMOMS3: {
-					messenger.log("Applying cubic O-MOMS prefilter and sampling function in c-dimension");
+					messenger.log("Cubic O-MOMS prefiltering and sampling in c-dimension");
 					for (cin.t=0, cnew.t=0; cin.t<newdims.t; ++cin.t, ++cnew.t)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -906,7 +892,7 @@ public class Scale {
 					break;
 				}
 				case BSPLINE5: {
-					messenger.log("Applying quintic B-spline prefilter and sampling function in c-dimension");
+					messenger.log("Quintic B-spline prefiltering and sampling in c-dimension");
 					for (cin.t=0, cnew.t=0; cin.t<newdims.t; ++cin.t, ++cnew.t)
 						for (cin.z=0, cnew.z=0; cin.z<newdims.z; ++cin.z, ++cnew.z)
 							for (cin.y=0, cnew.y=0; cin.y<newdims.y; ++cin.y, ++cnew.y)
@@ -941,7 +927,7 @@ public class Scale {
 	}
 	
 	private void initialize(
-		final int scheme,
+		final int interpolation,
 		final int newsize,
 		final double factor,
 		final double shift
@@ -949,7 +935,7 @@ public class Scale {
 		
 		pos = new int[newsize];
 		
-		switch (scheme) {
+		switch (interpolation) {
 			case NEAREST: {
 				for (int i=0; i<newsize; ++i)
 				pos[i] = FMath.round(i/factor + shift);
@@ -967,65 +953,65 @@ public class Scale {
 			}
 			case CUBIC: {
 				kernel = new double[newsize][4];
-				final double fm1o2 = -1.0/2.0;
-				final double f3o2 = 3.0/2.0;
-				final double f5o2 = 5.0/2.0;
+				final double DM1O2 = -1.0/2.0;
+				final double D3O2 = 3.0/2.0;
+				final double D5O2 = 5.0/2.0;
 				for (int i=0; i<newsize; ++i) {
 				final double in = i/factor + shift;
 				pos[i] = FMath.floor(in);
 				final double diff = in - pos[i];
 				final double mdiff = 1 - diff;
-				kernel[i][0] = fm1o2*diff*mdiff*mdiff;
-				kernel[i][1] = 1.0f + (f3o2*diff - f5o2)*diff*diff;
-				kernel[i][2] = 1.0f + (f3o2*mdiff - f5o2)*mdiff*mdiff;
-				kernel[i][3] = fm1o2*mdiff*diff*diff;
+				kernel[i][0] = DM1O2*diff*mdiff*mdiff;
+				kernel[i][1] = 1.0f + (D3O2*diff - D5O2)*diff*diff;
+				kernel[i][2] = 1.0f + (D3O2*mdiff - D5O2)*mdiff*mdiff;
+				kernel[i][3] = DM1O2*mdiff*diff*diff;
 				}
 				break;
 			}
 			case BSPLINE3: {
 				kernel = new double[newsize][4];
-				final double f1o2 = 1.0/2.0;
-				final double f1o6 = 1.0/6.0;
-				final double f2o3 = 2.0/3.0;
+				final double D1O2 = 1.0/2.0;
+				final double D1O6 = 1.0/6.0;
+				final double D2O3 = 2.0/3.0;
 				for (int i=0; i<newsize; ++i) {
 				final double in = i/factor + shift;
 				pos[i] = FMath.floor(in);
 				final double diff = in - pos[i];
 				final double mdiff = 1 - diff;
-				kernel[i][0] = f1o6*mdiff*mdiff*mdiff;
-				kernel[i][1] = f2o3 + (f1o2*diff - 1)*diff*diff;
-				kernel[i][2] = f2o3 + (f1o2*mdiff - 1)*mdiff*mdiff;
-				kernel[i][3] = f1o6*diff*diff*diff;
+				kernel[i][0] = D1O6*mdiff*mdiff*mdiff;
+				kernel[i][1] = D2O3 + (D1O2*diff - 1)*diff*diff;
+				kernel[i][2] = D2O3 + (D1O2*mdiff - 1)*mdiff*mdiff;
+				kernel[i][3] = D1O6*diff*diff*diff;
 				}
 				break;
 			}
 			case OMOMS3: {
 				kernel = new double[newsize][4];
-				final double f1o2 = 1.0/2.0;
-				final double f1o6 = 1.0/6.0;
-				final double f1o14 = 1.0/14.0;
-				final double f1o42 = 1.0/42.0;
-				final double f13o21 = 13.0/21.0;
+				final double D1O2 = 1.0/2.0;
+				final double D1O6 = 1.0/6.0;
+				final double D1O14 = 1.0/14.0;
+				final double D1O42 = 1.0/42.0;
+				final double D13O21 = 13.0/21.0;
 				for (int i=0; i<newsize; ++i) {
 				final double in = i/factor + shift;
 				pos[i] = FMath.floor(in);
 				final double diff = in - pos[i];
 				final double mdiff = 1 - diff;
-				kernel[i][0] = mdiff*(f1o42 + f1o6*mdiff*mdiff);
-				kernel[i][1] = f13o21 + diff*(f1o14 + diff*(f1o2*diff - 1));
-				kernel[i][2] = f13o21 + mdiff*(f1o14 + mdiff*(f1o2*mdiff - 1));
-				kernel[i][3] = diff*(f1o42 + f1o6*diff*diff);
+				kernel[i][0] = mdiff*(D1O42 + D1O6*mdiff*mdiff);
+				kernel[i][1] = D13O21 + diff*(D1O14 + diff*(D1O2*diff - 1));
+				kernel[i][2] = D13O21 + mdiff*(D1O14 + mdiff*(D1O2*mdiff - 1));
+				kernel[i][3] = diff*(D1O42 + D1O6*diff*diff);
 				}
 				break;
 			}
 			case BSPLINE5: {
 				kernel = new double[newsize][6];
-				final double f1o2 = 1.0/2.0;
-				final double f1o4 = 1.0/4.0;
-				final double f1o12 = 1.0/12.0;
-				final double f1o24 = 1.0/24.0;
-				final double f1o120 = 1.0/120.0;
-				final double f11o20 = 11.0/20.0;
+				final double D1O2 = 1.0/2.0;
+				final double D1O4 = 1.0/4.0;
+				final double D1O12 = 1.0/12.0;
+				final double D1O24 = 1.0/24.0;
+				final double D1O120 = 1.0/120.0;
+				final double D11O20 = 11.0/20.0;
 				for (int i=0; i<newsize; ++i) {
 				final double in = i/factor + shift;
 				pos[i] = FMath.floor(in);
@@ -1033,29 +1019,32 @@ public class Scale {
 				final double diff2 = diff*diff;
 				final double mdiff = 1.0f - diff;
 				final double mdiff2 = mdiff*mdiff;
-				kernel[i][0] = f1o120*mdiff2*mdiff2*mdiff;
-				kernel[i][1] = f1o120 + f1o24*mdiff*(1 + mdiff*(2 + mdiff*(2 + mdiff - mdiff2)));
-				kernel[i][2] = f11o20 + diff2*((f1o4 - f1o12*diff)*diff2 - f1o2);
-				kernel[i][3] = f11o20 + mdiff2*((f1o4 - f1o12*mdiff)*mdiff2 - f1o2);
-				kernel[i][4] = f1o120 + f1o24*diff*(1 + diff*(2 + diff*(2 + diff - diff2)));
-				kernel[i][5] = f1o120*diff2*diff2*diff;
+				kernel[i][0] = D1O120*mdiff2*mdiff2*mdiff;
+				kernel[i][1] = D1O120 + D1O24*mdiff*(1 + mdiff*(2 + mdiff*(2 + mdiff - mdiff2)));
+				kernel[i][2] = D11O20 + diff2*((D1O4 - D1O12*diff)*diff2 - D1O2);
+				kernel[i][3] = D11O20 + mdiff2*((D1O4 - D1O12*mdiff)*mdiff2 - D1O2);
+				kernel[i][4] = D1O120 + D1O24*diff*(1 + diff*(2 + diff*(2 + diff - diff2)));
+				kernel[i][5] = D1O120*diff2*diff2*diff;
 				}
 				break;
 			}
 		}
 	}
 	
-	private void checkup(
-		final Dimensions indims,
+	private void initialize(
+		final Image image,
 		final double xfactor,
 		final double yfactor,
 		final double zfactor,
 		final double tfactor,
 		final double cfactor,
-		final int scheme
+		final int interpolation
 	) {
 		
-		messenger.log("Checking parameters");
+		// Check parameters and conditions
+		if (image.aspects().x <= 0) throw new IllegalStateException("Aspect ratio in x-dimension less than or equal to 0");
+		if (image.aspects().y <= 0) throw new IllegalStateException("Aspect ratio in y-dimension less than or equal to 0");
+		if (image.aspects().z <= 0) throw new IllegalStateException("Aspect ratio in z-dimension less than or equal to 0");
 		
 		this.xfactor = xfactor; if (xfactor <= 0) throw new IllegalArgumentException("Scaling factor in x-dimension less than or equal to 0");
 		this.yfactor = yfactor; if (yfactor <= 0) throw new IllegalArgumentException("Scaling factor in y-dimension less than or equal to 0");
@@ -1064,6 +1053,8 @@ public class Scale {
 		this.cfactor = cfactor; if (cfactor <= 0) throw new IllegalArgumentException("Scaling factor in c-dimension less than or equal to 0");
 		
 		messenger.log("Scaling factors: (x,y,z,t,c) = ("+xfactor+","+yfactor+","+zfactor+","+tfactor+","+cfactor+")");
+		
+		final Dimensions indims = image.dimensions();
 		
 		messenger.log("Input image dimensions: (x,y,z,t,c) = ("+indims.x+","+indims.y+","+indims.z+","+indims.t+","+indims.c+")");
 		
@@ -1090,9 +1081,10 @@ public class Scale {
 		cshift = 0.5*((indims.c - 1) - (newdims.c - 1)/cfactor);
 		
 		// Check if requested interpolation scheme is applicable:
-		messenger.log("Requested interpolation scheme: "+schemes(scheme));
-		if (scheme < 0 || scheme > 5) throw new IllegalArgumentException("Non-supported interpolation scheme");
-		xscheme = yscheme = zscheme = tscheme = cscheme = scheme;
+		messenger.log("Selecting "+schemes(interpolation));
+		if (interpolation < NEAREST || interpolation > BSPLINE5)
+			throw new IllegalArgumentException("Non-supported interpolation scheme");
+		xscheme = yscheme = zscheme = tscheme = cscheme = interpolation;
 		if (xfactor != 1 && indims.x == 1 && xscheme >= 1) {
 			messenger.log("Size of input image in x-dimension too small");
 			messenger.log("Using nearest-neighbor interpolation in x-dimension");
@@ -1188,9 +1180,9 @@ public class Scale {
 		borders = new Borders(bxsize,bysize,bzsize,btsize,bcsize);
 	}
 	
-	private String schemes(final int scheme) {
+	private String schemes(final int interpolation) {
 		
-		switch (scheme) {
+		switch (interpolation) {
 			case NEAREST: return "nearest-neighbor interpolation";
 			case LINEAR: return "linear interpolation";
 			case CUBIC: return "cubic convolution interpolation";
@@ -1199,7 +1191,13 @@ public class Scale {
 			case BSPLINE5: return "quintic B-spline interpolation";
 		}
 		
-		return "";
+		return "unknown interpolation";
+	}
+	
+	private void logus(final String s) {
+		
+		messenger.log(s);
+		progressor.status(s+"...");
 	}
 	
 	/** The object used for message displaying. */

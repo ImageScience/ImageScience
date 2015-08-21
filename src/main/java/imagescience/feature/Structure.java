@@ -1,12 +1,14 @@
 package imagescience.feature;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Aspects;
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.FloatImage;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
@@ -21,13 +23,13 @@ public class Structure {
 	
 	/** Computes structure tensor eigenimages of images.
 		
-		@param image the input image for which structure-tensor eigenimages need to be computed. If it is of type {@link FloatImage}, it will be used to store intermediate results. Otherwise it will be left unaltered. If the size of the image in the z-dimension equals {@code 1}, this method will compute, for every image element, the two-dimensional (2D) structure tensor and its two eigenvalues. Otherwise it will compute for every image element the full three-dimensional (3D) structure tensor and its three eigenvalues. These computations are performed on every x-y(-z) subimage in a 5D image.
+		@param image The input image for which structure-tensor eigenimages need to be computed. If it is of type {@link FloatImage}, it will be used to store intermediate results. Otherwise it will be left unaltered. If the size of the image in the z-dimension equals {@code 1}, this method will compute, for every image element, the two-dimensional (2D) structure tensor and its two eigenvalues. Otherwise it will compute for every image element the full three-dimensional (3D) structure tensor and its three eigenvalues. These computations are performed on every x-y(-z) subimage in a 5D image.
 		
-		@param sscale the smoothing scale at which the required image derivatives are computed. The scale is equal to the standard deviation of the Gaussian kernel used for differentiation and must be larger than {@code 0}. In order to enforce physical isotropy, for each dimension, the scale is divided by the size of the image elements (aspect-ratio value) in that dimension.
+		@param sscale The smoothing scale at which the required image derivatives are computed. The scale is equal to the standard deviation of the Gaussian kernel used for differentiation and must be larger than {@code 0}. In order to enforce physical isotropy, for each dimension, the scale is divided by the size of the image elements (aspect ratio) in that dimension.
 		
-		@param iscale the integration scale. This scale is equal to the standard deviation of the Gaussian kernel used for integrating the components of the structure tensor and must be larger than {@code 0}. In order to enforce physical isotropy, for each dimension, the scale is divided by the size of the image elements (aspect-ratio value) in that dimension.
+		@param iscale The integration scale. This scale is equal to the standard deviation of the Gaussian kernel used for integrating the components of the structure tensor and must be larger than {@code 0}. In order to enforce physical isotropy, for each dimension, the scale is divided by the size of the image elements (aspect ratio) in that dimension.
 		
-		@return an array containing the eigenimages. The images are always of type {@link FloatImage}.<br>
+		@return An array containing the eigenimages. The images are always of type {@link FloatImage}.<br>
 		If only the two-dimensional (2D) structure tensor and its two eigenvalues were computed for every image element, the returned array contains two eigenimages:<br>
 		Element {@code 0} = the image with, for every element, the largest eigenvalue,<br>
 		Element {@code 1} = the image with, for every element, the smallest eigenvalue.<br>
@@ -36,11 +38,11 @@ public class Structure {
 		Element {@code 1} = the image with, for every element, the middle eigenvalue,<br>
 		Element {@code 2} = the image with, for every element, the smallest eigenvalue.
 		
-		@exception IllegalArgumentException if {@code sscale} or {@code iscale} is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If {@code sscale} or {@code iscale} is less than or equal to {@code 0}.
 		
-		@exception IllegalStateException if the size of the image elements (aspect-ratio value) is less than or equal to {@code 0} in the x-, y-, or z-dimension.
+		@throws IllegalStateException If the size of the image elements (aspect ratio) is less than or equal to {@code 0} in the x-, y-, or z-dimension.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Vector<Image> run(final Image image, final double sscale, final double iscale) {
 		
@@ -59,10 +61,10 @@ public class Structure {
 		messenger.log("Input image dimensions: (x,y,z,t,c) = ("+dims.x+","+dims.y+","+dims.z+","+dims.t+","+dims.c+")");
 		
 		final Aspects asps = image.aspects();
-		messenger.log("Element aspect-ratios: ("+asps.x+","+asps.y+","+asps.z+","+asps.t+","+asps.c+")");
-		if (asps.x <= 0) throw new IllegalStateException("Aspect-ratio value in x-dimension less than or equal to 0");
-		if (asps.y <= 0) throw new IllegalStateException("Aspect-ratio value in y-dimension less than or equal to 0");
-		if (asps.z <= 0) throw new IllegalStateException("Aspect-ratio value in z-dimension less than or equal to 0");
+		messenger.log("Element aspect ratios: ("+asps.x+","+asps.y+","+asps.z+","+asps.t+","+asps.c+")");
+		if (asps.x <= 0) throw new IllegalStateException("Aspect ratio in x-dimension less than or equal to 0");
+		if (asps.y <= 0) throw new IllegalStateException("Aspect ratio in y-dimension less than or equal to 0");
+		if (asps.z <= 0) throw new IllegalStateException("Aspect ratio in z-dimension less than or equal to 0");
 		
 		final Image smoothImage = (image instanceof FloatImage) ? image : new FloatImage(image);
 		Vector<Image> eigenimages = null;
@@ -77,31 +79,31 @@ public class Structure {
 			final double[] pls = {0, 0.2, 0.4, 0.45, 0.63, 0.80, 0.95, 1}; int pl = 0;
 			
 			// Compute structure tensor components:
-			logstatus("Computing Ix"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Ix"); progressor.range(pls[pl],pls[++pl]);
 			final Image Ix2 = differentiator.run(smoothImage.duplicate(),sscale,1,0,0);
-			logstatus("Computing Iy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Iy"); progressor.range(pls[pl],pls[++pl]);
 			final Image Iy2 = differentiator.run(smoothImage,sscale,0,1,0);
 			
 			progressor.range(pls[pl],pls[++pl]);
 			progressor.steps(3);
 			progressor.start();
 			final Image IxIy = Ix2.duplicate();
-			logstatus("Computing IxIy"); IxIy.multiply(Iy2); progressor.step();
-			logstatus("Squaring Ix"); Ix2.square(); progressor.step();
-			logstatus("Squaring Iy"); Iy2.square(); progressor.step();
+			logus("Computing IxIy"); IxIy.multiply(Iy2); progressor.step();
+			logus("Squaring Ix"); Ix2.square(); progressor.step();
+			logus("Squaring Iy"); Iy2.square(); progressor.step();
 			progressor.stop();
 			
 			// Integrate tensor components:
 			messenger.log("Gaussian integration at scale "+iscale);
-			logstatus("Integrating IxIx"); progressor.range(pls[pl],pls[++pl]);
+			logus("Integrating IxIx"); progressor.range(pls[pl],pls[++pl]);
 			differentiator.run(Ix2,iscale,0,0,0);
-			logstatus("Integrating IxIy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Integrating IxIy"); progressor.range(pls[pl],pls[++pl]);
 			differentiator.run(IxIy,iscale,0,0,0);
-			logstatus("Integrating IyIy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Integrating IyIy"); progressor.range(pls[pl],pls[++pl]);
 			differentiator.run(Iy2,iscale,0,0,0);
 			
 			// Compute eigenimages (Ix2 and Iy2 are reused to save memory):
-			logstatus("Computing eigenimages");
+			logus("Computing eigenimages");
 			progressor.steps(dims.c*dims.t*dims.y);
 			progressor.range(pls[pl],pls[++pl]);
 			Ix2.axes(Axes.X); IxIy.axes(Axes.X); Iy2.axes(Axes.X);
@@ -159,41 +161,41 @@ public class Structure {
 			final double[] pls = {0, 0.1, 0.2, 0.3, 0.34, 0.40, 0.46, 0.52, 0.58, 0.64, 0.7, 1}; int pl = 0;
 			
 			// Compute structure tensor components:
-			logstatus("Computing Ix"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Ix"); progressor.range(pls[pl],pls[++pl]);
 			final Image Ix2 = differentiator.run(smoothImage.duplicate(),sscale,1,0,0);
-			logstatus("Computing Iy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Iy"); progressor.range(pls[pl],pls[++pl]);
 			final Image Iy2 = differentiator.run(smoothImage.duplicate(),sscale,0,1,0);
-			logstatus("Computing Iz"); progressor.range(pls[pl],pls[++pl]);
+			logus("Computing Iz"); progressor.range(pls[pl],pls[++pl]);
 			final Image Iz2 = differentiator.run(smoothImage,sscale,0,0,1);
 			
 			progressor.range(pls[pl],pls[++pl]);
 			progressor.steps(6);
 			progressor.start();
-			logstatus("Computing IxIy"); final Image IxIy = Ix2.duplicate(); IxIy.multiply(Iy2); progressor.step();
-			logstatus("Computing IxIz"); final Image IxIz = Ix2.duplicate(); IxIz.multiply(Iz2); progressor.step();
-			logstatus("Computing IyIz"); final Image IyIz = Iy2.duplicate(); IyIz.multiply(Iz2); progressor.step();
-			logstatus("Squaring Ix"); Ix2.square(); progressor.step();
-			logstatus("Squaring Iy"); Iy2.square(); progressor.step();
-			logstatus("Squaring Iz"); Iz2.square(); progressor.step();
+			logus("Computing IxIy"); final Image IxIy = Ix2.duplicate(); IxIy.multiply(Iy2); progressor.step();
+			logus("Computing IxIz"); final Image IxIz = Ix2.duplicate(); IxIz.multiply(Iz2); progressor.step();
+			logus("Computing IyIz"); final Image IyIz = Iy2.duplicate(); IyIz.multiply(Iz2); progressor.step();
+			logus("Squaring Ix"); Ix2.square(); progressor.step();
+			logus("Squaring Iy"); Iy2.square(); progressor.step();
+			logus("Squaring Iz"); Iz2.square(); progressor.step();
 			progressor.stop();
 			
 			// Integrate tensor components:
 			messenger.log("Gaussian integration at scale "+iscale);
-			logstatus("Integrating IxIx"); progressor.range(pls[pl],pls[++pl]);
+			logus("Integrating IxIx"); progressor.range(pls[pl],pls[++pl]);
 			differentiator.run(Ix2,iscale,0,0,0);
-			logstatus("Integrating IxIy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Integrating IxIy"); progressor.range(pls[pl],pls[++pl]);
 			differentiator.run(IxIy,iscale,0,0,0);
-			logstatus("Integrating IxIz"); progressor.range(pls[pl],pls[++pl]);
+			logus("Integrating IxIz"); progressor.range(pls[pl],pls[++pl]);
 			differentiator.run(IxIz,iscale,0,0,0);
-			logstatus("Integrating IyIy"); progressor.range(pls[pl],pls[++pl]);
+			logus("Integrating IyIy"); progressor.range(pls[pl],pls[++pl]);
 			differentiator.run(Iy2,iscale,0,0,0);
-			logstatus("Integrating IyIz"); progressor.range(pls[pl],pls[++pl]);
+			logus("Integrating IyIz"); progressor.range(pls[pl],pls[++pl]);
 			differentiator.run(IyIz,iscale,0,0,0);
-			logstatus("Integrating IzIz"); progressor.range(pls[pl],pls[++pl]);
+			logus("Integrating IzIz"); progressor.range(pls[pl],pls[++pl]);
 			differentiator.run(Iz2,iscale,0,0,0);
 			
 			// Compute eigenimages (Ix2, Iy2, Iz2 are reused to save memory):
-			logstatus("Computing eigenimages");
+			logus("Computing eigenimages");
 			progressor.steps(dims.c*dims.t*dims.z*dims.y);
 			progressor.range(pls[pl],pls[++pl]);
 			Ix2.axes(Axes.X); IxIy.axes(Axes.X); IxIz.axes(Axes.X);
@@ -279,10 +281,10 @@ public class Structure {
 		return eigenimages;
 	}
 	
-	private void logstatus(final String s) {
+	private void logus(final String s) {
 		
 		messenger.log(s);
-		messenger.status(s+"...");
+		progressor.status(s+"...");
 	}
 	
 	/** The object used for message displaying. */

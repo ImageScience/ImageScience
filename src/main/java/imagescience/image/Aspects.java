@@ -1,6 +1,6 @@
 package imagescience.image;
 
-/** Contains aspect-ratio or size information of up to 5D image elements. */
+/** Contains aspect ratio or size information of up to 5D image elements. */
 public class Aspects {
 	
 	/** The absolute or relative aspect size in the x-dimension. The default value is {@code 1}. */
@@ -30,7 +30,7 @@ public class Aspects {
 	
 	/** One-dimensional constructor.
 		
-		@param x the aspect size in the x-dimension.
+		@param x The aspect size in the x-dimension.
 	*/
 	public Aspects(final double x) {
 		
@@ -43,9 +43,9 @@ public class Aspects {
 	
 	/** Two-dimensional constructor.
 		
-		@param x the aspect size in the x-dimension.
+		@param x The aspect size in the x-dimension.
 		
-		@param y the aspect size in the y-dimension.
+		@param y The aspect size in the y-dimension.
 	*/
 	public Aspects(final double x, final double y) {
 		
@@ -58,11 +58,11 @@ public class Aspects {
 	
 	/** Three-dimensional constructor.
 		
-		@param x the aspect size in the x-dimension.
+		@param x The aspect size in the x-dimension.
 		
-		@param y the aspect size in the y-dimension.
+		@param y The aspect size in the y-dimension.
 		
-		@param z the aspect size in the z-dimension.
+		@param z The aspect size in the z-dimension.
 	*/
 	public Aspects(final double x, final double y, final double z) {
 		
@@ -75,13 +75,13 @@ public class Aspects {
 	
 	/** Four-dimensional constructor.
 		
-		@param x the aspect size in the x-dimension.
+		@param x The aspect size in the x-dimension.
 		
-		@param y the aspect size in the y-dimension.
+		@param y The aspect size in the y-dimension.
 		
-		@param z the aspect size in the z-dimension.
+		@param z The aspect size in the z-dimension.
 		
-		@param t the aspect size in the t-dimension.
+		@param t The aspect size in the t-dimension.
 	*/
 	public Aspects(final double x, final double y, final double z, final double t) {
 		
@@ -94,15 +94,15 @@ public class Aspects {
 	
 	/** Five-dimensional constructor.
 		
-		@param x the aspect size in the x-dimension.
+		@param x The aspect size in the x-dimension.
 		
-		@param y the aspect size in the y-dimension.
+		@param y The aspect size in the y-dimension.
 		
-		@param z the aspect size in the z-dimension.
+		@param z The aspect size in the z-dimension.
 		
-		@param t the aspect size in the t-dimension.
+		@param t The aspect size in the t-dimension.
 		
-		@param c the aspect size in the c-dimension.
+		@param c The aspect size in the c-dimension.
 	*/
 	public Aspects(final double x, final double y, final double z, final double t, final double c) {
 		
@@ -115,15 +115,15 @@ public class Aspects {
 	
 	/** Duplicates this object.
 		
-		@return a new {@code Aspects} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
+		@return A new {@code Aspects} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
 	*/
 	public Aspects duplicate() { return new Aspects(x,y,z,t,c); }
 	
 	/** Indicates whether this object is in the same state as the given object.
 		
-		@param aspects the object to compare this object with.
+		@param aspects The object to compare this object with.
 		
-		@return {@code true} if the given object is not {@code null} and its aspect size in each dimension is equal to the corresponding aspect size of this object; {@code false} if this is not the case.
+		@return Value {@code true} if the given object is not {@code null} and its aspect size in each dimension is equal to the corresponding aspect size of this object, or {@code false} if this is not the case.
 	*/
 	public boolean equals(final Aspects aspects) {
 		

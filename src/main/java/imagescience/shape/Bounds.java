@@ -14,11 +14,11 @@ public class Bounds {
 
 	/** Constructor.
 		
-		@param lower a point whose coordinates define the lower bound for each dimension.
+		@param lower A point whose coordinates define the lower bound for each dimension.
 		
-		@param upper a point whose coordinates define the upper bound for each dimension.
+		@param upper A point whose coordinates define the upper bound for each dimension.
 		
-		@exception NullPointerException if {@code lower} or {@code upper} is {@code null}.
+		@throws NullPointerException If {@code lower} or {@code upper} is {@code null}.
 	*/
 	public Bounds(final Point lower, final Point upper) {
 
@@ -28,15 +28,15 @@ public class Bounds {
 
 	/** Duplicates the bounds.
 		
-		@return a new {@code Bounds} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
+		@return A new {@code Bounds} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
 	*/
 	public Bounds duplicate() { return new Bounds(lower,upper); }
 
 	/** Indicates whether this bounding box is the same as the given bounding box.
 		
-		@param bounds the bounding box to compare with.
+		@param bounds The bounding box to compare with.
 		
-		@return {@code true} if {@code bounds} is not {@code null} and its lower and upper bounds in each dimension are equal to the corresponding lower and upper bounds of this object; {@code false} if this is not the case.
+		@return Value {@code true} if {@code bounds} is not {@code null} and its lower and upper bounds in each dimension are equal to the corresponding lower and upper bounds of this object, or {@code false} if this is not the case.
 	*/
 	public boolean equals(final Bounds bounds) {
 

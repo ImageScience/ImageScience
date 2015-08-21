@@ -15,26 +15,26 @@ public class UniformGenerator implements RandomGenerator {
 	private final double min;
 	private final double max;
 	
-	/** Constructs a generator of random numbers uniformly distributed in the open interval (0,1). The seed used for initialization is derived from the system's current time in milliseconds. */
-	public UniformGenerator() { this(0.0,1.0,(int)System.currentTimeMillis()); }
+	/** Constructs a generator of random numbers uniformly distributed in the open interval {@code (0,1)} and initialized with a random seed. */
+	public UniformGenerator() { this(0.0,1.0,(int)Randomizer.seeder.next()); }
 	
-	/** Constructs a generator of random numbers uniformly distributed in the open interval (0,1) and initialized with the given seed.
+	/** Constructs a generator of random numbers uniformly distributed in the open interval {@code (0,1)} and initialized with the given {@code seed}.
 		
-		@param seed the seed used for initialization of the generator.
+		@param seed The seed used for initialization of the generator.
 	*/
 	public UniformGenerator(final int seed) { this(0.0,1.0,seed); }
 	
-	/** Constructs a generator of random numbers uniformly distributed in the open interval ({@code min},{@code max}). The seed used for initialization is derived from the system's current time in milliseconds.
+	/** Constructs a generator of random numbers uniformly distributed in the open interval {@code (min,max)} and initialized with a random seed.
 		
-		@param min {@code max} - the interval parameters. Random numbers are generated in the open interval ({@code min},{@code max}). If {@code min > max}, the meaning of the parameters is automatically reversed.
+		@param min {@code max} - The interval parameters. Random numbers are generated in the open interval {@code (min,max)}. If {@code min > max}, the meaning of the parameters is automatically reversed.
 	*/
-	public UniformGenerator(final double min, final double max) { this(min,max,(int)System.currentTimeMillis()); }
+	public UniformGenerator(final double min, final double max) { this(min,max,(int)Randomizer.seeder.next()); }
 	
-	/** Constructs a generator of random numbers uniformly distributed in the open interval ({@code min},{@code max}) and initialized with the given seed.
+	/** Constructs a generator of random numbers uniformly distributed in the open interval {@code (min,max)} and initialized with the given {@code seed}.
 		
-		@param min {@code max} - the interval parameters. Random numbers are generated in the open interval ({@code min},{@code max}). If {@code min > max}, the meaning of the parameters is automatically reversed.
+		@param min {@code max} - The interval parameters. Random numbers are generated in the open interval {@code (min,max)}. If {@code min > max}, the meaning of the parameters is automatically reversed.
 		
-		@param seed the seed used for initialization of the generator.
+		@param seed The seed used for initialization of the generator.
 	*/
 	public UniformGenerator(final double min, final double max, final int seed) {
 		
@@ -52,13 +52,13 @@ public class UniformGenerator implements RandomGenerator {
 	
 	/** Returns a uniform random number in the interval specified at construction.
 		
-		@return a uniform random number in the interval specified at construction.
+		@return A uniform random number in the interval specified at construction.
 	*/
 	public double next() { return next(min,max); }
 	
-	/** Returns a uniform random number in the open interval ({@code min},{@code max}).
+	/** Returns a uniform random number in the open interval {@code (min,max)}.
 		
-		@param min {@code max} - the interval parameters. Random numbers are generated in the open interval ({@code min},{@code max}). If {@code min > max}, the meaning of the parameters is automatically reversed.
+		@param min {@code max} - The interval parameters. Random numbers are generated in the open interval {@code (min,max)}. If {@code min > max}, the meaning of the parameters is automatically reversed.
 	*/
 	public double next(final double min, final double max) {
 		

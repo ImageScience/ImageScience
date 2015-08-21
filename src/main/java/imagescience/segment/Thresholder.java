@@ -1,11 +1,13 @@
 package imagescience.segment;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Axes;
 import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
@@ -18,11 +20,11 @@ public class Thresholder {
 	
 	/** Applies hard thresholding to an image.
 		
-		@param image the input image to be thresholded. The image is overwritten with the thresholding results.
+		@param image The input image to be thresholded. The image is overwritten with the thresholding results.
 		
-		@param threshold the threshold value. Elements with a value larger than or equal to {@code threshold} are set to {@code 255}, and elements with a value less than {@code threshold} are set to {@code 0}.
+		@param threshold The threshold value. Elements with a value larger than or equal to {@code threshold} are set to {@code 255}, and elements with a value less than {@code threshold} are set to {@code 0}.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public void hard(final Image image, final double threshold) {
 		
@@ -34,8 +36,8 @@ public class Thresholder {
 		
 		// Initialize:
 		messenger.log("Hard thresholding "+image.type()+" at value "+threshold);
+		progressor.status("Applying hard thresholding...");
 		final Dimensions dims = image.dimensions();
-		messenger.status("Applying hard thresholding...");
 		final double[] array = new double[dims.x];
 		final Coordinates coords = new Coordinates();
 		progressor.steps(dims.c*dims.t*dims.z);
@@ -60,18 +62,17 @@ public class Thresholder {
 		
 		// Finish up:
 		image.name(image.name() + " hard thresholded");
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
 	}
 	
 	/** Applies hysteresis thresholding to an image.
 		
-		@param image the input image to be thresholded. The image is overwritten with the thresholding results.
+		@param image The input image to be thresholded. The image is overwritten with the thresholding results.
 		
-		@param low {@code high} - the lower and higher threshold values that define the hysteresis. Elements with a value larger than or equal to {@code high} are set to {@code 255}, elements with a value less than {@code low} are set to {@code 0}, and elements with a value larger than or equal to the {@code low} are set to {@code 255} only if they are connected to elements with a value larger than or equal to {@code high} through elements all with a value larger than or equal to {@code low}. If the size of the image in the z-dimension equals {@code 1}, this method uses 8-connectivity in x-y space, otherwise it uses 26-connectivity in x-y-z space. The algorithm is applied to every x-y(-z) subimage in a 5D image.
+		@param low {@code high} - The lower and higher threshold values that define the hysteresis. Elements with a value larger than or equal to {@code high} are set to {@code 255}, elements with a value less than {@code low} are set to {@code 0}, and elements with a value larger than or equal to the {@code low} are set to {@code 255} only if they are connected to elements with a value larger than or equal to {@code high} through elements all with a value larger than or equal to {@code low}. If the size of the image in the z-dimension equals {@code 1}, this method uses 8-connectivity in x-y space, otherwise it uses 26-connectivity in x-y-z space. The algorithm is applied to every x-y(-z) subimage in a 5D image.
 		
-		@exception NullPointerException if {@code image} image is {@code null}.
+		@throws NullPointerException If {@code image} image is {@code null}.
 	*/
 	public void hysteresis(final Image image, final double low, final double high) {
 		
@@ -83,8 +84,8 @@ public class Thresholder {
 		
 		// Initialize:
 		messenger.log("Hysteresis thresholding "+image.type()+" in range ["+low+","+high+"]");
+		progressor.status("Applying hysteresis thresholding...");
 		final Dimensions dims = image.dimensions();
-		messenger.status("Applying hysteresis thresholding...");
 		final double[] array = new double[dims.x];
 		final double[] marray = new double[dims.x+2];
 		final Coordinates coords = new Coordinates();
@@ -246,7 +247,6 @@ public class Thresholder {
 		
 		// Finish up:
 		image.name(image.name() + " hysteresis thresholded");
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
 	}

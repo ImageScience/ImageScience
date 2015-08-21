@@ -5,10 +5,11 @@ import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
+
 import imagescience.utility.FMath;
 
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.GeneralPath;
 
 /** A square in the x-y plane. */
 public class Square implements Shape {
@@ -22,13 +23,13 @@ public class Square implements Shape {
 	
 	/** Constructs a square with top-left position and edge length.
 		
-		@param x the x-coordinate of the top-left position of the square.
+		@param x The x-coordinate of the top-left position of the square.
 		
-		@param y the y-coordinate of the top-left position of the square.
+		@param y The y-coordinate of the top-left position of the square.
 		
-		@param edge the edge length of the square.
+		@param edge The edge length of the square.
 		
-		@exception IllegalArgumentException if {@code edge} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code edge} is less than {@code 0}.
 	*/
 	public Square(final double x, final double y, final double edge) {
 		
@@ -40,9 +41,9 @@ public class Square implements Shape {
 	
 	/** Copy constructor.
 		
-		@param square the square to be copied. All information is copied and no memory is shared with this square.
+		@param square The square to be copied. All information is copied and no memory is shared with this square.
 		
-		@exception NullPointerException if {@code square} is {@code null}.
+		@throws NullPointerException If {@code square} is {@code null}.
 	*/
 	public Square(final Square square) {
 		
@@ -53,21 +54,21 @@ public class Square implements Shape {
 	
 	/** Sets the x-coordinate of the top-left position of the square.
 		
-		@param x the x-coordinate of the top-left position of the square.
+		@param x The x-coordinate of the top-left position of the square.
 	*/
 	public void x(final double x) { this.x = x; }
 	
 	/** Sets the y-coordinate of the top-left position of the square.
 		
-		@param y the y-coordinate of the top-left position of the square.
+		@param y The y-coordinate of the top-left position of the square.
 	*/
 	public void y(final double y) { this.y = y; }
 	
 	/** Sets the edge length of the square.
 		
-		@param edge the edge length of the square.
+		@param edge The edge length of the square.
 		
-		@exception IllegalArgumentException if {@code edge} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code edge} is less than {@code 0}.
 	*/
 	public void edge(final double edge) {
 		
@@ -77,47 +78,47 @@ public class Square implements Shape {
 	
 	/** Returns the x-coordinate of the top-left position of the square.
 		
-		@return the x-coordinate of the top-left position of the square.
+		@return The x-coordinate of the top-left position of the square.
 	*/
 	public double x() { return x; }
 	
 	/** Returns the y-coordinate of the top-left position of the square.
 		
-		@return the y-coordinate of the top-left position of the square.
+		@return The y-coordinate of the top-left position of the square.
 	*/
 	public double y() { return y; }
 	
 	/** Returns the edge length of the square.
 		
-		@return the edge length of the square.
+		@return The edge length of the square.
 	*/
 	public double edge() { return edge; }
 	
 	/** Returns the perimeter of the square.
 		
-		@return the perimeter of the square.
+		@return The perimeter of the square.
 	*/
 	public double perimeter() {	return (4*edge); }
 	
 	/** Returns the area spanned by the square.
 		
-		@return the area spanned by the square.
+		@return The area spanned by the square.
 	*/
 	public double area() { return (edge*edge); }
 	
 	/** Sets the top-left position of the square.
 		
-		@param x the x-coordinate of the top-left position of the square.
+		@param x The x-coordinate of the top-left position of the square.
 		
-		@param y the y-coordinate of the top-left position of the square.
+		@param y The y-coordinate of the top-left position of the square.
 	*/
 	public void position(final double x, final double y) { this.x = x; this.y = y; }
 	
 	/** Translates the square over the given distance.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 	*/
 	public void translate(final double dx, final double dy) { this.x += dx; this.y += dy; }
 	
@@ -125,13 +126,13 @@ public class Square implements Shape {
 	
 	/** Sets the top-left position and edge length of the square.
 		
-		@param x the x-coordinate of the top-left position of the square.
+		@param x The x-coordinate of the top-left position of the square.
 		
-		@param y the y-coordinate of the top-left position of the square.
+		@param y The y-coordinate of the top-left position of the square.
 		
-		@param edge the edge length of the square.
+		@param edge The edge length of the square.
 		
-		@exception IllegalArgumentException if {@code edge} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code edge} is less than {@code 0}.
 	*/
 	public void set(final double x, final double y, final double edge) {
 		
@@ -143,21 +144,21 @@ public class Square implements Shape {
 	
 	/** Indicates the position of a point relative to the square.
 		
-		@param point the point whose position relative to the square is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
+		@param point The point whose position relative to the square is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
 		
-		@return the value {@link #contains(double,double) contains(point.x,point.y)}.
+		@return The value {@link #contains(double,double) contains(point.x,point.y)}.
 		
-		@exception NullPointerException if {@code point} is {@code null}.
+		@throws NullPointerException If {@code point} is {@code null}.
 	*/
 	public boolean contains(final Point point) { return contains(point.x,point.y); }
 	
 	/** Indicates the position of a point relative to the square.
 		
-		@param x the x-coordinate of the point.
+		@param x The x-coordinate of the point.
 		
-		@param y the y-coordinate of the point.
+		@param y The y-coordinate of the point.
 		
-		@return {@code true} if the point is on or inside the square; {@code false} if it is outside the square.
+		@return Value {@code true} if the point is on or inside the square, or {@code false} if it is outside the square.
 	*/
 	public boolean contains(final double x, final double y) {
 		
@@ -170,7 +171,7 @@ public class Square implements Shape {
 	
 	/** Returns the contour of the square.
 		
-		@return a new {@code GeneralPath} object containing the contour of the square.
+		@return A new {@code GeneralPath} object containing the contour of the square.
 	*/
 	public GeneralPath contour() { return new GeneralPath(new Rectangle2D.Double(x,y,edge,edge)); }
 	

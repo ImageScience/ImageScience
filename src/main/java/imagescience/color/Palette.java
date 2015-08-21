@@ -1,4 +1,5 @@
 package imagescience.color;
+
 import java.awt.Color;
 
 /** A palette of 100 different colors. */
@@ -54,16 +55,16 @@ public class Palette {
 	
 	private final int mode;
 	
-	private int nextindex;
+	private int next;
 	
 	/** Default constructor. Results in a palette operating in the arbitrary mode. */
 	public Palette() { this(ARBITRARY); }
 	
 	/** Mode constructor. Results in a palette operating in the given mode.
 		
-		@param mode the palette mode. Must be one of the static fields of this class.
+		@param mode The palette mode. Must be one of the static fields of this class.
 		
-		@exception IllegalArgumentException if {@code mode} is not one of the static fields of this class.
+		@throws IllegalArgumentException If {@code mode} is not one of the static fields of this class.
 	*/
 	public Palette(final int mode) {
 		
@@ -85,13 +86,15 @@ public class Palette {
 	
 	/** Returns the palette mode.
 		
-		@return the palette mode. The returned value is equal to one of the static fields of this class.
+		@return The palette mode. The returned value is equal to one of the static fields of this class.
 	*/
 	public int mode() { return mode; }
 	
 	/** Returns the color at the given index (modulo 100).
 		
-		@return the color at the given index (modulo 100). The actual color returned depends on the mode of the palette.
+		@param index The index.
+		
+		@return The color at the given index (modulo 100). The actual color returned depends on the mode of the palette.
 	*/
 	public Color get(final int index) {
 		
@@ -100,9 +103,9 @@ public class Palette {
 	
 	/** Returns the index of the given color.
 		
-		@param color the color whose index is to be returned.
+		@param color The color.
 		
-		@return the index of the given color. The actual index returned depends on the mode of the palette. If {@code color} is {@code null} or it is not in the palette, the method returns -1.
+		@return The index of the given color. The actual index returned depends on the mode of the palette. If {@code color} is {@code null} or it is not in the palette, the method returns -1.
 	*/
 	public int index(final Color color) {
 		
@@ -118,22 +121,22 @@ public class Palette {
 	
 	/** Returns the next color. Calling this method repeatedly yields a sequence of colors with a period of 100 colors. Colors that have been marked explicitly as used will first be skipped until all colors have been used and a new cycle is started.
 		
-		@return the next color. The actual color returned depends on the mode of the palette.
+		@return The next color. The actual color returned depends on the mode of the palette.
 	*/
 	public Color next() {
 		
 		while (true) {
-			if (nextindex == SIZE) { reset(); break; }
-			else if (!used[nextindex]) break;
-			else ++nextindex;
+			if (next == SIZE) { reset(); break; }
+			else if (!used[next]) break;
+			else ++next;
 		}
-		used[nextindex] = true;
-		return colors[nextindex++];
+		used[next] = true;
+		return colors[next++];
 	}
 	
 	/** Marks the given color as used if it is in the palette. Colors that have been marked as used will first be skipped by the {@link #next()} method until all colors have been used and a new cycle is started.
 		
-		@param color the color to be marked as used.
+		@param color The color.
 	*/
 	public void used(final Color color) {
 		
@@ -149,7 +152,7 @@ public class Palette {
 	public void reset() {
 		
 		for (int i=0; i<SIZE; ++i) used[i] = false;
-		nextindex = 0;
+		next = 0;
 	}
 	
 }

@@ -1,13 +1,15 @@
 package imagescience.feature;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Axes;
 import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.FloatImage;
 import imagescience.image.Image;
+
 import imagescience.utility.FMath;
-import imagescience.utility.ImageScience;
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
@@ -68,11 +70,11 @@ public class Statistics {
 	
 	/** Returns the value of the requested statistic.
 		
-		@param statistic the statistic whose value is to be returned. Must be one of the static fields of this class.
+		@param statistic The statistic whose value is to be returned. Must be one of the static fields of this class.
 		
-		@return the value of the requested statistic as computed in the last call to any of the {@code run()} methods.
+		@return The value of the requested statistic as computed in the last call to any of the {@code run()} methods.
 		
-		@exception IllegalArgumentException if {@code statistic} is not one of the static fields of this class.
+		@throws IllegalArgumentException If {@code statistic} is not one of the static fields of this class.
 	*/
 	public double get(final int statistic) {
 		
@@ -97,9 +99,9 @@ public class Statistics {
 	
 	/** Computes the statistics of an image. For a {@link FloatImage}, the median and mode are not computed exactly but are estimated with an accuracy of +/- 0.0005 percent of the dynamic range of the image.
 		
-		@param image the image whose statistics are to be computed.
+		@param image The image whose statistics are to be computed.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public void run(final Image image) {
 		
@@ -111,15 +113,15 @@ public class Statistics {
 	
 	/** Computes the statistics of an image in a rectangular region of interest. For a {@link FloatImage}, the median and mode are not computed exactly, but are estimated with an accuracy of +/- 0.0005 percent of the dynamic range of the image.
 		
-		@param image the image whose statistics are to be computed.
+		@param image The image whose statistics are to be computed.
 		
-		@param min contains for each dimension the minimum coordinate of the rectangular region of interest.
+		@param min Contains for each dimension the minimum coordinate of the rectangular region of interest.
 		
-		@param max contains for each dimension the maximum coordinate of the rectangular region of interest.
+		@param max Contains for each dimension the maximum coordinate of the rectangular region of interest.
 		
-		@exception IllegalArgumentException if the region of interest as determined by {@code min} and {@code max} does not fall entirely within the image, or if any of the {@code min} coordinates is larger than its corresponding {@code max} coordinate.
+		@throws IllegalArgumentException If the region of interest as determined by {@code min} and {@code max} does not fall entirely within the image, or if any of the {@code min} coordinates is larger than its corresponding {@code max} coordinate.
 		
-		@exception NullPointerException if any of the parameters is {@code null}.
+		@throws NullPointerException If any of the parameters is {@code null}.
 	*/
 	public void run(final Image image, final Coordinates min, final Coordinates max) {
 		
@@ -130,17 +132,17 @@ public class Statistics {
 	
 	/** Computes the statistics of an image in a masked rectangular region of interest. For a {@link FloatImage}, the median and mode are not computed exactly, but are estimated with an accuracy of +/- 0.0005 percent of the dynamic range of the image.
 		
-		@param image the image whose statistics are to be computed.
+		@param image The image whose statistics are to be computed.
 		
-		@param min contains for each dimension the minimum coordinate of the rectangular region of interest.
+		@param min Contains for each dimension the minimum coordinate of the rectangular region of interest.
 		
-		@param max contains for each dimension the maximum coordinate of the rectangular region of interest.
+		@param max Contains for each dimension the maximum coordinate of the rectangular region of interest.
 		
-		@param mask the mask to be used within the region of interest determined by {@code min} and {@code max}. The method includes all image elements whose corresponding mask value is nonzero. The position of the (zeroth element of the) mask relative to the image is determined by {@code min}. In principle, the size of the mask must be equal to the size determined by {@code min} and {@code max}. Alternatively, to be able to be more memory efficient, the size of the mask may be equal to 1 in any dimension. In that case, the mask is extended (not actually, but implicitly by the algorithm) by value repetition, so that it (again) spans the entire range given by the {@code min} and the {@code max} coordinate for that dimension (this explains the need for the otherwise superfluous {@code max} coordinate).
+		@param mask The mask to be used within the region of interest determined by {@code min} and {@code max}. The method includes all image elements whose corresponding mask value is nonzero. The position of the (zeroth element of the) mask relative to the image is determined by {@code min}. In principle, the size of the mask must be equal to the size determined by {@code min} and {@code max}. Alternatively, to be able to be more memory efficient, the size of the mask may be equal to 1 in any dimension. In that case, the mask is extended (not actually, but implicitly by the algorithm) by value repetition, so that it (again) spans the entire range given by the {@code min} and the {@code max} coordinate for that dimension (this explains the need for the otherwise superfluous {@code max} coordinate).
 		
-		@exception IllegalArgumentException if the region of interest as determined by {@code min} and {@code max} does not fall entirely within the image, if any of the {@code min} coordinates is larger than its corresponding {@code max} coordinate, or if the size of the mask in any dimension does not match the size determined by the {@code min} and {@code max} coordinate for that dimension or, alternatively, is not equal to 1.
+		@throws IllegalArgumentException If the region of interest as determined by {@code min} and {@code max} does not fall entirely within the image, if any of the {@code min} coordinates is larger than its corresponding {@code max} coordinate, or if the size of the mask in any dimension does not match the size determined by the {@code min} and {@code max} coordinate for that dimension or, alternatively, is not equal to 1.
 		
-		@exception NullPointerException if any of the parameters is {@code null}.
+		@throws NullPointerException If any of the parameters is {@code null}.
 	*/
 	public void run(final Image image, final Coordinates min, final Coordinates max, final Image mask) {
 		
@@ -184,7 +186,7 @@ public class Statistics {
 		final int pmx = (mdims.x == 1) ? 0 : 1;
 		
 		messenger.log("Computing statistics");
-		messenger.status("Computing statistics...");
+		progressor.status("Computing statistics...");
 		progressor.steps(2*csize*tsize*zsize);
 		progressor.start();
 		
@@ -260,7 +262,6 @@ public class Statistics {
 			dMedian = FMath.round(dMedian);
 		}
 		
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
 	}

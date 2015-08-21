@@ -13,14 +13,20 @@ public class MouseCursor {
 	/** The custom arrow cursor type. */
 	public static final int ARROW=0;
 	
-	/** The custom crosshair cursor type. */
-	public static final int CROSSHAIR=1;
+	/** The custom plus cursor type. */
+	public static final int PLUS=1;
 	
 	/** The custom magnifier cursor type. */
 	public static final int MAGNIFIER=2;
 	
 	/** The custom hand cursor type. */
 	public static final int HAND=3;
+	
+	/** The custom cross cursor type. */
+	public static final int CROSS=4;
+	
+	/** The custom sight cursor type. */
+	public static final int SIGHT=5;
 	
 	private static final int SIZE = 32; // Cursor size
 	private static final byte o = (byte)0; // Zero value
@@ -33,11 +39,11 @@ public class MouseCursor {
 	
 	/** Creates a new cursor of the requested custom type.
 		
-		@param type the cursor type. Must be one of {@link #ARROW}, {@link #CROSSHAIR}, {@link #MAGNIFIER}, {@link #HAND}.
+		@param type The cursor type. Must be one of the static fields of this class.
 		
-		@return a new cursor of the requested custom type. If, for any reason, the requested custom cursor could not be created, this method returns a standard replacement cursor provided by the system.
+		@return A new cursor of the requested custom type. If, for any reason, the requested custom cursor can not be created, this method returns a standard replacement cursor provided by the system.
 		
-		@exception IllegalArgumentException if {@code type} is not one of the indicated values.
+		@throws IllegalArgumentException If {@code type} is not one of the indicated values.
 	*/
 	public Cursor create(final int type) {
 		
@@ -88,36 +94,36 @@ public class MouseCursor {
 					hotspot.y = 2;
 					name = "Arrow";
 					break;
-				case CROSSHAIR:
-					messenger.log("Creating custom crosshair cursor");
+				case CROSS:
+					messenger.log("Creating custom cross cursor");
 					pixels = new byte[] {
 						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
 						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
 						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
 						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
 						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,l,l,l,l,l,l,l,l,l,l,l,M,l,l,l,l,l,l,l,l,l,l,l,o,o,o,o,o,
-						o,o,o,o,l,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,
-						o,o,o,o,l,l,l,l,l,l,l,l,l,l,l,M,l,l,l,l,l,l,l,l,l,l,l,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
 						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
 						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
 						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
@@ -127,46 +133,6 @@ public class MouseCursor {
 					hotspot.x = 15;
 					hotspot.y = 15;
 					name = "Cross";
-					break;
-				case MAGNIFIER:
-					messenger.log("Creating custom magnifier cursor");
-					pixels = new byte[] {
-						o,o,o,o,l,l,l,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,l,l,l,M,M,M,M,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,l,l,M,M,M,M,M,M,M,M,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,l,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						l,l,M,M,M,M,M,M,M,M,M,M,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						l,M,M,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						l,M,M,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						l,M,M,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						l,M,M,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						l,l,M,M,M,M,M,M,M,M,M,M,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,l,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,l,l,M,M,M,M,M,M,M,M,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,l,l,l,M,M,M,M,l,l,l,m,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,l,l,l,l,l,l,o,l,l,m,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,l,l,m,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,m,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,m,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
-						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o
-					};
-					hotspot.x = 7;
-					hotspot.y = 6;
-					name = "Magnifier";
 					break;
 				case HAND:
 					messenger.log("Creating custom hand cursor");
@@ -208,6 +174,126 @@ public class MouseCursor {
 					hotspot.y = 15;
 					name = "Hand";
 					break;
+				case MAGNIFIER:
+					messenger.log("Creating custom magnifier cursor");
+					pixels = new byte[] {
+						o,o,o,o,l,l,l,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,l,l,l,M,M,M,M,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,l,l,M,M,M,M,M,M,M,M,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,l,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						l,l,M,M,M,M,M,M,M,M,M,M,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						l,M,M,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						l,M,M,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						l,M,M,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						l,M,M,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						l,l,M,M,M,M,M,M,M,M,M,M,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,l,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,l,l,M,M,M,M,M,M,M,M,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,l,l,l,M,M,M,M,l,l,l,m,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,l,l,l,l,l,l,o,l,l,m,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,l,l,m,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,m,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,m,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o
+					};
+					hotspot.x = 7;
+					hotspot.y = 6;
+					name = "Magnifier";
+					break;
+				case PLUS:
+					messenger.log("Creating custom plus cursor");
+					pixels = new byte[] {
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,l,l,l,l,l,l,l,l,l,l,l,M,l,l,l,l,l,l,l,l,l,l,l,o,o,o,o,o,
+						o,o,o,o,l,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,
+						o,o,o,o,l,l,l,l,l,l,l,l,l,l,l,M,l,l,l,l,l,l,l,l,l,l,l,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o
+					};
+					hotspot.x = 15;
+					hotspot.y = 15;
+					name = "Plus";
+					break;
+				case SIGHT:
+					messenger.log("Creating custom sight cursor");
+					pixels = new byte[] {
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,l,l,l,l,M,l,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,l,l,M,M,M,M,M,M,M,M,M,l,l,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,l,M,M,l,l,l,l,M,l,l,l,l,M,M,l,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,l,M,l,l,o,o,o,l,M,l,o,o,o,l,l,M,l,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,l,M,l,o,o,o,o,o,l,M,l,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,
+						o,o,o,o,o,l,M,l,o,o,o,o,o,l,l,M,l,l,o,o,o,o,o,l,M,l,o,o,o,o,o,o,
+						o,o,o,o,o,l,M,l,o,o,o,l,l,M,M,M,M,M,l,l,o,o,o,l,M,l,o,o,o,o,o,o,
+						o,o,o,o,l,M,l,o,o,o,l,M,M,l,l,l,l,l,M,M,l,o,o,o,l,M,l,o,o,o,o,o,
+						o,o,o,o,l,M,l,o,o,o,l,M,l,o,o,o,o,o,l,M,l,o,o,o,l,M,l,o,o,o,o,o,
+						o,o,o,o,l,M,l,o,o,l,M,l,o,o,o,o,o,o,o,l,M,l,o,o,l,M,l,o,o,o,o,o,
+						l,l,l,l,l,M,l,l,l,l,M,l,o,o,o,o,o,o,o,l,M,l,l,l,l,M,l,l,l,l,l,o,
+						l,M,M,M,M,M,M,M,M,M,M,l,o,o,o,o,o,o,o,l,M,M,M,M,M,M,M,M,M,M,l,o,
+						l,l,l,l,l,M,l,l,l,l,M,l,o,o,o,o,o,o,o,l,M,l,l,l,l,M,l,l,l,l,l,o,
+						o,o,o,o,l,M,l,o,o,l,M,l,o,o,o,o,o,o,o,l,M,l,o,o,l,M,l,o,o,o,o,o,
+						o,o,o,o,l,M,l,o,o,o,l,M,l,o,o,o,o,o,l,M,l,o,o,o,l,M,l,o,o,o,o,o,
+						o,o,o,o,l,M,l,o,o,o,l,M,M,l,l,l,l,l,M,M,l,o,o,o,l,M,l,o,o,o,o,o,
+						o,o,o,o,o,l,M,l,o,o,o,l,l,M,M,M,M,M,l,l,o,o,o,l,M,l,o,o,o,o,o,o,
+						o,o,o,o,o,l,M,l,o,o,o,o,o,l,l,M,l,l,o,o,o,o,o,l,M,l,o,o,o,o,o,o,
+						o,o,o,o,o,o,l,M,l,o,o,o,o,o,l,M,l,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,l,M,l,l,o,o,o,l,M,l,o,o,o,l,l,M,l,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,l,M,M,l,l,l,l,M,l,l,l,l,M,M,l,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,l,l,M,M,M,M,M,M,M,M,M,l,l,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,l,l,l,l,M,l,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,M,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,l,l,l,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,
+						o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o
+					};
+					hotspot.x = 15;
+					hotspot.y = 15;
+					name = "Sight";
+					break;
 				default:
 					throw new IllegalArgumentException();
 			}
@@ -222,25 +308,23 @@ public class MouseCursor {
 			
 		} catch (Throwable e) {
 			messenger.log("Could not create requested cursor");
+			messenger.log("Creating suitable system cursor");
 			switch(type) {
 				case ARROW:
-					messenger.log("Creating system arrow cursor");
 					cursor = new Cursor(Cursor.DEFAULT_CURSOR);
 					break;
-				case CROSSHAIR:
-					messenger.log("Creating system crosshair cursor");
-					cursor = new Cursor(Cursor.CROSSHAIR_CURSOR);
-					break;
-				case MAGNIFIER:
-					messenger.log("Creating system magnifier cursor");
-					cursor = new Cursor(Cursor.MOVE_CURSOR);
-					break;
 				case HAND:
-					messenger.log("Creating system hand cursor");
 					cursor = new Cursor(Cursor.HAND_CURSOR);
 					break;
+				case MAGNIFIER:
+					cursor = new Cursor(Cursor.MOVE_CURSOR);
+					break;
+				case CROSS:
+				case PLUS:
+				case SIGHT:
+					cursor = new Cursor(Cursor.CROSSHAIR_CURSOR);
+					break;
 				default:
-					messenger.log("Non-supported cursor type");
 					throw new IllegalArgumentException("Non-supported cursor type");
 			}
 		}

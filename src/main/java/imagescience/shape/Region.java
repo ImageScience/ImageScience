@@ -1,18 +1,21 @@
 package imagescience.shape;
 
 import imagescience.image.Axes;
-import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
+import imagescience.image.ByteImage;
+
 import imagescience.utility.FMath;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 
@@ -26,9 +29,9 @@ public class Region implements Shape {
 	
 	/** Image constructor.
 		
-		@param image an image defining the region. The resulting region is the union of all unit squares corresponding to elements in the image with value larger than {@code 0}. If the image is not a 2D but a higher-dimensional image, only the elements in the x-y plane are considered for which the higher coordinates are {@code 0}.
+		@param image An image defining the region. The resulting region is the union of all unit squares corresponding to elements in the image with value larger than {@code 0}. If the image is not a 2D but a higher-dimensional image, only the elements in the x-y plane are considered for which the higher coordinates are {@code 0}.
 		
-		@exception NullPointerException if {@code image} is {@code null}.
+		@throws NullPointerException If {@code image} is {@code null}.
 	*/
 	public Region(final Image image) {
 		
@@ -68,41 +71,41 @@ public class Region implements Shape {
 	
 	/** Copy constructor.
 		
-		@param region the region to be copied. All information is copied and no memory is shared with this region.
+		@param region The region to be copied. All information is copied and no memory is shared with this region.
 		
-		@exception NullPointerException if {@code region} is {@code null}.
+		@throws NullPointerException If {@code region} is {@code null}.
 	*/
 	public Region(final Region region) { area.add(region.area); }
 	
 	/** Adds the shape of the given region to the shape of this region. Addition is achieved through union.
 		
-		@param region the region to be added to this region.
+		@param region The region to be added to this region.
 		
-		@exception NullPointerException if {@code region} is {@code null}.
+		@throws NullPointerException If {@code region} is {@code null}.
 	*/
 	public void add(final Region region) { area.add(region.area); }
 	
 	/** Sets the shape of this region to the union of its current shape and the shape of the given region, minus their intersection.
 		
-		@param region the region to be joined with this region as described.
+		@param region The region to be joined with this region as described.
 		
-		@exception NullPointerException if {@code region} is {@code null}.
+		@throws NullPointerException If {@code region} is {@code null}.
 	*/
 	public void exclusive(final Region region) { area.exclusiveOr(region.area); }
 	
 	/** Sets the shape of this region to the intersection of its current shape and the shape of the given region.
 		
-		@param region the region to be intersected with this region.
+		@param region The region to be intersected with this region.
 		
-		@exception NullPointerException if {@code region} is {@code null}.
+		@throws NullPointerException If {@code region} is {@code null}.
 	*/
 	public void intersect(final Region region) { area.intersect(region.area); }
 	
 	/** Subtracts the shape of the given region from the shape of this region.
 		
-		@param region the region to be subtracted from this region.
+		@param region The region to be subtracted from this region.
 		
-		@exception NullPointerException if {@code region} is {@code null}.
+		@throws NullPointerException If {@code region} is {@code null}.
 	*/
 	public void subtract(final Region region) { area.subtract(region.area); }
 	
@@ -111,7 +114,7 @@ public class Region implements Shape {
 	
 	/** Returns the area covered by the region.
 		
-		@return the area covered by the region.
+		@return The area covered by the region.
 	*/
 	public double area() {
 		
@@ -160,9 +163,9 @@ public class Region implements Shape {
 	
 	/** Translates the region over the given distance.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 	*/
 	public void translate(final int dx, final int dy) {
 		
@@ -173,27 +176,27 @@ public class Region implements Shape {
 	
 	/** Indicates the position of a point relative to the region.
 		
-		@param point the point whose position relative to the region is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
+		@param point The point whose position relative to the region is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
 		
-		@return the value {@link #contains(double,double) contains(point.x,point.y)}.
+		@return The value {@link #contains(double,double) contains(point.x,point.y)}.
 		
-		@exception NullPointerException if {@code point} is {@code null}.
+		@throws NullPointerException If {@code point} is {@code null}.
 	*/
 	public boolean contains(final Point point) { return area.contains(point.x,point.y); }
 	
 	/** Indicates the position of a point relative to the region.
 		
-		@param x the x-coordinate of the point.
+		@param x The x-coordinate of the point.
 		
-		@param y the y-coordinate of the point.
+		@param y The y-coordinate of the point.
 		
-		@return {@code true} if the point is on or inside the region; {@code false} if it is outside the region.
+		@return Value {@code true} if the point is on or inside the region, or {@code false} if it is outside the region.
 	*/
 	public boolean contains(final double x, final double y) { return area.contains(x,y); }
 	
 	/** Returns the contour of the region.
 		
-		@return a new {@code GeneralPath} object containing the contour of the region.
+		@return A new {@code GeneralPath} object containing the contour of the region.
 	*/
 	public GeneralPath contour() { return new GeneralPath(area); }
 	

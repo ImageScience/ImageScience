@@ -5,10 +5,11 @@ import imagescience.image.ByteImage;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
+
 import imagescience.utility.FMath;
 
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.GeneralPath;
 
 /** A rectangle in the x-y plane. */
 public class Rectangle implements Shape {
@@ -23,15 +24,15 @@ public class Rectangle implements Shape {
 
 	/** Constructs a rectangle with given top-left corner position, width and height.
 		
-		@param x the x-coordinate of the top-left position of the rectangle.
+		@param x The x-coordinate of the top-left position of the rectangle.
 		
-		@param y the y-coordinate of the top-left position of the rectangle.
+		@param y The y-coordinate of the top-left position of the rectangle.
 		
-		@param width the width of the rectangle.
+		@param width The width of the rectangle.
 		
-		@param height the height of the rectangle.
+		@param height The height of the rectangle.
 		
-		@exception IllegalArgumentException if {@code width} or {@code height} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code width} or {@code height} is less than {@code 0}.
 	*/
 	public Rectangle(final double x, final double y, final double width, final double height) {
 		
@@ -45,9 +46,9 @@ public class Rectangle implements Shape {
 	
 	/** Copy constructor.
 		
-		@param rectangle the rectangle to be copied. All information is copied and no memory is shared with this rectangle.
+		@param rectangle The rectangle to be copied. All information is copied and no memory is shared with this rectangle.
 		
-		@exception NullPointerException if {@code rectangle} is {@code null}.
+		@throws NullPointerException If {@code rectangle} is {@code null}.
 	*/
 	public Rectangle(final Rectangle rectangle) {
 		
@@ -59,21 +60,21 @@ public class Rectangle implements Shape {
 	
 	/** Sets the x-coordinate of the top-left corner of the rectangle.
 		
-		@param x the x-coordinate of the top-left position of the rectangle.
+		@param x The x-coordinate of the top-left position of the rectangle.
 	*/
 	public void x(final double x) { this.x = x; }
 	
 	/** Sets the y-coordinate of the top-left corner of the rectangle.
 		
-		@param y the y-coordinate of the top-left position of the rectangle.
+		@param y The y-coordinate of the top-left position of the rectangle.
 	*/
 	public void y(final double y) { this.y = y; }
 	
 	/** Sets the width of the rectangle.
 		
-		@param width the width of the rectangle.
+		@param width The width of the rectangle.
 		
-		@exception IllegalArgumentException if {@code width} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code width} is less than {@code 0}.
 	*/
 	public void width(final double width) {
 		
@@ -83,9 +84,9 @@ public class Rectangle implements Shape {
 	
 	/** Sets the height of the rectangle.
 		
-		@param height the height of the rectangle.
+		@param height The height of the rectangle.
 		
-		@exception IllegalArgumentException if {@code height} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code height} is less than {@code 0}.
 	*/
 	public void height(final double height) {
 		
@@ -95,53 +96,53 @@ public class Rectangle implements Shape {
 	
 	/** Returns the x-coordinate of the top-left corner of the rectangle.
 		
-		@return the x-coordinate of the top-left corner of the rectangle.
+		@return The x-coordinate of the top-left corner of the rectangle.
 	*/
 	public double x() { return x; }
 	
 	/** Returns the y-coordinate of the top-left corner of the rectangle.
 		
-		@return the y-coordinate of the top-left corner of the rectangle.
+		@return The y-coordinate of the top-left corner of the rectangle.
 	*/
 	public double y() { return y; }
 	
 	/** Returns the width of the rectangle.
 		
-		@return the width of the rectangle.
+		@return The width of the rectangle.
 	*/
 	public double width() { return width; }
 
 	/** Returns the height of the rectangle.
 		
-		@return the height of the rectangle.
+		@return The height of the rectangle.
 	*/
 	public double height() { return height; }
 	
 	/** Returns the perimeter of the rectangle.
 		
-		@return the perimeter of the rectangle.
+		@return The perimeter of the rectangle.
 	*/
 	public double perimeter() {	return 2*(width + height); }
 
 	/** Returns the area spanned by the rectangle.
 		
-		@return the area spanned by the rectangle.
+		@return The area spanned by the rectangle.
 	*/
 	public double area() { return (width*height); }
 
 	/** Sets the top-left corner position of the rectangle.
 		
-		@param x the x-coordinate of the top-left position of the rectangle.
+		@param x The x-coordinate of the top-left position of the rectangle.
 		
-		@param y the y-coordinate of the top-left position of the rectangle.
+		@param y The y-coordinate of the top-left position of the rectangle.
 	*/
 	public void position(final double x, final double y) { this.x = x; this.y = y; }
 
 	/** Translates the rectangle over the given distance.
 		
-		@param dx the distance in the x-dimension over which to translate.
+		@param dx The distance in the x-dimension over which to translate.
 		
-		@param dy the distance in the y-dimension over which to translate.
+		@param dy The distance in the y-dimension over which to translate.
 	*/
 	public void translate(final double dx, final double dy) { this.x += dx; this.y += dy; }
 
@@ -149,15 +150,15 @@ public class Rectangle implements Shape {
 
 	/** Sets the top-left corner position and size of the rectangle.
 		
-		@param x the x-coordinate of the top-left position of the rectangle.
+		@param x The x-coordinate of the top-left position of the rectangle.
 		
-		@param y the y-coordinate of the top-left position of the rectangle.
+		@param y The y-coordinate of the top-left position of the rectangle.
 		
-		@param width the width of the rectangle.
+		@param width The width of the rectangle.
 		
-		@param height the height of the rectangle.
+		@param height The height of the rectangle.
 		
-		@exception IllegalArgumentException if {@code width} or {@code height} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code width} or {@code height} is less than {@code 0}.
 	*/
 	public void set(final double x, final double y, final double width, final double height) {
 		
@@ -171,11 +172,11 @@ public class Rectangle implements Shape {
 	
 	/** Sets the size of the rectangle.
 		
-		@param width the width of the rectangle.
+		@param width The width of the rectangle.
 		
-		@param height the height of the rectangle.
+		@param height The height of the rectangle.
 		
-		@exception IllegalArgumentException if {@code width} or {@code height} is less than {@code 0}.
+		@throws IllegalArgumentException If {@code width} or {@code height} is less than {@code 0}.
 	*/
 	public void size(final double width, final double height) {
 		
@@ -187,21 +188,21 @@ public class Rectangle implements Shape {
 	
 	/** Indicates the position of a point relative to the rectangle.
 		
-		@param point the point whose position relative to the rectangle is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
+		@param point The point whose position relative to the rectangle is to be tested. The point is treated as a 2D point. That is, only its x- and y-coordinate values are considered.
 		
-		@return the value {@link #contains(double,double) contains(point.x,point.y)}.
+		@return The value {@link #contains(double,double) contains(point.x,point.y)}.
 		
-		@exception NullPointerException if {@code point} is {@code null}.
+		@throws NullPointerException If {@code point} is {@code null}.
 	*/
 	public boolean contains(final Point point) { return contains(point.x,point.y); }
 
 	/** Indicates the position of a point relative to the rectangle.
 		
-		@param x the x-coordinate of the point.
+		@param x The x-coordinate of the point.
 		
-		@param y the y-coordinate of the point.
+		@param y The y-coordinate of the point.
 		
-		@return {@code true} if the point is on or inside the rectangle; {@code false} if it is outside the rectangle.
+		@return Value {@code true} if the point is on or inside the rectangle, or {@code false} if it is outside the rectangle.
 	*/
 	public boolean contains(final double x, final double y) {
 		
@@ -214,7 +215,7 @@ public class Rectangle implements Shape {
 	
 	/** Returns the contour of the rectangle.
 		
-		@return a new {@code GeneralPath} object containing the contour of the rectangle.
+		@return A new {@code GeneralPath} object containing the contour of the rectangle.
 	*/
 	public GeneralPath contour() { return new GeneralPath(new Rectangle2D.Double(x,y,width,height)); }
 	

@@ -10,18 +10,18 @@ public class Wave2Color {
 	
 	/** Converts a wavelength to its corresponding RGBA color values.
 		
-		@param wavelen the wavelength (in nanometers) to be converted.
+		@param wavelen The wavelength (in nanometers) to be converted.
 		
-		@param rgba the {@code double} array in which the RGBA values will be stored:<br>
+		@param rgba The {@code double} array in which the RGBA values will be stored:<br>
 		{@code [0]} = the value of the red (R) component,<br>
 		{@code [1]} = the value of the green (G) component,<br>
 		{@code [2]} = the value of the blue (B) component,<br>
 		{@code [3]} = the value of the alpha (A) component.<br>
 		The value of each component is in the range {@code [0.0,1.0]}.
 		
-		@exception NullPointerException if {@code rgba} is {@code null}.
+		@throws NullPointerException If {@code rgba} is {@code null}.
 		
-		@exception ArrayIndexOutOfBoundsException if the length of {@code rgba} is not {@code 4}.
+		@throws ArrayIndexOutOfBoundsException If the length of {@code rgba} is not {@code 4}.
 	*/
 	public void rgba(final double wavelen, final double[] rgba) {
 		
@@ -71,9 +71,9 @@ public class Wave2Color {
 	
 	/** Converts a wavelength to its corresponding RGBA color values.
 		
-		@param wavelen the wavelength (in nanometers) to be converted.
+		@param wavelen The wavelength (in nanometers) to be converted.
 		
-		@return a new {@code double} array with four elements:<br>
+		@return A new {@code double} array with four elements:<br>
 		{@code [0]} = the value of the red (R) component,<br>
 		{@code [1]} = the value of the green (G) component,<br>
 		{@code [2]} = the value of the blue (B) component,<br>
@@ -89,9 +89,9 @@ public class Wave2Color {
 	
 	/** Converts a wavelength to its corresponding RGBA color values.
 		
-		@param wavelen the wavelength (in nanometers) to be converted.
+		@param wavelen The wavelength (in nanometers) to be converted.
 		
-		@return a new {@code Color} object containing the RGBA color values.
+		@return A new {@code Color} object containing the RGBA color values.
 	*/
 	public Color color(final double wavelen) {
 		

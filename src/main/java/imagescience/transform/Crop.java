@@ -1,33 +1,35 @@
 package imagescience.transform;
 
+import imagescience.ImageScience;
+
 import imagescience.image.Axes;
 import imagescience.image.Coordinates;
 import imagescience.image.Dimensions;
 import imagescience.image.Image;
-import imagescience.utility.ImageScience;
+
 import imagescience.utility.Messenger;
 import imagescience.utility.Progressor;
 import imagescience.utility.Timer;
 
-/** Crops images. */
+/** Crops an image. */
 public class Crop {
 	
 	/** Default constructor. */
 	public Crop() { }
 	
-	/** Creates a cropped version of an image.
+	/** Crops an image.
 		
-		@param image the image to be cropped.
+		@param image The image to be cropped.
 		
-		@param start {@code stop} - the start and stop (inclusive) coordinates for cropping in every dimension.
+		@param start {@code stop} - The start and stop (inclusive) coordinates for cropping in every dimension.
 		
-		@return a new image containing a copy of the input image within the given crop range. The returned image is of the same type as the input image.
+		@return A new image containing a copy of the input image within the given crop range. The returned image is of the same type as the input image.
 		
-		@exception IllegalArgumentException if any of the {@code start} or {@code stop} coordinates is out of range, or if the {@code start} coordinate is larger than the {@code stop} coordinate in any dimension.
+		@throws IllegalArgumentException If any of the {@code start} or {@code stop} coordinates is out of range, or if the {@code start} coordinate is larger than the {@code stop} coordinate in any dimension.
 		
-		@exception NullPointerException if any of the parameters is {@code null}.
+		@throws NullPointerException If any of the parameters is {@code null}.
 		
-		@exception UnknownError if for any reason the output image could not be created. In most cases this will be due to insufficient free memory.
+		@throws UnknownError If for any reason the output image can not be created. In most cases this will be due to insufficient free memory.
 	*/
 	public Image run(final Image image, final Coordinates start, final Coordinates stop) {
 		
@@ -39,9 +41,7 @@ public class Crop {
 		timer.start();
 		
 		// Check parameters:
-		messenger.log("Checking parameters");
 		final Dimensions idims = image.dimensions();
-		messenger.log("Input image dimensions: (x,y,z,t,c) = ("+idims.x+","+idims.y+","+idims.z+","+idims.t+","+idims.c+")");
 		
 		if (start.x < 0 || stop.x >= idims.x || start.x > stop.x)
 			throw new IllegalArgumentException("Crop range invalid in x-dimension");
@@ -64,12 +64,9 @@ public class Crop {
 		messenger.log("Crop range in t-dimension: [" + start.t + "," + stop.t + "]");
 		messenger.log("Crop range in c-dimension: [" + start.c + "," + stop.c + "]");
 		
-		final Dimensions cdims = new Dimensions(stop.x - start.x + 1,
-												stop.y - start.y + 1,
-												stop.z - start.z + 1,
-												stop.t - start.t + 1,
-												stop.c - start.c + 1);
+		final Dimensions cdims = new Dimensions(stop.x - start.x + 1, stop.y - start.y + 1, stop.z - start.z + 1, stop.t - start.t + 1, stop.c - start.c + 1);
 		
+		messenger.log("Input image dimensions: (x,y,z,t,c) = ("+idims.x+","+idims.y+","+idims.z+","+idims.t+","+idims.c+")");
 		messenger.log("Output image dimensions: (x,y,z,t,c) = ("+cdims.x+","+cdims.y+","+cdims.z+","+cdims.t+","+cdims.c+")");
 		
 		// Crop:
@@ -79,7 +76,7 @@ public class Crop {
 		final Coordinates ci = new Coordinates(); ci.x = start.x;
 		final Coordinates cc = new Coordinates();
 		final double[] a = new double[cdims.x];
-		messenger.status("Cropping...");
+		progressor.status("Cropping...");
 		progressor.steps(cdims.c*cdims.t*cdims.z);
 		progressor.start();
 		
@@ -98,7 +95,6 @@ public class Crop {
 		// Finish up:
 		cropped.name(image.name()+" cropped");
 		cropped.aspects(image.aspects().duplicate());
-		messenger.status("");
 		progressor.stop();
 		timer.stop();
 		

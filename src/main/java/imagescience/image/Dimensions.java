@@ -30,9 +30,9 @@ public class Dimensions {
 	
 	/** One-dimensional constructor.
 		
-		@param x the x-dimension.
+		@param x The x-dimension.
 		
-		@exception IllegalArgumentException if the parameter value is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If the parameter value is less than or equal to {@code 0}.
 	*/
 	public Dimensions(final int x) {
 		
@@ -46,11 +46,11 @@ public class Dimensions {
 	
 	/** Two-dimensional constructor.
 		
-		@param x the x-dimension.
+		@param x The x-dimension.
 		
-		@param y the y-dimension.
+		@param y The y-dimension.
 		
-		@exception IllegalArgumentException if any of the parameter values is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If any of the parameter values is less than or equal to {@code 0}.
 	*/
 	public Dimensions(final int x, final int y) {
 		
@@ -64,13 +64,13 @@ public class Dimensions {
 	
 	/** Three-dimensional constructor.
 		
-		@param x the x-dimension.
+		@param x The x-dimension.
 		
-		@param y the y-dimension.
+		@param y The y-dimension.
 		
-		@param z the z-dimension.
+		@param z The z-dimension.
 		
-		@exception IllegalArgumentException if any of the parameter values is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If any of the parameter values is less than or equal to {@code 0}.
 	*/
 	public Dimensions(final int x, final int y, final int z) {
 		
@@ -84,15 +84,15 @@ public class Dimensions {
 	
 	/** Four-dimensional constructor.
 		
-		@param x the x-dimension.
+		@param x The x-dimension.
 		
-		@param y the y-dimension.
+		@param y The y-dimension.
 		
-		@param z the z-dimension.
+		@param z The z-dimension.
 		
-		@param t the t-dimension.
+		@param t The t-dimension.
 		
-		@exception IllegalArgumentException if any of the parameter values is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If any of the parameter values is less than or equal to {@code 0}.
 	*/
 	public Dimensions(final int x, final int y, final int z, final int t) {
 		
@@ -106,17 +106,17 @@ public class Dimensions {
 	
 	/** Five-dimensional constructor.
 		
-		@param x the x-dimension.
+		@param x The x-dimension.
 		
-		@param y the y-dimension.
+		@param y The y-dimension.
 		
-		@param z the z-dimension.
+		@param z The z-dimension.
 		
-		@param t the t-dimension.
+		@param t The t-dimension.
 		
-		@param c the c-dimension.
+		@param c The c-dimension.
 		
-		@exception IllegalArgumentException if any of the parameter values is less than or equal to {@code 0}.
+		@throws IllegalArgumentException If any of the parameter values is less than or equal to {@code 0}.
 	*/
 	public Dimensions(final int x, final int y, final int z, final int t, final int c) {
 		
@@ -130,15 +130,15 @@ public class Dimensions {
 	
 	/** Duplicates this object.
 		
-		@return a new {@code Dimensions} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
+		@return A new {@code Dimensions} object that is an exact copy of this object. All information is copied and no memory is shared between this and the returned object.
 	*/
 	public Dimensions duplicate() { return new Dimensions(x,y,z,t,c); }
 	
 	/** Indicates whether this object is in the same state as the given object.
 		
-		@param dims the object to compare this object with.
+		@param dims The object to compare this object with.
 	
-		@return {@code true} if the given object is not {@code null} and its dimensions are equal to the corresponding dimensions of this object; {@code false} if this is not the case.
+		@return Value {@code true} if the given object is not {@code null} and its dimensions are equal to the corresponding dimensions of this object, or {@code false} if this is not the case.
 	*/
 	public boolean equals(final Dimensions dims) {
 		
