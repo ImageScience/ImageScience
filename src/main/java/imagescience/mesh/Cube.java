@@ -2,7 +2,7 @@ package imagescience.mesh;
 
 import java.util.Vector;
 
-import javax.vecmath.Point3f;
+import org.scijava.vecmath.Point3f;
 
 /** Triangular mesh of a cube in 3D. */
 public class Cube {
