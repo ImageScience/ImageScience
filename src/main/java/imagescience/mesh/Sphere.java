@@ -3,7 +3,7 @@ package imagescience.mesh;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import javax.vecmath.Point3f;
+import org.scijava.vecmath.Point3f;
 
 /** Triangular mesh of a sphere in 3D. The mesh is created by recursive subdivision of an icosahedron. */
 public class Sphere {
