@@ -1,7 +1,2 @@
-# Eclipse #
-/.classpath
-/.project
-/.settings/
-
-# Maven #
+/project/
 /target/
