@@ -1,78 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project>
 	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>sc.fiji</groupId>
-		<artifactId>pom-fiji</artifactId>
-		<version>7.1.1</version>
-		<relativePath />
-	</parent>
-
-	<artifactId>imagescience</artifactId>
-	<version>3.0.0</version>
-
-	<name>jars/imagescience.jar</name>
-	<description />
-	<url>http://fiji.sc/ImageScience</url>
-	<inceptionYear>2001</inceptionYear>
-
+	
+	<groupId>org.imagescience</groupId>
+	<artifactId>ImageScience</artifactId>
+	<version>3.1.0</version>
+	<packaging>jar</packaging>
+	
+	<name>ImageScience</name>
+	<description>A Java library for scientific image computing.</description>
+	<url>https://imagescience.org/meijering/software/imagescience/</url>
+	<inceptionYear>1996</inceptionYear>
+	
 	<licenses>
 		<license>
 			<name>ImageScience</name>
-			<url>http://fiji.sc/ImageScience_License</url>
-			<distribution>manual</distribution>
-			<comments>Not an OSS license!</comments>
+			<url>https://imagescience.org/meijering/software/imagescience/</url>
 		</license>
 	</licenses>
-
+	
 	<developers>
 		<developer>
 			<name>Erik Meijering</name>
-			<url>http://imagescience.org/meijering/</url>
-			<organization>ImageScience</organization>
-			<organizationUrl>http://imagescience.org/</organizationUrl>
+			<url>https://imagescience.org/meijering/</url>
 			<roles>
 				<role>developer</role>
 			</roles>
-			<timezone>+1</timezone>
 		</developer>
 	</developers>
-
+	
 	<scm>
-		<connection>scm:git:git://github.com/fiji/imagescience</connection>
-		<developerConnection>scm:git:git@github.com:fiji/imagescience</developerConnection>
-		<tag>HEAD</tag>
-		<url>https://github.com/fiji/imagescience</url>
+		<connection>scm:git:git://github.com/ImageScience/ImageScience</connection>
+		<developerConnection>scm:git:ssh://github.com:ImageScience/ImageScience</developerConnection>
+		<url>https://github.com/ImageScience/ImageScience</url>
 	</scm>
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/job/imagescience/</url>
-	</ciManagement>
-
+	
 	<repositories>
-		<!-- NB: for project parent -->
 		<repository>
-			<id>imagej.public</id>
-			<url>http://maven.imagej.net/content/groups/public</url>
+			<id>scijava.public</id>
+			<url>https://maven.scijava.org/content/groups/public/</url>
 		</repository>
 	</repositories>
-
+	
 	<dependencies>
-		<!-- ImageJ dependencies -->
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>ij</artifactId>
+			<version>1.53e</version>
 		</dependency>
 		<dependency>
 			<groupId>sc.fiji</groupId>
 			<artifactId>Image_5D</artifactId>
+			<version>2.0.2</version>
 		</dependency>
-		<!-- Third party dependencies -->
 		<dependency>
-			<groupId>java3d</groupId>
+			<groupId>org.scijava</groupId>
 			<artifactId>vecmath</artifactId>
+			<version>1.6.0-scijava-2</version>
 		</dependency>
 	</dependencies>
-
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<build>
+		<sourceDirectory>source/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<stylesheetfile>source/css/stylesheet.css</stylesheetfile>
+					<show>public</show>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
